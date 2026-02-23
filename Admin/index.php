@@ -255,7 +255,7 @@ $absent = $students-$totAttendance;
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">Employés carotés</div>
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Carotés</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carot ;?></div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                       </div>

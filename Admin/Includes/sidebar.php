@@ -64,7 +64,7 @@
         <div id="collapseBootstrap2" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Gérer les employés</h6>
-            <a class="collapse-item" href="createStudents.php">Ajouter/</br>Modifier un employé</a>
+            <a class="collapse-item" href="createStudents.php">Ajouter un employé</a>
             <a class="collapse-item" href="viewStudents.php">Voir les employés</a>
             <a class="collapse-item" href="downloadEmployes.php">Tous les employés(Excel)</a>
            
@@ -86,7 +86,7 @@
         <div id="collapseBootstrapcon" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Supplémentaires</h6>
-            <a class="collapse-item" href="#">Voir les heures supp</a>
+            <a class="collapse-item" href="viewSuppSelect.php">Voir les heures supp</a>
             <a class="collapse-item" href="#">Payer les heures supp</a>
           </div>
         </div>

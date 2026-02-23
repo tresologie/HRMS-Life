@@ -12,14 +12,14 @@ if(isset($_POST['save'])){
   $lastName=$_POST['lastName'];
   $emailAddress=$_POST['emailAddress'];
   $phoneNo=$_POST['phoneNo'];
+  $password=$_POST['password'];
   $classId=$_POST['classId'];
   $dateCreated = date("Y-m-d");
    
     $query=mysqli_query($conn,"select * from tblclassteacher where emailAddress ='$emailAddress'");
     $ret=mysqli_fetch_array($query);
 
-    $sampPass = "pass123";
-    $sampPass_2 = md5($sampPass);
+    $sampPass_2 = md5($password);
 
     if($ret > 0){ 
 
@@ -42,13 +42,6 @@ if(isset($_POST['save'])){
   }
 }
 
-//---------------------------------------EDIT-------------------------------------------------------------
-
-
-
-
-
-
 //--------------------EDIT------------------------------------------------------------
 
  if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit")
@@ -65,14 +58,13 @@ if(isset($_POST['save'])){
              $firstName=$_POST['firstName'];
               $lastName=$_POST['lastName'];
               $emailAddress=$_POST['emailAddress'];
-
+              $password=$_POST['password'];
               $phoneNo=$_POST['phoneNo'];
               $classId=$_POST['classId'];
-      
-              $dateCreated = date("d-m-y");
+              $dateCreated = date("Y-m-d");
 
     $query=mysqli_query($conn,"update tblclassteacher set firstName='$firstName', lastName='$lastName',
-    emailAddress='$emailAddress', password='$password',phoneNo='$phoneNo', classId='$classId',
+    emailAddress='$emailAddress', password='$sampPass_2',phoneNo='$phoneNo', classId='$classId',
     where Id='$Id'");
             if ($query) {
                 
@@ -181,6 +173,16 @@ if(isset($_POST['save'])){
                     </div>
                     <div class="form-group row mb-3">
                         <div class="col-xl-6">
+                        <label class="form-control-label">Mot de passe<span class="text-danger ml-2">*</span></label>
+                        <input type="password" class="form-control" required name="password" value="<?php echo $row['password'];?>" id="exampleInputFirstName" >
+                        </div>
+                        <div class="col-xl-6">
+                        <label class="form-control-label">Comfirmer le mot de passe<span class="text-danger ml-2">*</span></label>
+                      <input type="password" class="form-control" name="cpassword" value="<?php echo $row['cpassword'];?>" id="exampleInputFirstName" >
+                        </div>
+                    </div>
+                    <div class="form-group row mb-3">
+                        <div class="col-xl-6">
                         <label class="form-control-label">Selectionner une usine<span class="text-danger ml-2">*</span></label>
                          <?php
                         $qry= "SELECT * FROM tblclass ORDER BY className ASC";
@@ -203,7 +205,7 @@ if(isset($_POST['save'])){
                     {
                     ?>
                     <button type="submit" name="update" class="btn btn-warning">Modifier</button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <?php
                     } else {           
                     ?>
@@ -268,7 +270,7 @@ if(isset($_POST['save'])){
                       {
                            echo   
                            "<div class='alert alert-danger' role='alert'>
-                            No Record Found!
+                            Non trouvé!
                             </div>";
                       }
                       

@@ -1,0 +1,92 @@
+IRAKIZA Trésor	Le 10/10/2025
+DUSHIME Anniella
+UPG/TIC/GL
+
+CAHIER DE CHARGE
+Application de Gestion des Ressources Humaines
+Société : Life Company
+I. Présentation du projet
+I.1 Contexte
+Life Company souhaite digitaliser la gestion des employés, des présences, des heures supplémentaires, du calcul des salaires, …
+Actuellement, certaines opérations sont manuelles, ce qui entraîne des erreurs de calculs, perte de temps, manque de traçabilité, des difficultés de suivi des absences, …
+I.2 Objectif général
+Développer une application web permettant de gérer les employés, suivre les présences quotidiennes, calculer les heures supplémentaires, automatiser le calcul des salaires et générer des rapports facilement
+I.3 Objectifs spécifiques
+L’application devra permettre :
+1)	Ajouter, modifier et supprimer un employé
+2)	Gérer les postes et les usines
+3)	Enregistrer les présences journalières
+4)	Calculer automatiquement les heures supplémentaires
+5)	Calculer le salaire mensuel
+6)	Générer des rapports mensuels
+7)	Sécuriser l’accès par authentification
+
+II. Périmètre du projet
+II.1 Fonctionnalités incluses
+	Gestion des employés
+1.	Nom, prénom
+2.	Numéro d’identité
+3.	Numéro badge
+4.	Poste
+5.	Salaire de base
+6.	Usine
+7.	Date d’embauche
+	Gestion des usines
+1.	Ajouter une usine
+2.	Modifier
+3.	Supprimer
+	Gestion des présences
+1.	Appel
+2.	Absence
+3.	Retard
+4.	Justification
+	Gestion des heures supplémentaires
+1.	Calcul automatique : Heure fin - Heure début
+2.	Détection des heures au-delà du temps normal
+3.	Stockage des heures supplémentaires
+	Gestion des salaires
+Le salaire mensuel sera calculé selon : Salaire = Salaire de base - pénalités (si absences non justifiées)
+	Rapports
+1.	Rapport mensuel des présences
+2.	Rapport des absences
+3.	Rapport des heures supplémentaires
+4.	Rapport de paie
+Export possible en PDF et Excel
+	Sécurité
+1.	Connexion par login/mot de passe
+2.	Gestion des rôles :
+	Administrateur
+	RH
+	Superviseur
+III.  Exigences techniques
+III.1 Technologies utilisées
+1.	Frontend : HTML, CSS, Bootstrap
+2.	Backend : PHP
+3.	Base de données : MySQL
+4.	JavaScript (AJAX)
+5.	Hébergement : Serveur local (XAMPP) puis production
+III.2 Base de données (Structure principale)
+	tblstudents (Employés)
+Id, firstName, lastName, identite, admissionNumber, poste, salaire, classId, dateCreated
+	tblattendance (Présences)
+Id, admissionNumber, date, heureDebut, heureFin, statut, dateTimeTaken
+	tblsupp (Heures supplémentaires)
+Id, admissionNumber, date, heureDebut, heureFin, montant,dateTimeTaken
+	tblsalaire (Salaires)
+Id, montant,dateTimeTaken, mois, status, identite, admissionNumber, poste, salaire, classId,
+ 
+
+IV. Contraintes
+	L’application doit être responsive
+	Accès sécurisé
+	Données protégées
+	Sauvegarde régulière de la base de données
+	Performance acceptable avec +500 employés
+V. Améliorations futures
+	Application mobile
+	Système biométrique
+	Notifications automatiques
+	Dashboard statistiques avancé
+	Intégration comptable
+Conclusion
+Cette application permettra à Life Company d’améliorer la gestion RH, de réduire les erreurs, de gagner du temps, d’augmenter la transparence, d’améliorer la productivité

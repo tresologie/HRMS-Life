@@ -114,10 +114,9 @@ session_start();
         $_SESSION['lastName'] = $rows['lastName'];
         $_SESSION['emailAddress'] = $rows['emailAddress'];
         $_SESSION['classId'] = $rows['classId'];
-        $_SESSION['classArmId'] = $rows['classArmId'];
 
         echo "<script type = \"text/javascript\">
-        window.location = (\"ClassTeacher/index.php\")
+        window.location = (\"Usine/index.php\")
         </script>";
       }
 
@@ -139,13 +138,6 @@ session_start();
 }
 ?>
 
-                    <!-- <hr>
-                    <a href="index.html" class="btn btn-google btn-block">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
-                    </a>
-                    <a href="index.html" class="btn btn-facebook btn-block">
-                      <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a> -->
 
                 
                   <div class="text-center">
