@@ -107,7 +107,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Salaires</h6>
             <a class="collapse-item" href="viewStudentAttendance.php">Voir les présences</br>d'un employé</a>
-            <a class="collapse-item" href="viewPresences.php">Nombre de présences/</br>absences</a>
+            <a class="collapse-item" href="viewPresences.php">Présences tous les employés</a>
             <a class="collapse-item" href="#">Salaire des employés</br>(Excel)</a>
            
           </div>

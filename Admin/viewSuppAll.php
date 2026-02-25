@@ -111,100 +111,131 @@ include '../Includes/session.php';
                 </div>
                 <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>#</th>
-                        <th>Nom & Prenom</th>
-                        <th>Badge</th>
-                        <th>Usine</th>
-                        <th>Poste</th>
-                        <th>Date</th>
-                        <th>Montant</th>
-                        
-                      </tr>
-                    </thead>
-                   
-                    <tbody>
 
                   <?php
 
-                    if(isset($_POST['view'])){
+if(isset($_POST['view'])){
 
-                       $admissionNumber =  $_POST['admissionNumber'];
-                       $type =  $_POST['type'];
+  $type = $_POST['type'];
 
-                       if($type == "1"){ //All Attendance
+  // 1️⃣ Déterminer la période
+  if($type == "2"){ // Single date
+      $singleDate = $_POST['singleDate'];
+      $fromDate = $singleDate;
+      $toDate = $singleDate;
 
-                        $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                        tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
-                        FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo 
-                        ORDER BY className ASC";
+  } elseif($type == "3"){ // Date Range
+      $fromDate = $_POST['fromDate'];
+      $toDate = $_POST['toDate'];
 
-                       }
-                       if($type == "2"){ //Single Date Attendance
+      // Limiter à 7 jours max
+      $diff = (strtotime($toDate) - strtotime($fromDate)) / (60*60*24) + 1;
+      if($diff > 7){
+          $toDate = date('Y-m-d', strtotime($fromDate. ' + 6 days'));
+      }
 
-                        $singleDate =  $_POST['singleDate'];
+  } else { // Tous les jours / par défaut
+      $toDate = date('Y-m-d'); // aujourd'hui
+      $fromDate = date('Y-m-d', strtotime('-6 days')); // 7 jours
+  }
 
-                         $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                          tblstudents.poste,tblclass.className,tblstudents.firstName,tblstudents.lastName,
-                          tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
-                        FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken = '$singleDate' ORDER BY className ASC";
-                        
+  // 2️⃣ Requête SQL
+  $query = "SELECT 
+      tblstudents.admissionNumber,
+      tblstudents.firstName,
+      tblstudents.lastName,
+      tblstudents.poste,
+      tblclass.className,
+      tblsupp.dateTimeTaken,
+      FLOOR(tblsupp.montant / 100) * 100 AS montant
+      FROM tblsupp
+      INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
+      INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+      WHERE tblsupp.dateTimeTaken BETWEEN '$fromDate' AND '$toDate'
+      ORDER BY tblclass.className ASC, tblstudents.firstName ASC, tblsupp.dateTimeTaken ASC";
 
-                       }
-                       if($type == "3"){ //Date Range Attendance
+  $rs = $conn->query($query);
 
-                         $fromDate =  $_POST['fromDate'];
-                         $toDate =  $_POST['toDate'];
+  // 3️⃣ Préparer le tableau
+  $dates = [];
+  $data = [];
 
-                         $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                         tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
-                        FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
-                        ";
-                        
-                       }
+  while ($row = $rs->fetch_assoc()) {
 
-                      $rs = $conn->query($query);
-                      $num = $rs->num_rows;
-                      $sn=0;
-                      $status="";
-                      if($num > 0)
-                      { 
-                        while ($rows = $rs->fetch_assoc())
-                          {
-                             
-                            $sn = $sn + 1;
-                            echo"
-                              <tr>
-                                <td>".$sn."</td>
-                                <td>".$rows['firstName'].'  '.$rows['lastName']."</td>
-                                <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['className']."</td>
-                                <td>".$rows['poste']."</td>
-                                <td>".$rows['dateTimeTaken']."</td>
-                                <td style='font-weight:bold;'>".number_format($rows['montant'], 0, ',', ' ')." Fbu</td>
-                              </tr>";
-                              
-                          }
-                      }
-                      else
-                      {
-                           echo   
-                           "<div class='alert alert-danger' role='alert'>
-                            Non trouvés!
-                            </div>";
-                      }
-                    }
+      $emp = $row['admissionNumber'];
+      $date = $row['dateTimeTaken'];
+      $montant = $row['montant'];
+
+      // Stocker dates uniques
+      $dates[$date] = $date;
+
+      // Stocker données par employé
+      $data[$emp]['name'] = $row['firstName'].' '.$row['lastName'];
+      $data[$emp]['badge'] = $row['admissionNumber'];
+      $data[$emp]['usine'] = $row['className'];
+      $data[$emp]['poste'] = $row['poste'];
+
+      $data[$emp]['values'][$date] = $montant;
+  }
+
+  // Trier et limiter dates à 7 max
+  ksort($dates);
+  $dates = array_slice($dates, 0, 7, true);
+
+  // 4️⃣ Affichage du tableau
+  if(!empty($data)){
+
+      echo "<thead class='thead-light'>";
+      echo "<tr>";
+      echo "<th>Nom & Prenom</th>";
+      echo "<th>Badge</th>";
+      echo "<th>Usine</th>";
+      echo "<th>Poste</th>";
+
+      foreach($dates as $date){
+          echo "<th>".date("d/m", strtotime($date))."</th>";
+      }
+
+      echo "<th>TOTAL</th>"; // colonne Total
+      echo "</tr></thead><tbody>";
+
+      foreach($data as $emp => $info){
+
+          $totalEmploye = 0;
+
+          echo "<tr>";
+          echo "<td>".$info['name']."</td>";
+          echo "<td>".$info['badge']."</td>";
+          echo "<td>".$info['usine']."</td>";
+          echo "<td>".$info['poste']."</td>";
+
+          foreach($dates as $date){
+
+              $value = isset($info['values'][$date]) ? $info['values'][$date] : 0;
+              $totalEmploye += $value;
+
+              echo "<td style='font-weight:bold;'>".number_format($value, 0, ',', ' ')."</td>";
+          }
+
+          echo "<td style='font-weight:bold; background:#d4edda;'>".number_format($totalEmploye, 0, ',', ' ')."</td>";
+
+          echo "</tr>";
+      }
+
+      echo "</tbody>";
+
+  } else {
+
+      echo "<tr>
+              <td colspan='".(count($dates)+5)."'>
+                  <div class='alert alert-danger'>
+                      Non trouvés!
+                  </div>
+              </td>
+            </tr>";
+  }
+}
+                    
                       ?>
                     </tbody>
                   </table>
