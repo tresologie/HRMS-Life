@@ -4,7 +4,14 @@ error_reporting(0);
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
+$query = "SELECT tblclass.className
+    FROM tblclassteacher
+    INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
 
+    Where tblclassteacher.Id = '$_SESSION[userId]'";
+    $rs = $conn->query($query);
+    $num = $rs->num_rows;
+    $rrw = $rs->fetch_assoc();
 
 ?>
 
@@ -63,7 +70,7 @@ include '../Includes/session.php';
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Heures supplémentaires</h1>
+            <h1 class="h3 mb-0 text-gray-800">Heures supplémentaires (<b><?php echo $rrw['className'];?></b>)</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
               <li class="breadcrumb-item active" aria-current="page">Heures suppl</li>
@@ -80,11 +87,11 @@ include '../Includes/session.php';
                 </div>
                 <div class="card-body">
                   <form method="post">
-                    <div class="form-group row mb-3" style="max-height:500px; overflow-y:auto; ">
+                    <div class="form-group row mb-3 ">
                         <div class="col-xl-6">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
-                        $qry= "SELECT * FROM tblstudents  ORDER BY firstName ASC";
+                        $qry= "SELECT * FROM tblstudents where classId = '$_SESSION[classId]'  ORDER BY firstName ASC";
                         $result = $conn->query($qry);
                         $num = $result->num_rows;		
                         if ($num > 0){
@@ -130,7 +137,6 @@ include '../Includes/session.php';
                         <th>#</th>
                         <th>Nom & Prenom</th>
                         <th>Badge</th>
-                        <th>Usine</th>
                         <th>Poste</th>
                         <th>Date</th>
                         <th>Heures</th>
@@ -156,7 +162,7 @@ include '../Includes/session.php';
                         FROM tblsupp
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.admissionNo = '$admissionNumber'  ";
+                        where tblsupp.admissionNo = '$admissionNumber' and tblsupp.classId = '$_SESSION[classId]' ";
 
                        }
                        if($type == "2"){ //Single Date Attendance
@@ -170,7 +176,8 @@ include '../Includes/session.php';
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
                        
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber' ";
+                        where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber' 
+                        and tblsupp.classId = '$_SESSION[classId]' ";
                         
 
                        }
@@ -187,7 +194,8 @@ include '../Includes/session.php';
                         
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
-                        and tblsupp.admissionNo = '$admissionNumber'  ";
+                        and tblsupp.admissionNo = '$admissionNumber' 
+                        and tblsupp.classId = '$_SESSION[classId]' ";
                         
                        }
 
@@ -206,7 +214,6 @@ include '../Includes/session.php';
                                 <td>".$sn."</td>
                                 <td>".$rows['firstName'].'  '.$rows['lastName']."</td>
                                 <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['className']."</td>
                                 <td>".$rows['poste']."</td>
                                 <td>".$rows['dateTimeTaken']."</td>
                                 <td>".$rows['heures']."</td>

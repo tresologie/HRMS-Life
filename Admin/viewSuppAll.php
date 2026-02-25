@@ -81,22 +81,8 @@ include '../Includes/session.php';
                 <div class="card-body">
                   <form method="post">
                     <div class="form-group row mb-3" style="max-height:500px; overflow-y:auto; ">
-                        <div class="col-xl-6">
-                        <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
-                        <?php
-                        $qry= "SELECT * FROM tblstudents  ORDER BY firstName ASC";
-                        $result = $conn->query($qry);
-                        $num = $result->num_rows;		
-                        if ($num > 0){
-                          echo ' <select required name="admissionNumber" class="form-control mb-3">';
-                          echo'<option value="">--Choisir un employé--</option>';
-                          while ($rows = $result->fetch_assoc()){
-                          echo'<option value="'.$rows['admissionNumber'].'" >'.$rows['firstName'].' '.$rows['lastName'].'</option>';
-                              }
-                                  echo '</select>';
-                              }
-                            ?>  
-                        </div>
+                   
+                    
                         <div class="col-xl-6">
                         <label class="form-control-label">Type<span class="text-danger ml-2">*</span></label>
                           <select required name="type" onchange="typeDropDown(this.value)" class="form-control mb-3">
@@ -133,7 +119,6 @@ include '../Includes/session.php';
                         <th>Usine</th>
                         <th>Poste</th>
                         <th>Date</th>
-                        <th>Heures</th>
                         <th>Montant</th>
                         
                       </tr>
@@ -151,12 +136,12 @@ include '../Includes/session.php';
                        if($type == "1"){ //All Attendance
 
                         $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                        tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
+                        tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,
                         tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
                         FROM tblsupp
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.admissionNo = '$admissionNumber'  ";
+                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo 
+                        ORDER BY className ASC";
 
                        }
                        if($type == "2"){ //Single Date Attendance
@@ -164,13 +149,12 @@ include '../Includes/session.php';
                         $singleDate =  $_POST['singleDate'];
 
                          $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                          tblstudents.poste,tblclass.className,tblstudents.firstName,tblstudents.lastName,tblsupp.heures,
+                          tblstudents.poste,tblclass.className,tblstudents.firstName,tblstudents.lastName,
                           tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
                         FROM tblsupp
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                       
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber' ";
+                        where tblsupp.dateTimeTaken = '$singleDate' ORDER BY className ASC";
                         
 
                        }
@@ -180,14 +164,13 @@ include '../Includes/session.php';
                          $toDate =  $_POST['toDate'];
 
                          $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                         tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
+                         tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,
                         tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
                         FROM tblattendance
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
-                        and tblsupp.admissionNo = '$admissionNumber'  ";
+                        ";
                         
                        }
 
@@ -200,7 +183,7 @@ include '../Includes/session.php';
                         while ($rows = $rs->fetch_assoc())
                           {
                              
-                             $sn = $sn + 1;
+                            $sn = $sn + 1;
                             echo"
                               <tr>
                                 <td>".$sn."</td>
@@ -209,9 +192,9 @@ include '../Includes/session.php';
                                 <td>".$rows['className']."</td>
                                 <td>".$rows['poste']."</td>
                                 <td>".$rows['dateTimeTaken']."</td>
-                                <td>".$rows['heures']."</td>
                                 <td style='font-weight:bold;'>".number_format($rows['montant'], 0, ',', ' ')." Fbu</td>
                               </tr>";
+                              
                           }
                       }
                       else

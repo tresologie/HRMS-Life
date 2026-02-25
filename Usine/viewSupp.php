@@ -45,7 +45,7 @@ $rrw = $rs->fetch_assoc();
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Liste des heures supplementaires (<?php echo $rrw['className'];?>)</h1>
+            <h1 class="h3 mb-0 text-gray-800">Liste des heures supplementaires (<b><?php echo $rrw['className'];?></b>)</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
               <li class="breadcrumb-item active" aria-current="page">Voir la liste des supp</li>
@@ -81,7 +81,7 @@ $rrw = $rs->fetch_assoc();
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Heures supplementaires </h6>
                 </div>
-                <div class="table-responsive p-3" style="max-height:500px; overflow-y:auto; ">
+                <div class="table-responsive p-3 ">
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
@@ -92,8 +92,9 @@ $rrw = $rs->fetch_assoc();
                         <th>Debut</th>
                         <th>Fin</th>
                         <th>Heures</th>
-                        <th>Montant</th>
                         <th>Date</th>
+                        <th>Montant</th>
+                        
                       </tr>
                     </thead>
                    
@@ -132,8 +133,9 @@ $rrw = $rs->fetch_assoc();
                               <td>".$rows['heureDebut']."</td>
                               <td>".$rows['heureFin']."</td>
                               <td>".$rows['heures']."</td>
-                              <td>".number_format($rows['montant'], 0, ',', ' ')."</td>
-                             <td>".$rows['dateTimeTaken']."</td>
+                              <td>".$rows['dateTimeTaken']."</td>
+                              <td style='font-weight:bold;'>".number_format($rows['montant'], 0, ',', ' ')." Fbu</td>
+                            
                               </tr>";
                           }
                       }

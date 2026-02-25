@@ -67,15 +67,15 @@ $query = "SELECT tblclass.className
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Tous les employés</h6>
                 </div>
-                <div class="table-responsive p-3" style="max-height:500px; overflow-y:auto;">
+                <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
                         <th>#</th>
                         <th>Nom & Prénom</th>
                         <th>Badge</th>
-                        <th>Poste</th>
                         <th>Usine</th>
+                        <th>Poste</th>
                         <th>Date</th>
                         
                       </tr>
@@ -102,8 +102,9 @@ $query = "SELECT tblclass.className
                                 <td>".$sn."</td>
                                 <td>".$rows['firstName']." ".$rows['lastName']." </br> ".$rows['identite']."</td>
                                 <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['poste']."</td>
                                 <td>".$rows['className']."</td>
+                                <td>".$rows['poste']."</td>
+                                
                                 <td>".$rows['dateCreated']."</td>
                                
                               </tr>";

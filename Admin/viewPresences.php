@@ -26,10 +26,11 @@ $query = "SELECT tblclass.className
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/life.jpg" rel="icon">
-  <title>Tous les employes</title>
+  <title>Tous les employés</title>
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -47,10 +48,10 @@ $query = "SELECT tblclass.className
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Tous les employés de <b><?php echo $rrw['className'];?></b></h1>
+            <h1 class="h3 mb-0 text-gray-800">Tous les employés</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Tous les employés de l'usine</li>
+              <li class="breadcrumb-item active" aria-current="page">Tous les employés</li>
             </ol>
           </div>
 
@@ -64,17 +65,19 @@ $query = "SELECT tblclass.className
               <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Tous les employés de l'usine</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Tous les employés</h6>
                 </div>
-                <div class="table-responsive p-3 ">
+                <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                     <thead class="thead-light">
                       <tr>
                         <th>#</th>
                         <th>Nom & Prénom</th>
                         <th>Badge</th>
+                        <th>Usine</th>
                         <th>Poste</th>
-                       
+                        <th>Date</th>
+                        <th>presences</th>
                         
                       </tr>
                     </thead>
@@ -82,12 +85,10 @@ $query = "SELECT tblclass.className
                     <tbody>
 
                   <?php
-                      $query = "SELECT tblstudents.Id,tblstudents.firstName,tblstudents.identite,
-                      tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste,tblstudents.dateCreated
+                      $query = "SELECT tblstudents.Id,tblclass.className,tblstudents.firstName,tblstudents.identite,
+                      tblstudents.lastName,tblstudents.admissionNumber,poste,tblstudents.dateCreated
                       FROM tblstudents
-                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId
-                      
-                      where tblstudents.classId = '$_SESSION[classId]' ";
+                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId ";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;
@@ -100,9 +101,11 @@ $query = "SELECT tblclass.className
                             echo"
                               <tr>
                                 <td>".$sn."</td>
-                                <td>".$rows['firstName']." ".$rows['lastName']." </td>
+                                <td>".$rows['firstName']." ".$rows['lastName']." </br> ".$rows['identite']."</td>
                                 <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['poste']."</td>
+                                <td>".$rows['className']."</td>
+                                <td>".$rows['poste']."</td> 
+                                <td>".$rows['dateCreated']."</td>
                                
                               </tr>";
                           }
@@ -111,7 +114,7 @@ $query = "SELECT tblclass.className
                       {
                            echo   
                            "<div class='alert alert-danger' role='alert'>
-                            Non trouvé!
+                            Non trouvés!
                             </div>";
                       }
                       
@@ -123,7 +126,7 @@ $query = "SELECT tblclass.className
             </div>
             </div>
           </div>
-       
+          
 
         </div>
         <!---Container Fluid-->
@@ -163,6 +166,7 @@ $(document).ready(function () {
     });
 });
 </script>
+
 
 </body>
 

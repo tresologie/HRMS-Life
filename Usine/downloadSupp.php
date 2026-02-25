@@ -91,7 +91,7 @@ if(mysqli_num_rows($ret) > 0 )
         <td>".$row['heureDebut']."</td>
         <td>".$row['heureFin']."</td>
         <td>".$row['heures']."</td>
-        <td>".$row['montant']." Fbu</td>
+        <td style='font-weight:bold;'>".number_format($row['montant'], 0, ',', ' ')." Fbu</td>
         <td></td>
         </tr>"; 
 

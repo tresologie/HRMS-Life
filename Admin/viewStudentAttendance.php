@@ -18,7 +18,7 @@ include '../Includes/session.php';
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="img/logo/life.jpg" rel="icon">
-  <title>Heures supplémentaires</title>
+  <title>Un employé</title>
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -63,10 +63,10 @@ include '../Includes/session.php';
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Heures supplémentaires</h1>
+            <h1 class="h3 mb-0 text-gray-800">Voir les présences d'un empoyé</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Heures suppl</li>
+              <li class="breadcrumb-item active" aria-current="page">Voir les présences d'un empoyé</li>
             </ol>
           </div>
 
@@ -75,12 +75,12 @@ include '../Includes/session.php';
               <!-- Form Basic -->
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Voir les heures supplémentaires</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Voir les présences d'un empoyé</h6>
                     <?php echo $statusMsg; ?>
                 </div>
                 <div class="card-body">
                   <form method="post">
-                    <div class="form-group row mb-3" style="max-height:500px; overflow-y:auto; ">
+                    <div class="form-group row mb-3" >
                         <div class="col-xl-6">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
@@ -111,7 +111,7 @@ include '../Includes/session.php';
                         echo"<div id='txtHint'></div>";
                       ?>
 
-                    <button type="submit" name="view" class="btn btn-primary">Heures suppl</button>
+                    <button type="submit" name="view" class="btn btn-primary">Voir l'appel</button>
                   </form>
                 </div>
               </div>
@@ -121,7 +121,7 @@ include '../Includes/session.php';
               <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Heures supplémentaires</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Appel des employé</h6>
                 </div>
                 <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">
@@ -133,8 +133,7 @@ include '../Includes/session.php';
                         <th>Usine</th>
                         <th>Poste</th>
                         <th>Date</th>
-                        <th>Heures</th>
-                        <th>Montant</th>
+                        <th>Status</th>
                         
                       </tr>
                     </thead>
@@ -150,27 +149,26 @@ include '../Includes/session.php';
 
                        if($type == "1"){ //All Attendance
 
-                        $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                        tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
+                        $query = "SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,tblclass.className,
                         tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
-                        FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.admissionNo = '$admissionNumber'  ";
+                        FROM tblattendance
+                        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
+                      
+                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                        where tblattendance.admissionNo = '$admissionNumber' ";
 
                        }
                        if($type == "2"){ //Single Date Attendance
 
                         $singleDate =  $_POST['singleDate'];
 
-                         $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                          tblstudents.poste,tblclass.className,tblstudents.firstName,tblstudents.lastName,tblsupp.heures,
-                          tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
-                        FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
+                         $query = "SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,tblclass.className,
+                        tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                        FROM tblattendance
+                        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
                        
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber' ";
+                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                        where tblattendance.dateTimeTaken = '$singleDate' and tblattendance.admissionNo = '$admissionNumber' ";
                         
 
                        }
@@ -179,15 +177,14 @@ include '../Includes/session.php';
                          $fromDate =  $_POST['fromDate'];
                          $toDate =  $_POST['toDate'];
 
-                         $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                         tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
+                         $query = "SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,tblclass.className,
                         tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
                         FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
+                        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
                         
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
-                        and tblsupp.admissionNo = '$admissionNumber'  ";
+                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                        where tblattendance.dateTimeTaken between '$fromDate' and '$toDate' 
+                        and tblattendance.admissionNo = '$admissionNumber' ";
                         
                        }
 
@@ -199,7 +196,7 @@ include '../Includes/session.php';
                       { 
                         while ($rows = $rs->fetch_assoc())
                           {
-                             
+                              if($rows['status'] == '1'){$status = "Present"; $colour="#00FF00";}else{$status = "Absent";$colour="#FF0000";}
                              $sn = $sn + 1;
                             echo"
                               <tr>
@@ -209,8 +206,8 @@ include '../Includes/session.php';
                                 <td>".$rows['className']."</td>
                                 <td>".$rows['poste']."</td>
                                 <td>".$rows['dateTimeTaken']."</td>
-                                <td>".$rows['heures']."</td>
-                                <td style='font-weight:bold;'>".number_format($rows['montant'], 0, ',', ' ')." Fbu</td>
+                                <td style='background-color:".$colour."'>".$status."</td>
+                                
                               </tr>";
                           }
                       }

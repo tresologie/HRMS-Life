@@ -86,8 +86,9 @@
         <div id="collapseBootstrapcon" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Supplémentaires</h6>
-            <a class="collapse-item" href="viewSuppSelect.php">Voir les heures supp</a>
-            <a class="collapse-item" href="#">Payer les heures supp</a>
+            <a class="collapse-item" href="viewSuppSelect.php">Heures suppl(un employé)</a>
+            <a class="collapse-item" href="viewSuppAll.php">Heures suppl(Tous)</a>
+            <a class="collapse-item" href="#">Heures suppl(Excel)</a>
           </div>
         </div>
       </li>
@@ -100,13 +101,14 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-money-bill" style="color: blue;"></i>
-          <span>Payer les employés</span>
+          <span>Présences & Salaires</span>
         </a>
         <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Salaires</h6>
-            <a class="collapse-item" href="#">Consulter le paiement</a>
-            <a class="collapse-item" href="#">Payer les employés</br>(Guhemba)</a>
+            <a class="collapse-item" href="viewStudentAttendance.php">Voir les présences</br>d'un employé</a>
+            <a class="collapse-item" href="viewPresences.php">Nombre de présences/</br>absences</a>
+            <a class="collapse-item" href="#">Salaire des employés</br>(Excel)</a>
            
           </div>
         </div>

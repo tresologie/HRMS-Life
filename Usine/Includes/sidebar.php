@@ -72,6 +72,7 @@
             <h6 class="collapse-header">Supplémentaires</h6>
             <a class="collapse-item" href="takeHeuresSupp.php">Ajouter les heures supp</a>
             <a class="collapse-item" href="viewSupp.php">Voir les heures supp</a>
+            <a class="collapse-item" href="viewSuppSelect.php">Heures suppl(un employé)</a>
             <a class="collapse-item" href="downloadSupp.php">Rapport des heures</br>supplémentaires(Excel)</a>
 
           </div>

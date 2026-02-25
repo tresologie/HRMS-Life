@@ -144,7 +144,7 @@ if(isset($_POST['save'])){
                   <h6 class="m-0 font-weight-bold text-primary">Tous les employés de (<?php echo $rrw['className'];?>)</h6>
                   <h6 class="m-0 font-weight-bold text-danger">Note: <i>Cochez dans la case pour marquer la présence!</i></h6>
                 </div>
-                <div class="table-responsive p-3"  style="max-height:500px; overflow-y:auto; ">
+                <div class="table-responsive p-3 ">
                 <?php echo $statusMsg; ?>
                   <table class="table align-items-center table-flush table-hover">
                     <thead class="thead-light">

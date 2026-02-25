@@ -185,7 +185,7 @@ include '../Includes/session.php';
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Montant prévu pour les heures supplementaires
                         </div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo number_format($total, 0, ',', ' ')?>Fbu</div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo number_format($total, 0, ',', ' ')?>  Fbu</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                       </div>
                     </div>
@@ -214,7 +214,7 @@ include '../Includes/session.php';
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">A payer</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($payer, 0, ',', ' ')?>Fbu</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($payer, 0, ',', ' ')?>  Fbu</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                       </div>
                     </div>
@@ -237,7 +237,7 @@ include '../Includes/session.php';
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">A retourner</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($retour, 0, ',', ' ')?>Fbu</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($retour, 0, ',', ' ')?>  Fbu</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                       </div>
                     </div>
