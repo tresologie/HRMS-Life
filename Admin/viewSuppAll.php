@@ -153,7 +153,7 @@ if(isset($_POST['view'])){
       INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
       INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
       WHERE tblsupp.dateTimeTaken BETWEEN '$fromDate' AND '$toDate'
-      ORDER BY tblclass.className ASC, tblstudents.firstName ASC, tblsupp.dateTimeTaken ASC";
+      ORDER BY tblstudents.firstName ASC";
 
   $rs = $conn->query($query);
 
@@ -171,7 +171,7 @@ if(isset($_POST['view'])){
       $dates[$date] = $date;
 
       // Stocker données par employé
-      $data[$emp]['name'] = $row['firstName'].' '.$row['lastName'].' '.$row['identite'];
+      $data[$emp]['name'] = $row['firstName'].' '.$row['lastName'];
       $data[$emp]['badge'] = $row['admissionNumber'];
       $data[$emp]['usine'] = $row['className'];
       $data[$emp]['poste'] = $row['poste'];
@@ -205,7 +205,7 @@ if(isset($_POST['view'])){
           $totalEmploye = 0;
 
           echo "<tr>";
-          echo "<td style= 'width:240px;' >".$info['name']."</td>";
+          echo "<td style= 'width:400px;' >".$info['name']." ".$row['identite']."</td>";
           echo "<td>".$info['badge']."</td>";
           echo "<td>".$info['usine']."</td>";
           echo "<td>".$info['poste']."</td>";

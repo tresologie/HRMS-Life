@@ -50,7 +50,8 @@ if(isset($_POST['save'])){
                             AND dateTimeTaken='$dateToday'");
     }
 
-    $statusMsg = "<div class='alert alert-success' style='margin-right:700px;'>Présences mises à jour avec succès !</div>";
+    $statusMsg = "<div class='alert alert-success' style='margin-right:700px;'>
+    Présences mises à jour avec succès !</div>";
 }
 ?>
 
@@ -65,14 +66,6 @@ if(isset($_POST['save'])){
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
-
-  <style>
-    /* Scroll uniquement sur la table */
-    .table-responsive {
-      max-height: 500px;
-      overflow-y: auto;
-    }
-  </style>
 </head>
 
 <body id="page-top">
@@ -124,7 +117,8 @@ if(isset($_POST['save'])){
                                   tblstudents.lastName, tblstudents.poste
                                   FROM tblstudents
                                   INNER JOIN tblclass ON tblclass.Id = tblstudents.classId
-                                  WHERE tblstudents.classId='$_SESSION[classId]'";
+                                  WHERE tblstudents.classId='$_SESSION[classId]'
+                                  ORDER BY tblstudents.firstName ASC ";
                         $rs = $conn->query($query);
                         $sn = 0;
 

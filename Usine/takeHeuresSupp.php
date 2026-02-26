@@ -215,8 +215,8 @@ if($rowVerif && $rowVerif['heures'] > 0 && in_array($adNo, $check)){
                       tblstudents.lastName,tblstudents.poste
                       FROM tblstudents
                       INNER JOIN tblclass ON tblclass.Id = tblstudents.classId
-                  
-                      where tblstudents.classId = '$_SESSION[classId]' ";
+                      where tblstudents.classId = '$_SESSION[classId]'
+                      ORDER BY tblstudents.firstName ASC ";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;

@@ -87,7 +87,8 @@ $query = "SELECT tblclass.className
                       $query = "SELECT tblstudents.Id,tblclass.className,tblstudents.firstName,tblstudents.identite,
                       tblstudents.lastName,tblstudents.admissionNumber,poste,tblstudents.dateCreated
                       FROM tblstudents
-                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId ";
+                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId 
+                      ORDER BY tblstudents.firstName ASC";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;
@@ -100,7 +101,7 @@ $query = "SELECT tblclass.className
                             echo"
                               <tr>
                                 <td>".$sn."</td>
-                                <td>".$rows['firstName']." ".$rows['lastName']." </br> ".$rows['identite']."</td>
+                                <td><b>".$rows['firstName']." ".$rows['lastName']."</b> </br> ".$rows['identite']."</td>
                                 <td>".$rows['admissionNumber']."</td>
                                 <td>".$rows['className']."</td>
                                 <td>".$rows['poste']."</td>

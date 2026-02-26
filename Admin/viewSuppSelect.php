@@ -170,7 +170,8 @@ include '../Includes/session.php';
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
                        
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                        where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber' ";
+                        where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber'
+                        ORDER BY tblstudents.firstName ASC ";
                         
 
                        }

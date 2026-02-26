@@ -76,7 +76,8 @@ FROM tblsupp
 INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
 INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
 WHERE tblsupp.dateTimeTaken = '$dateTaken' 
-AND tblsupp.classId = '".$_SESSION['classId']."'");
+AND tblsupp.classId = '$_SESSION[classId]' 
+ORDER BY tblstudents.firstName ASC");
 
 if(mysqli_num_rows($ret) > 0 )
 {

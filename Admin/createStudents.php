@@ -259,7 +259,8 @@ if(isset($_POST['save'])){
                       tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste,
                       tblstudents.salaire,tblstudents.dateCreated
                       FROM tblstudents
-                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId ";
+                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId 
+                      ORDER BY tblstudents.firstName ASC";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;

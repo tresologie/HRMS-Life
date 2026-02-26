@@ -195,7 +195,8 @@ $query = "SELECT tblclass.className
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
                         and tblsupp.admissionNo = '$admissionNumber' 
-                        and tblsupp.classId = '$_SESSION[classId]' ";
+                        and tblsupp.classId = '$_SESSION[classId]' 
+                        ORDER BY tblstudents.firstName ASC";
                         
                        }
 

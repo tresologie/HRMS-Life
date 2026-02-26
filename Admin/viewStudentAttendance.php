@@ -184,7 +184,8 @@ include '../Includes/session.php';
                         
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
                         where tblattendance.dateTimeTaken between '$fromDate' and '$toDate' 
-                        and tblattendance.admissionNo = '$admissionNumber' ";
+                        and tblattendance.admissionNo = '$admissionNumber' 
+                        ORDER BY tblstudents.firstName ASC";
                         
                        }
 

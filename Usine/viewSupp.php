@@ -114,7 +114,10 @@ $rrw = $rs->fetch_assoc();
                       FROM tblsupp
                       INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
                       INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
-                      where tblsupp.dateTimeTaken = '$dateTaken' and tblsupp.classId = '$_SESSION[classId]'";
+                      where tblsupp.dateTimeTaken = '$dateTaken' and tblsupp.classId = '$_SESSION[classId]' 
+                      ORDER BY tblstudents.firstName ASC";
+
+                      
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                      

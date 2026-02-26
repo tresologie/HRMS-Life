@@ -64,7 +64,8 @@ $ret = mysqli_query($conn,"SELECT tblattendance.Id,tblattendance.status,tblatten
         INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
 
         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
-        where tblattendance.dateTimeTaken = '$dateTaken' and tblattendance.classId = '$_SESSION[classId]' ");
+        where tblattendance.dateTimeTaken = '$dateTaken' and tblattendance.classId = '$_SESSION[classId]' 
+        ORDER BY tblstudents.firstName ASC");
 
 if(mysqli_num_rows($ret) > 0 )
 {

@@ -161,7 +161,7 @@ FROM tblattendance
 INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
 INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
 WHERE tblattendance.dateTimeTaken BETWEEN '$fromDate' AND '$toDate'
-ORDER BY tblclass.className ASC, tblstudents.firstName ASC, tblattendance.dateTimeTaken ASC";
+ORDER BY tblstudents.firstName ASC";
 
   $rs = $conn->query($query);
 
