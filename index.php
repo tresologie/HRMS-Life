@@ -22,7 +22,7 @@ session_start();
 
 </head>
 
-<body class="bg-gradient-login" style="background-image: url('img/logo/life1.jpg');">
+<body>
   <!-- Login Content -->
   <div class="container-login">
     <div class="row justify-content-center">
@@ -32,11 +32,11 @@ session_start();
             <div class="row">
               <div class="col-lg-12">
                 <div class="login-form">
-                <h5 align="center"> HRMS-Life </h5>
+                <h5 align ="center" ><b> HRMS-Life</b> </h5>
                   <div class="text-center">
                     <img src="img/logo/life.jpg" style="width:130px;height:130px;">
-                    <br><br>
-                    <h1 class="h4 text-gray-900 mb-4">Se connecter</h1>
+                    <br>
+                    <h1 class="h4 text-gray-900 mb-3">Se connecter</h1>
                   </div>
                   <form class="user" method="Post" action="">
                   <div class="form-group">
@@ -51,13 +51,6 @@ session_start();
                     </div>
                     <div class="form-group">
                       <input type="password" name = "password" required class="form-control" id="exampleInputPassword" placeholder="Entrer votre mot de passe">
-                    </div>
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small" style="line-height: 1.5rem;">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <!-- <label class="custom-control-label" for="customCheck">Remember
-                          Me</label> -->
-                      </div>
                     </div>
                     <div class="form-group">
                         <input type="submit"  class="btn btn-success btn-block" value="Se connecter" name="login" />
