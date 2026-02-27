@@ -63,10 +63,10 @@ include '../Includes/session.php';
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Voir les présences d'un empoyé</h1>
+            <h1 class="h3 mb-0 text-gray-800">Les présences d'un empoyé</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Voir les présences d'un empoyé</li>
+              <li class="breadcrumb-item active" aria-current="page">Les présences d'un empoyé</li>
             </ol>
           </div>
 
@@ -81,7 +81,7 @@ include '../Includes/session.php';
                 <div class="card-body">
                   <form method="post">
                     <div class="form-group row mb-3" >
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
                         $qry= "SELECT * FROM tblstudents  ORDER BY firstName ASC";
@@ -97,13 +97,13 @@ include '../Includes/session.php';
                               }
                             ?>  
                         </div>
-                        <div class="col-xl-6">
-                        <label class="form-control-label">Type<span class="text-danger ml-2">*</span></label>
+                        <div class="col-xl-4">
+                        <label class="form-control-label">Un jour/Un mois/De ... à ...<span class="text-danger ml-2">*</span></label>
                           <select required name="type" onchange="typeDropDown(this.value)" class="form-control mb-3">
                           <option value="">--Choisir--</option>
-                          <option value="1" >Tous les jours</option>
-                          <option value="2" >Un jour(date precisé)</option>
-                          <option value="3" >Une intervaille donnée</option>
+                          <option value="2" >Un jour</option>
+                          <option value="1" >Un mois</option>
+                          <option value="3" >De ... à ...</option>
                         </select>
                         </div>
                     </div>

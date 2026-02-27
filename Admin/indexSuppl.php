@@ -34,7 +34,7 @@ $queryClasses = mysqli_query($conn, "SELECT DISTINCT classId FROM tblstudents OR
           </ol>
         </div>
 
-        <div class="row mb-3" style="max-height:500px; overflow-y:auto; ">
+        <div class="row mb-3">
           <?php
           while ($class = mysqli_fetch_assoc($queryClasses)) {
               $classId = $class['classId'];

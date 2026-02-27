@@ -32,7 +32,8 @@ if(isset($_POST['save'])){
 
     if ($query) {
        
-    $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Le chef d'usine ajouté avec succes!</div>";
+    $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>
+    Le chef d'usine ajouté avec succes!</div>";
 
     }
     else
@@ -58,13 +59,12 @@ if(isset($_POST['save'])){
              $firstName=$_POST['firstName'];
               $lastName=$_POST['lastName'];
               $emailAddress=$_POST['emailAddress'];
-              $password=$_POST['password'];
               $phoneNo=$_POST['phoneNo'];
               $classId=$_POST['classId'];
               $dateCreated = date("Y-m-d");
 
-    $query=mysqli_query($conn,"update tblclassteacher set firstName='$firstName', lastName='$lastName',
-    emailAddress='$emailAddress', password='$sampPass_2',phoneNo='$phoneNo', classId='$classId',
+    $query=mysqli_query($conn,"UPDATE tblclassteacher set firstName='$firstName', lastName='$lastName',
+    emailAddress='$emailAddress',phoneNo='$phoneNo', classId='$classId'
     where Id='$Id'");
             if ($query) {
                 
@@ -152,37 +152,36 @@ if(isset($_POST['save'])){
                 <div class="card-body">
                   <form method="post">
                    <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Nom<span class="text-danger ml-2">*</span></label>
                         <input type="text" class="form-control" required name="firstName" value="<?php echo $row['firstName'];?>" id="exampleInputFirstName">
                         </div>
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Prénom<span class="text-danger ml-2">*</span></label>
                       <input type="text" class="form-control" required name="lastName" value="<?php echo $row['lastName'];?>" id="exampleInputFirstName" >
                         </div>
-                    </div>
-                     <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Email<span class="text-danger ml-2">*</span></label>
                         <input type="email" class="form-control" required name="emailAddress" value="<?php echo $row['emailAddress'];?>" id="exampleInputFirstName" >
                         </div>
-                        <div class="col-xl-6">
+                    </div>
+                     <div class="form-group row mb-3">
+                        
+                        <div class="col-xl-4">
                         <label class="form-control-label">Numéro de Tel<span class="text-danger ml-2">*</span></label>
                       <input type="text" class="form-control" name="phoneNo" value="<?php echo $row['phoneNo'];?>" id="exampleInputFirstName" >
                         </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Mot de passe<span class="text-danger ml-2">*</span></label>
                         <input type="password" class="form-control" required name="password" value="<?php echo $row['password'];?>" id="exampleInputFirstName" >
                         </div>
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Comfirmer le mot de passe<span class="text-danger ml-2">*</span></label>
-                      <input type="password" class="form-control" name="cpassword" value="<?php echo $row['cpassword'];?>" id="exampleInputFirstName" >
+                        <input type="password" class="form-control" name="cpassword" value="<?php echo $row['cpassword'];?>" id="exampleInputFirstName" >
                         </div>
                     </div>
                     <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Selectionner une usine<span class="text-danger ml-2">*</span></label>
                          <?php
                         $qry= "SELECT * FROM tblclass ORDER BY className ASC";

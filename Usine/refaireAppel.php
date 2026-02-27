@@ -19,7 +19,7 @@ if($row['startTime']){
     $appelEndTime = date("H:i:s", strtotime($appelStartTime . ' +30 minutes'));
 
     if(strtotime($timeNow) > strtotime($appelEndTime)){
-        echo "<div class='alert alert-danger text-center' style='margin-top:50px; font-size:20px;'>
+        echo "<div class='alert alert-danger text-center' style='margin:50px; font-size:40px;'>
                 L'appel est déjà terminé !</div>";
         exit(); // bloque le reste de la page
     }

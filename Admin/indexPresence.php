@@ -25,7 +25,7 @@ $queryClasses = mysqli_query($conn, "SELECT DISTINCT classId FROM tblstudents OR
   <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
       <?php include "Includes/topbar.php";?>
-      <div class="container-fluid" id="container-wrapper"style="max-height:500px; overflow-y:auto; ">
+      <div class="container-fluid" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4" >
           <h1 class="h3 mb-0 text-gray-800">Statistiques de présences du <?php echo date("d-m-Y");?></h1>
           <ol class="breadcrumb">

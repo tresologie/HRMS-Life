@@ -81,7 +81,7 @@ include '../Includes/session.php';
                 <div class="card-body">
                   <form method="post">
                     <div class="form-group row mb-3" style="max-height:500px; overflow-y:auto; ">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
                         $qry= "SELECT * FROM tblstudents  ORDER BY firstName ASC";
@@ -97,13 +97,13 @@ include '../Includes/session.php';
                               }
                             ?>  
                         </div>
-                        <div class="col-xl-6">
-                        <label class="form-control-label">Type<span class="text-danger ml-2">*</span></label>
+                        <div class="col-xl-4">
+                        <label class="form-control-label">Un jour/Tous les jours/De Tel ... à ...<span class="text-danger ml-2">*</span></label>
                           <select required name="type" onchange="typeDropDown(this.value)" class="form-control mb-3">
                           <option value="">--Choisir--</option>
+                          <option value="2" >Un jour</option>
                           <option value="1" >Tous les jours</option>
-                          <option value="2" >Un jour(date precisé)</option>
-                          <option value="3" >Une intervaille donnée</option>
+                          <option value="3" >De tel date à tel date</option>
                         </select>
                         </div>
                     </div>
@@ -185,7 +185,6 @@ include '../Includes/session.php';
                         tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
                         FROM tblattendance
                         INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        
                         INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
                         and tblsupp.admissionNo = '$admissionNumber'  ";

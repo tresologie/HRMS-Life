@@ -144,7 +144,7 @@ if(isset($_POST['save'])){
         <!-- Topbar -->
 
         <!-- Container Fluid-->
-        <div class="container-fluid" id="container-wrapper" style="max-height:500px; overflow-y:auto;">
+        <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Ajouter un employé</h1>
             <ol class="breadcrumb">
@@ -164,37 +164,49 @@ if(isset($_POST['save'])){
                 <div class="card-body">
                   <form method="post">
                    <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Nom<span class="text-danger ml-2">*</span></label>
                         <input type="text" class="form-control" name="firstName" value="<?php echo $row['firstName'];?>" id="exampleInputFirstName" >
                         </div>
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Prénom<span class="text-danger ml-2">*</span></label>
-                      <input type="text" class="form-control" name="lastName" value="<?php echo $row['lastName'];?>" id="exampleInputFirstName" >
+                        <input type="text" class="form-control" name="lastName" value="<?php echo $row['lastName'];?>" id="exampleInputFirstName" >
                         </div>
-                    </div>
-                     <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">No. d'identité<span class="text-danger ml-2">*</span></label>
                         <input type="text" class="form-control" name="identite" value="<?php echo $row['identite'];?>" id="exampleInputFirstName" >
                         </div>
-                        <div class="col-xl-6">
+                    </div>
+                    <div class="form-group row mb-3">
+                        <div class="col-xl-4">
+                        <label class="form-control-label">Date de naissance<span class="text-danger ml-2">*</span></label>
+                        <input type="text" class="form-control" name="firstName" value="<?php echo $row['firstName'];?>" id="exampleInputFirstName" >
+                        </div>
+                        <div class="col-xl-4">
+                        <label class="form-control-label">Telephone<span class="text-danger ml-2">*</span></label>
+                        <input type="text" class="form-control" name="lastName" value="<?php echo $row['lastName'];?>" id="exampleInputFirstName" >
+                        </div>
+                        <div class="col-xl-4">
+                        <label class="form-control-label">Genre<span class="text-danger ml-2">*</span></label>
+                        <input type="text" class="form-control" name="identite" value="<?php echo $row['identite'];?>" id="exampleInputFirstName" >
+                        </div>
+                    </div>
+                     <div class="form-group row mb-3">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Numéro de la badge<span class="text-danger ml-2">*</span></label>
-                      <input type="text" class="form-control" required name="admissionNumber" value="<?php echo $row['admissionNumber'];?>" id="exampleInputFirstName" >
+                        <input type="text" class="form-control" required name="admissionNumber" value="<?php echo $row['admissionNumber'];?>" id="exampleInputFirstName" >
                         </div>
-                        </div>
-                        <div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Poste<span class="text-danger ml-2">*</span></label>
                       <input type="text" class="form-control" required name="poste" value="<?php echo $row['poste'];?>" id="exampleInputFirstName" >
                       </div>
-                      <div class="col-xl-6">
+                      <div class="col-xl-4">
                       <label class="form-control-label">Salaire<span class="text-danger ml-2">*</span></label>
                       <input type="number" class="form-control" required name="salaire" value="<?php echo $row['salaire'];?>" id="exampleInputFirstName" >
                         </div>
                     </div>
-                  
-                        <div class="col-xl-6">
+                    <div class="form-group row mb-3">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Usine<span class="text-danger ml-2">*</span></label>
                          <?php
                         $qry= "SELECT * FROM tblclass ORDER BY className ASC";
@@ -273,7 +285,7 @@ if(isset($_POST['save'])){
                             echo"
                               <tr>
                                 <td>".$sn."</td>
-                                <td>".$rows['firstName'].'  '.$rows['lastName']. '</br> '.$rows['identite']."</td>
+                                <td><b>".$rows['firstName']." ".$rows['lastName']."</b> </br> ".$rows['identite']."</td>
                                 <td>".$rows['admissionNumber']."</td>
                                 <td>".$rows['poste']."</td>
                                 <td>".$rows['salaire']." Fbu</td>

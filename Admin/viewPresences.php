@@ -72,7 +72,7 @@ if(date('d') >= 28){
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Presences des employés</h1>
+            <h1 class="h3 mb-0 text-gray-800">Présences des employés</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
               <li class="breadcrumb-item active" aria-current="page">Présences</li>
@@ -84,7 +84,7 @@ if(date('d') >= 28){
               <!-- Form Basic -->
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Presences des employés</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Présences des employés</h6>
                     <?php echo $statusMsg; ?>
                 </div>
                 <div class="card-body">
@@ -92,13 +92,13 @@ if(date('d') >= 28){
                     <div class="form-group row mb-3" style="max-height:500px; overflow-y:auto; ">
                    
                     
-                        <div class="col-xl-6">
-                        <label class="form-control-label">Type<span class="text-danger ml-2">*</span></label>
+                        <div class="col-xl-4">
+                        <label class="form-control-label">Un jour/Un mois/De ...à ...<span class="text-danger ml-2">*</span></label>
                           <select required name="type" onchange="typeDropDown(this.value)" class="form-control mb-3">
                           <option value="">--Choisir--</option>
-                          <option value="1" >Tous les jours</option>
-                          <option value="2" >Un jour(date precisé)</option>
-                          <option value="3" >Une intervaille donnée</option>
+                          <option value="2" >Un jour</option>
+                          <option value="1" >Un mois</option>
+                          <option value="3" >De ... à ...</option>
                         </select>
                         </div>
                     </div>
@@ -116,7 +116,7 @@ if(date('d') >= 28){
               <div class="col-lg-12">
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Presences des employés</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Présences des employés</h6>
                 </div>
                 <div class="table-responsive p-3">
                   <table class="table align-items-center table-flush table-hover" id="dataTableHover">

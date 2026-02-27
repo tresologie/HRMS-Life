@@ -45,7 +45,7 @@ $rrw = $rs->fetch_assoc();
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Liste des heures supplementaires (<b><?php echo $rrw['className'];?></b>)</h1>
+            <h1 class="h3 mb-0 text-gray-800">Liste des heures supplementaires <b><?php echo $rrw['className'];?></b></h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
               <li class="breadcrumb-item active" aria-current="page">Voir la liste des supp</li>

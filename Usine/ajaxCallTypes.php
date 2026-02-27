@@ -7,7 +7,7 @@ include '../Includes/dbcon.php';
 
     if($tid == 2){
         echo'<div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Selectionner la date<span class="text-danger ml-2">*</span></label>
                         <input type="date" class="form-control" name="singleDate" id="exampleInputFirstName">
                         </div>
@@ -16,11 +16,11 @@ include '../Includes/dbcon.php';
     else if($tid == 3){
 
          echo'<div class="form-group row mb-3">
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Du<span class="text-danger ml-2">*</span></label>
                         <input type="date" class="form-control" name="fromDate" id="exampleInputFirstName">
                         </div>
-                        <div class="col-xl-6">
+                        <div class="col-xl-4">
                         <label class="form-control-label">Au<span class="text-danger ml-2">*</span></label>
                         <input type="date" class="form-control" name="toDate" id="exampleInputFirstName">
                         </div>
