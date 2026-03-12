@@ -5,10 +5,10 @@ include '../Includes/session.php';
 date_default_timezone_set('Africa/Bujumbura');
 
 
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+Where tblchef.Id = '$_SESSION[userId]'";
 
 $rs = $conn->query($query);
 $num = $rs->num_rows;
@@ -50,11 +50,11 @@ $filename="Liste de tous les employes de Life campony";
 $dateCreated = date("Y-m-d");
 
 $cnt=1;			
-$ret = mysqli_query($conn,"SELECT tblstudents.Id,tblstudents.dateCreated, tblclass.className, tblstudents.salaire,
-tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
- FROM tblstudents 
- INNER JOIN tblclass ON tblclass.Id = tblstudents.classId 
- ORDER BY tblclass.className, tblstudents.firstName ASC");
+$ret = mysqli_query($conn,"SELECT tblemployees.Id,tblemployees.dateCreated, tblservice.serviceName, tblemployees.salaire,
+tblemployees.firstName,tblemployees.lastName,tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
+ FROM tblemployees 
+ INNER JOIN tblservice ON tblservice.Id = tblemployees.classId 
+ ORDER BY tblservice.serviceName, tblemployees.firstName ASC");
 
 if(mysqli_num_rows($ret) > 0 )
 {
@@ -66,7 +66,7 @@ echo '
 <td>'.$row['firstName'].'  '.$row['lastName'].'</td>  
 <td>'.$row['identite'].'</td> 
 <td>'.$row['admissionNumber'].'</td>
-<td>'.$row['className'].'</td> 
+<td>'.$row['serviceName'].'</td> 
 <td>'.$row['poste'].'</td>	
 <td>'.number_format($row['salaire'], 0, ',', ' ').' Fbu</td> 
 <td>'.$row['dateCreated'].'</td>	 					

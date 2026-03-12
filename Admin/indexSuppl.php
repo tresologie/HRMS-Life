@@ -11,9 +11,9 @@ $toDate   = $_GET['to'] ?? date('Y-m-d');
 
 // Récupérer toutes les usines (classes) qui ont au moins un employé avec leur nom
 $queryClasses = mysqli_query($conn, "
-    SELECT DISTINCT s.classId, c.className
-    FROM tblstudents s
-    INNER JOIN tblclass c ON s.classId = c.Id
+    SELECT DISTINCT s.classId, c.serviceName
+    FROM tblemployees s
+    INNER JOIN tblservice c ON s.classId = c.Id
     ORDER BY s.classId ASC
 ");
 
@@ -65,9 +65,18 @@ $queryClasses = mysqli_query($conn, "
           
           while ($class = mysqli_fetch_assoc($queryClasses)) {
               $classId = $class['classId'];
-              $className = $class['className'];
+              $serviceName = $class['serviceName'];
 
-             
+             /* ===================== TOTAL ÉTUDIANTS PAR CLASSE ===================== */
+$studentsData = [];
+$resultStudents = mysqli_query($conn,"
+SELECT classId, COUNT(*) as total
+FROM tblemployees
+GROUP BY classId
+");
+while($row = mysqli_fetch_assoc($resultStudents)){
+    $studentsData[$row['classId']] = $row['total'];
+}
 
               // Montant payé
               $resultPayer = mysqli_query($conn,
@@ -96,7 +105,7 @@ $queryClasses = mysqli_query($conn, "
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">À payer-<?php echo $className; ?></div>
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">À payer-<?php echo $serviceName; ?></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($payer,0,',',' '); ?> Fbu</div>
                   </div>
                   <div class="col-auto">
@@ -114,7 +123,7 @@ $queryClasses = mysqli_query($conn, "
 <div class="row no-gutters align-items-center">
 <div class="col mr-2">
 <div class="text-xs font-weight-bold text-uppercase mb-1">
-Présents - <?php echo $className;?>
+Présents - <?php echo $serviceName;?>
 </div>
 <div class="h5 mb-0 font-weight-bold text-gray-800">
 <?php echo $present;?>
@@ -136,7 +145,7 @@ Présents - <?php echo $className;?>
 <div class="row no-gutters align-items-center">
 <div class="col mr-2">
 <div class="text-xs font-weight-bold text-uppercase mb-1">
-Absents - <?php echo $className;?>
+Absents - <?php echo $serviceName;?>
 </div>
 <div class="h5 mb-0 font-weight-bold text-gray-800">
 <?php echo $absent;?>
@@ -156,7 +165,7 @@ Absents - <?php echo $className;?>
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Carrotés - <?php echo $className; ?></div>
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Carrotés - <?php echo $serviceName; ?></div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carot; ?></div>
                   </div>
                   <div class="col-auto">

@@ -12,10 +12,10 @@ include '../Includes/session.php';
 
 
 
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+Where tblchef.Id = '$_SESSION[userId]'";
 
 $rs = $conn->query($query);
 $num = $rs->num_rows;
@@ -34,7 +34,7 @@ echo "
     <td colspan='3' style='text-align:right;'>Le ".$todaysDate."</td>
 </tr>
 <tr style='font-weight:bold;'>
-    <td colspan='3' style='text-align:left;'> Usine: ".$rrw['className']." </td>
+    <td colspan='3' style='text-align:left;'> Usine: ".$rrw['serviceName']." </td>
 </tr>
 <tr style='font-weight:bold;'>
     <td></td>
@@ -61,12 +61,12 @@ $dateCreated = date("Y-m-d");
 $todaysDate = date("d-m-Y");
 
 $cnt=1;			
-$ret = mysqli_query($conn,"SELECT tblstudents.Id,tblstudents.dateCreated,
-tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
- FROM tblstudents 
- INNER JOIN tblclass ON tblclass.Id = tblstudents.classId
- where tblstudents.classId = '$_SESSION[classId]'
- ORDER BY tblstudents.firstName ASC");
+$ret = mysqli_query($conn,"SELECT tblemployees.Id,tblemployees.dateCreated,
+tblemployees.firstName,tblemployees.lastName,tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
+ FROM tblemployees 
+ INNER JOIN tblservice ON tblservice.Id = tblemployees.classId
+ where tblemployees.classId = '$_SESSION[classId]'
+ ORDER BY tblemployees.firstName ASC");
 
 if(mysqli_num_rows($ret) > 0 )
 {

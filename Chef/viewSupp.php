@@ -9,15 +9,15 @@ $dateTaken = date('Y-m-d');
 $totalGeneral = 0;
 
 // Classe de l'enseignant
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+Where tblchef.Id = '$_SESSION[userId]'";
 $rs = $conn->query($query);
 $rrw = $rs->fetch_assoc();
 
 // Récupérer le nombre total d'étudiants/employés
-$query1 = mysqli_query($conn, "SELECT * FROM tblstudents WHERE classId = '$_SESSION[classId]'");
+$query1 = mysqli_query($conn, "SELECT * FROM tblemployees WHERE classId = '$_SESSION[classId]'");
 $students = $query1 ? mysqli_num_rows($query1) : 0;
 
 // Si l'utilisateur choisit une date
@@ -77,7 +77,7 @@ $absent = $students - $present;
        <?php include "Includes/topbar.php";?>
         <!-- Topbar -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h6 class=" font-weight-bold text-primary"style="margin-left:30px">Heures supplementaires <b><?php echo $rrw['className'];?></b></h6>
+        <h6 class=" font-weight-bold text-primary"style="margin-left:30px">Heures supplementaires <b><?php echo $rrw['serviceName'];?></b></h6>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="downloadSupp.php">Exporter</a>(Exel)</li>
               <li class="breadcrumb-item"><a href="printSuppl.php">Imprimer</a>(PDF)</li>
@@ -174,16 +174,16 @@ $absent = $students - $present;
 
                       
 
-                      $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,tblstudents.identite,
+                      $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,tblemployees.identite,
                       DATE_FORMAT(tblsupp.heureDebut, '%H:%i') AS heureDebut, 
                       DATE_FORMAT(tblsupp.heureFin, '%H:%i') AS heureFin,
                       tblsupp.heures, FLOOR(tblsupp.montant / 100) * 100 AS montant,        
-                      tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
+                      tblemployees.firstName,tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste
                       FROM tblsupp
-                      INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                      INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                      INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+                      INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                       where tblsupp.dateTimeTaken = '$dateTaken' and tblsupp.classId = '$_SESSION[classId]' 
-                      ORDER BY tblstudents.firstName ASC";
+                      ORDER BY tblemployees.firstName ASC";
 
                       
                       $rs = $conn->query($query);

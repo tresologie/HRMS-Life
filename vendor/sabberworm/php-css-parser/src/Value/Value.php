@@ -11,7 +11,7 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 use function Safe\preg_match;
 
@@ -22,7 +22,7 @@ use function Safe\preg_match;
 abstract class Value implements CSSElement, Positionable
 {
     use Position;
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @param int<1, max>|null $lineNumber
@@ -191,7 +191,7 @@ abstract class Value implements CSSElement, Positionable
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
         ];
     }
 

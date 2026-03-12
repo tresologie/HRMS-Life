@@ -110,8 +110,14 @@ while($row = mysqli_fetch_assoc($ret)){
     $cnt++;
 }
 
-$html .= '</table>';
-$html .= '</body></html>';
+$html .= '</table>
+<div class="footer">
+        Good Life Service<br>
+        Cartier Industriel – Chausse d\'Uvira – Tel: +257 68 50 50 50<br>
+        Burundi – Bujumbura 
+    </div>
+</body>
+</html>';
 
 // Orientation paysage pour mieux voir la table
 $orientation = 'landscape';

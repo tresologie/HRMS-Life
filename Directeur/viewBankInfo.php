@@ -76,7 +76,7 @@ date_default_timezone_set('Africa/Bujumbura');
                             s.lastName,
                             s.admissionNumber
                         FROM tblBankInfo b
-                        INNER JOIN tblstudents s ON s.admissionNumber = b.admissionNo
+                        INNER JOIN tblemployees s ON s.admissionNumber = b.admissionNo
                         ORDER BY s.firstName ASC, s.lastName ASC
                     ";
                     

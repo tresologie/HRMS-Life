@@ -9,7 +9,7 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 use function Safe\preg_match;
 
@@ -20,7 +20,7 @@ use function Safe\preg_match;
  */
 class CSSString extends PrimitiveValue
 {
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @var string
@@ -106,7 +106,7 @@ class CSSString extends PrimitiveValue
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             // We're using the term "contents" here to make the difference to the class more clear.
             'contents' => $this->string,
         ];

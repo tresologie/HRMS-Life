@@ -26,7 +26,7 @@ if(isset($_POST['save'])){
       </div>";
   } else {
       // Vérifier si l'email existe déjà
-      $query = mysqli_query($conn,"SELECT * FROM tblclassteacher WHERE emailAddress ='$emailAddress'");
+      $query = mysqli_query($conn,"SELECT * FROM tblchef WHERE emailAddress ='$emailAddress'");
       $ret = mysqli_fetch_array($query);
 
       if($ret > 0){ 
@@ -38,7 +38,7 @@ if(isset($_POST['save'])){
           $md5Password = md5($password);
 
           // Insertion dans la BDD
-          $query = mysqli_query($conn,"INSERT INTO tblclassteacher 
+          $query = mysqli_query($conn,"INSERT INTO tblchef 
               (firstName, lastName, emailAddress, password, phoneNo, classId, dateCreated) 
               VALUES ('$firstName', '$lastName', '$emailAddress', '$md5Password', '$phoneNo', '$classId', '$dateCreated')");
 
@@ -62,7 +62,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
   $Id = $_GET['Id'];
 
   // Récupérer les données existantes pour pré-remplir le formulaire
-  $query = mysqli_query($conn, "SELECT * FROM tblclassteacher WHERE Id ='$Id'");
+  $query = mysqli_query($conn, "SELECT * FROM tblchef WHERE Id ='$Id'");
   $row = mysqli_fetch_array($query);
 
   if (isset($_POST['update'])) {
@@ -94,7 +94,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
       // Effectuer la mise à jour uniquement si $canUpdate = true
       if ($canUpdate) {
           if (!empty($password)) {
-              $query = mysqli_query($conn, "UPDATE tblclassteacher SET 
+              $query = mysqli_query($conn, "UPDATE tblchef SET 
                   firstName='$firstName',
                   lastName='$lastName',
                   emailAddress='$emailAddress',
@@ -103,7 +103,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
                   password='$md5Password'
                   WHERE Id='$Id'");
           } else {
-              $query = mysqli_query($conn, "UPDATE tblclassteacher SET 
+              $query = mysqli_query($conn, "UPDATE tblchef SET 
                   firstName='$firstName',
                   lastName='$lastName',
                   emailAddress='$emailAddress',
@@ -114,7 +114,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
 
           if ($query) {
             echo "<script type = \"text/javascript\">
-            window.location = (\"createClassTeacher.php\")
+            window.location = (\"createChef.php\")
             </script>"; 
           } else {
               $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>
@@ -130,12 +130,12 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
 	{
         $Id= $_GET['Id'];
 
-        $query = mysqli_query($conn,"DELETE FROM tblclassteacher WHERE Id='$Id'");
+        $query = mysqli_query($conn,"DELETE FROM tblchef WHERE Id='$Id'");
 
         if ($query) {
 
           echo "<script type = \"text/javascript\">
-          window.location = (\"createClassTeacher.php\")
+          window.location = (\"createChef.php\")
           </script>"; 
         }
           else{
@@ -239,7 +239,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
     <label>Selectionner une usine<span class="text-danger ml-2">*</span></label>
     <?php
     // Récupération des classes
-    $qry= "SELECT * FROM tblclass ORDER BY className ASC";
+    $qry= "SELECT * FROM tblservice ORDER BY serviceName ASC";
     $result = $conn->query($qry);
 
     if ($result->num_rows > 0){
@@ -248,7 +248,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
         while ($rowsClass = $result->fetch_assoc()){
             // Si on est en édition, sélection de l’usine déjà attribuée
             $selected = (isset($row['classId']) && $rowsClass['Id'] == $row['classId']) ? 'selected' : '';
-            echo '<option value="'.$rowsClass['Id'].'" '.$selected.'>'.$rowsClass['className'].'</option>';
+            echo '<option value="'.$rowsClass['Id'].'" '.$selected.'>'.$rowsClass['serviceName'].'</option>';
         }
         echo '</select>';
     }
@@ -262,7 +262,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
                     {
                     ?>
                     <button type="submit" name="update" class="btn btn-warning">Modifier</button>
-                    <a href="createClassTeacher.php" class="btn btn-secondary">Annuler</a>
+                    <a href="createChef.php" class="btn btn-secondary">Annuler</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <?php
                     } else {           
@@ -298,10 +298,10 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
                     <tbody>
 
                   <?php
-                      $query = "SELECT tblclassteacher.Id,tblclass.className,tblclassteacher.firstName,
-                      tblclassteacher.lastName,tblclassteacher.emailAddress,tblclassteacher.phoneNo,tblclassteacher.dateCreated
-                      FROM tblclassteacher
-                      INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId";
+                      $query = "SELECT tblchef.Id,tblservice.serviceName,tblchef.firstName,
+                      tblchef.lastName,tblchef.emailAddress,tblchef.phoneNo,tblchef.dateCreated
+                      FROM tblchef
+                      INNER JOIN tblservice ON tblservice.Id = tblchef.classId";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;
@@ -317,7 +317,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
                                 <td>".$rows['firstName'].'  '.$rows['lastName']."</td>
                                 <td>".$rows['emailAddress']."</td>
                                 <td>".$rows['phoneNo']."</td>
-                                <td>".$rows['className']."</td>
+                                <td>".$rows['serviceName']."</td>
                                 <td><a href='?action=edit&Id=".$rows['Id']."'><i class='fas fa-fw fa-edit'></i></a></td>
                                 <td><a href='?action=delete&Id=".$rows['Id']." ']'><i class='fas fa-fw fa-trash'></i></a></td>
                               </tr>";

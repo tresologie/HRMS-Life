@@ -19,19 +19,19 @@ if($diff > 7){
 
 // ===== Requête =====
 $query = "SELECT 
-    tblstudents.admissionNumber,
-    tblstudents.firstName,
-    tblstudents.lastName,
-    tblstudents.identite,
-    tblstudents.poste,
-    tblclass.className,
+    tblemployees.admissionNumber,
+    tblemployees.firstName,
+    tblemployees.lastName,
+    tblemployees.identite,
+    tblemployees.poste,
+    tblservice.serviceName,
     tblsupp.dateTimeTaken,
     FLOOR(tblsupp.montant / 100) * 100 AS montant
 FROM tblsupp
-INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
 WHERE tblsupp.dateTimeTaken BETWEEN '$fromDate' AND '$toDate'
-ORDER BY tblclass.className, tblstudents.firstName ASC";
+ORDER BY tblservice.serviceName, tblemployees.firstName ASC";
 
 $result = $conn->query($query);
 
@@ -49,7 +49,7 @@ while($row = $result->fetch_assoc()){
     $data[$emp]['name']  = $row['firstName'].' '.$row['lastName'];
     $data[$emp]['identite'] = $row['identite'];
     $data[$emp]['badge'] = $row['admissionNumber'];
-    $data[$emp]['usine'] = $row['className'];
+    $data[$emp]['usine'] = $row['serviceName'];
     $data[$emp]['poste'] = $row['poste'];
     $data[$emp]['values'][$date] = $montant;
 }

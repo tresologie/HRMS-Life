@@ -142,7 +142,7 @@ function sqlsrv_fetch_array($stmt, ?int $fetchType = null, ?int $row = null, ?in
 
 /**
  * @param resource $stmt
- * @param string $className
+ * @param string $serviceName
  * @param array $ctorParams
  * @param int $row
  * @param int $offset
@@ -150,17 +150,17 @@ function sqlsrv_fetch_array($stmt, ?int $fetchType = null, ?int $row = null, ?in
  * @throws SqlsrvException
  *
  */
-function sqlsrv_fetch_object($stmt, ?string $className = null, ?array $ctorParams = null, ?int $row = null, ?int $offset = null): ?object
+function sqlsrv_fetch_object($stmt, ?string $serviceName = null, ?array $ctorParams = null, ?int $row = null, ?int $offset = null): ?object
 {
     error_clear_last();
     if ($offset !== null) {
-        $safeResult = \sqlsrv_fetch_object($stmt, $className, $ctorParams, $row, $offset);
+        $safeResult = \sqlsrv_fetch_object($stmt, $serviceName, $ctorParams, $row, $offset);
     } elseif ($row !== null) {
-        $safeResult = \sqlsrv_fetch_object($stmt, $className, $ctorParams, $row);
+        $safeResult = \sqlsrv_fetch_object($stmt, $serviceName, $ctorParams, $row);
     } elseif ($ctorParams !== null) {
-        $safeResult = \sqlsrv_fetch_object($stmt, $className, $ctorParams);
-    } elseif ($className !== null) {
-        $safeResult = \sqlsrv_fetch_object($stmt, $className);
+        $safeResult = \sqlsrv_fetch_object($stmt, $serviceName, $ctorParams);
+    } elseif ($serviceName !== null) {
+        $safeResult = \sqlsrv_fetch_object($stmt, $serviceName);
     } else {
         $safeResult = \sqlsrv_fetch_object($stmt);
     }

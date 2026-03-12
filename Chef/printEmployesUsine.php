@@ -1,5 +1,5 @@
 <?php
-// IMPORTANT : AUCUN output AVANT le stream du PDF (pas d'espace, pas d'echo, pas de HTML)
+// IMPORTANT : RIEN AVANT ÇA (pas d'espace, pas d'echo, pas de HTML)
 require_once '../vendor/autoload.php'; // Dompdf
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -9,10 +9,20 @@ include '../Includes/session.php';
 
 date_default_timezone_set('Africa/Bujumbura');
 
-// Date du jour (format français)
+// Récupération du service/usine du chef connecté
+$query = "SELECT tblservice.serviceName
+          FROM tblchef
+          INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+          WHERE tblchef.Id = '" . mysqli_real_escape_string($conn, $_SESSION['userId']) . "'";
+
+$rs = $conn->query($query);
+$rrw = $rs->fetch_assoc();
+$usineName = $rrw['serviceName'] ?? 'Usine inconnue';
+
+// Date du jour
 $todaysDate = date("d/m/Y");
 
-// Requête : TOUS les employés de l'entreprise
+// Requête des employés de cette usine
 $ret = mysqli_query($conn, "
     SELECT 
         tblemployees.firstName,
@@ -20,15 +30,14 @@ $ret = mysqli_query($conn, "
         tblemployees.identite,
         tblemployees.admissionNumber,
         tblemployees.poste,
-        tblemployees.salaire,
-        tblemployees.dateCreated,
-        tblservice.serviceName
+        tblemployees.dateCreated
     FROM tblemployees 
-    INNER JOIN tblservice ON tblservice.Id = tblemployees.classId 
-    ORDER BY tblservice.serviceName ASC, tblemployees.firstName ASC
+    INNER JOIN tblservice ON tblservice.Id = tblemployees.classId
+    WHERE tblemployees.classId = '" . mysqli_real_escape_string($conn, $_SESSION['classId']) . "'
+    ORDER BY tblemployees.firstName ASC
 ");
 
-// HTML pour le PDF
+// Génération du HTML pour le PDF
 $html = '
 <!DOCTYPE html>
 <html lang="fr">
@@ -45,24 +54,20 @@ $html = '
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #4f46e5;
         }
         .logo {
-            font-size: 20pt;
+            font-size: 18pt;
             font-weight: bold;
             color: #4f46e5;
-        }
-        .date {
-            font-size: 11pt;
-            color: #4b5563;
         }
         h2 {
             text-align: center;
             color: #1e40af;
-            margin: 0 0 30px 0;
-            font-size: 16pt;
+            margin: 20px 0 25px 0;
+            font-size: 15pt;
         }
         table {
             width: 100%;
@@ -71,7 +76,7 @@ $html = '
         }
         th, td {
             border: 1px solid #9ca3af;
-            padding: 7px 9px;
+            padding: 6px 8px;
             text-align: center;
         }
         th {
@@ -86,7 +91,7 @@ $html = '
             text-align: right;
         }
         .footer {
-            margin-top: 50px;
+            margin-top: 40px;
             text-align: center;
             font-size: 9pt;
             color: #64748b;
@@ -97,10 +102,10 @@ $html = '
 
 <div class="header">
     <div class="logo">Life Company</div>
-    <div class="date">Le ' . $todaysDate . '</div>
+    <div><strong>Le ' . $todaysDate . '</strong></div>
 </div>
 
-<h2>Liste de tous les employés de Life Company</h2>
+<h2>Liste des employés de l\'usine : ' . htmlspecialchars($usineName) . '</h2>
 
 <table>
     <thead>
@@ -109,39 +114,31 @@ $html = '
             <th class="left">Nom & Prénom</th>
             <th>Identité</th>
             <th>Badge</th>
-            <th>Usine</th>
             <th>Poste</th>
-            <th class="right">Salaire</th>
             <th>Date d\'ajout</th>
         </tr>
     </thead>
     <tbody>';
 
 $cnt = 1;
-
 if (mysqli_num_rows($ret) > 0) {
     while ($row = mysqli_fetch_assoc($ret)) {
-        $salaire = number_format($row['salaire'], 0, ',', ' ');
-        $dateAjout = $row['dateCreated'] ? date('d/m/Y', strtotime($row['dateCreated'])) : '-';
-
         $html .= '
         <tr>
             <td>' . $cnt . '</td>
             <td class="left">' . htmlspecialchars($row['firstName'] . ' ' . $row['lastName']) . '</td>
             <td>' . htmlspecialchars($row['identite'] ?: '-') . '</td>
             <td>' . htmlspecialchars($row['admissionNumber']) . '</td>
-            <td class="left">' . htmlspecialchars($row['serviceName']) . '</td>
-            <td class="left">' . htmlspecialchars($row['poste'] ?: '-') . '</td>
-            <td class="right">' . $salaire . ' Fbu</td>
-            <td>' . $dateAjout . '</td>
+            <td>' . htmlspecialchars($row['poste'] ?: '-') . '</td>
+            <td>' . ($row['dateCreated'] ? date('d/m/Y', strtotime($row['dateCreated'])) : '-') . '</td>
         </tr>';
         $cnt++;
     }
 } else {
     $html .= '
     <tr>
-        <td colspan="8" style="text-align:center; padding:25px; color:#666; font-style:italic;">
-            Aucun employé enregistré dans la base.
+        <td colspan="6" style="text-align:center; padding:20px; color:#666;">
+            Aucun employé trouvé pour cette usine.
         </td>
     </tr>';
 }
@@ -158,7 +155,7 @@ $html .= '
 </body>
 </html>';
 
-// Génération PDF
+// Génération du PDF
 $options = new Options();
 $options->set('defaultFont', 'Arial');
 $options->set('isHtml5ParserEnabled', true);
@@ -166,9 +163,9 @@ $options->set('isRemoteEnabled', true);
 
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
-$dompdf->setPaper('A4', 'landscape');  // paysage pour mieux afficher 8 colonnes
+$dompdf->setPaper('A4', 'portrait'); // ou 'landscape' si tu préfères plus large
 
-$filename = "Tous_les_employes_Life_Company_" . date("d-m-Y") . ".pdf";
+$filename = "Liste_Employes_" . str_replace(' ', '_', $usineName) . "_" . date("d-m-Y") . ".pdf";
 
 $dompdf->render();
 $dompdf->stream($filename, ["Attachment" => true]);

@@ -8,7 +8,7 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 /**
  * Class representing a CSS selector combinator (space, `>`, `+`, or `~`).
@@ -17,7 +17,7 @@ use Sabberworm\CSS\ShortClassNameProvider;
  */
 class Combinator implements Component
 {
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @var ValidCombinatorValue
@@ -112,7 +112,7 @@ class Combinator implements Component
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             'value' => $this->value,
         ];
     }

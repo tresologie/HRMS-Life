@@ -14,7 +14,7 @@ $dateToShow = $today;
 $filterMessage = "Liste d'appel du jour (aujourd'hui) – " . date('d/m/Y');
 
 // Récupérer le nombre total d'étudiants/employés
-$query1 = mysqli_query($conn, "SELECT * FROM tblstudents WHERE classId = '$_SESSION[classId]'");
+$query1 = mysqli_query($conn, "SELECT * FROM tblemployees WHERE classId = '$_SESSION[classId]'");
 $students = $query1 ? mysqli_num_rows($query1) : 0;
 
 // Présents aujourd'hui
@@ -33,10 +33,10 @@ if (isset($_POST['view']) && !empty($_POST['dateTaken'])) {
 
 }
 
-$queryClass = "SELECT tblclass.className
-               FROM tblclassteacher
-               INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-               WHERE tblclassteacher.Id = '$_SESSION[userId]'";
+$queryClass = "SELECT tblservice.serviceName
+               FROM tblchef
+               INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+               WHERE tblchef.Id = '$_SESSION[userId]'";
 $rsClass = $conn->query($queryClass);
 $rrw = $rsClass->fetch_assoc();
 ?>
@@ -71,7 +71,7 @@ $rrw = $rsClass->fetch_assoc();
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4" >
         <h6 class=" font-weight-bold text-primary" style="margin-left:30px">
-            Liste d'appel <b>Le <?php echo date('d-m-Y', strtotime($dateToShow)).' ' . $rrw['className'] ; ?></b>
+            Liste d'appel <b>Le <?php echo date('d-m-Y', strtotime($dateToShow)).' ' . $rrw['serviceName'] ; ?></b>
           </h6>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="downloadRecord.php">Exporter</a> (Excel)</li>
@@ -150,14 +150,14 @@ $rrw = $rsClass->fetch_assoc();
                         <tbody>
                           <?php
                           $query = "SELECT tblattendance.Id, tblattendance.status, tblattendance.dateTimeTaken,
-                                           tblclass.className, tblstudents.firstName, tblstudents.lastName,
-                                           tblstudents.admissionNumber, tblstudents.poste
+                                           tblservice.serviceName, tblemployees.firstName, tblemployees.lastName,
+                                           tblemployees.admissionNumber, tblemployees.poste
                                     FROM tblattendance
-                                    INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
-                                    INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                                    INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
+                                    INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
                                     WHERE tblattendance.dateTimeTaken LIKE '$dateToShow%'
                                       AND tblattendance.classId = '$_SESSION[classId]'
-                                    ORDER BY tblstudents.firstName ASC";
+                                    ORDER BY tblemployees.firstName ASC";
 
                           $rs = $conn->query($query);
                           $num = $rs->num_rows;

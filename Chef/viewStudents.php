@@ -1,20 +1,19 @@
-
-<?php 
+<?php
 error_reporting(0);
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
 date_default_timezone_set('Africa/Bujumbura');
 
-$query = "SELECT tblclass.className
-    FROM tblclassteacher
-    INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
+$query = "SELECT tblservice.serviceName
+    FROM tblchef
+    INNER JOIN tblservice ON tblservice.Id = tblchef.classId
     
-    Where tblclassteacher.Id = '$_SESSION[userId]'";
+    Where tblchef.Id = '$_SESSION[userId]'";
 
-    $rs = $conn->query($query);
-    $num = $rs->num_rows;
-    $rrw = $rs->fetch_assoc();
+$rs = $conn->query($query);
+$num = $rs->num_rows;
+$rrw = $rs->fetch_assoc();
 
 ?>
 
@@ -38,30 +37,30 @@ $query = "SELECT tblclass.className
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
-      <?php include "Includes/sidebar.php";?>
+    <?php include "Includes/sidebar.php"; ?>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
-       <?php include "Includes/topbar.php";?>
+        <?php include "Includes/topbar.php"; ?>
         <!-- Topbar -->
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h6 class=" font-weight-bold text-primary" style="margin-left:30px">Tous les employés de <b><?php echo $rrw['className'];?></b></h6>
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="downloadEmployesUsine.php">Exporter</a>(Exel)</li>
-              <li class="breadcrumb-item"><a href="#">Imprimer</a>(PDF)</li>
-              
-            </ol>
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="./">Accueil</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Tous les employés de l'usine</li>
-            </ol>
-          </div>
+          <h6 class=" font-weight-bold text-primary" style="margin-left:30px">Tous les employés de <b><?php echo $rrw['serviceName']; ?></b></h6>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="downloadEmployesUsine.php">Exporter</a>(Exel)</li>
+            <li class="breadcrumb-item"><a href="printEmployesUsine.php">Imprimer</a>(PDF)</li>
+
+          </ol>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tous les employés de l'usine</li>
+          </ol>
+        </div>
 
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-        
+
 
           <div class="row">
             <div class="col-lg-12">
@@ -69,99 +68,95 @@ $query = "SELECT tblclass.className
 
 
               <!-- Input Group -->
-                 <div class="row">
-              <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="table-responsive p-3 ">
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>#</th>
-                        <th>Nom & Prénom</th>
-                        <th>Badge</th>
-                        <th>Poste</th>
-                       
-                        
-                      </tr>
-                    </thead>
-                    
-                    <tbody>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card mb-4">
+                    <div class="table-responsive p-3 ">
+                      <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                        <thead class="thead-light">
+                          <tr>
+                            <th>#</th>
+                            <th>Nom & Prénom</th>
+                            <th>Badge</th>
+                            <th>Poste</th>
 
-                  <?php
-                      $query = "SELECT tblstudents.Id,tblstudents.firstName,tblstudents.identite,
-                      tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste,tblstudents.dateCreated
-                      FROM tblstudents
-                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId
-                      where tblstudents.classId = '$_SESSION[classId]'
-                      ORDER BY tblstudents.firstName ASC ";
-                      $rs = $conn->query($query);
-                      $num = $rs->num_rows;
-                      $sn=0;
-                      $status="";
-                      if($num > 0)
-                      { 
-                        while ($rows = $rs->fetch_assoc())
-                          {
-                             $sn = $sn + 1;
-                            echo"
+
+                          </tr>
+                        </thead>
+
+                        <tbody>
+
+                          <?php
+                          $query = "SELECT tblemployees.Id,tblemployees.firstName,tblemployees.identite,
+                      tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste,tblemployees.dateCreated
+                      FROM tblemployees
+                      INNER JOIN tblservice ON tblservice.Id = tblemployees.classId
+                      where tblemployees.classId = '$_SESSION[classId]'
+                      ORDER BY tblemployees.firstName ASC ";
+                          $rs = $conn->query($query);
+                          $num = $rs->num_rows;
+                          $sn = 0;
+                          $status = "";
+                          if ($num > 0) {
+                            while ($rows = $rs->fetch_assoc()) {
+                              $sn = $sn + 1;
+                              echo "
                               <tr>
-                                <td>".$sn."</td>
-                                <td>".$rows['firstName']." ".$rows['lastName']." </td>
-                                <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['poste']."</td>
+                                <td>" . $sn . "</td>
+                                <td>" . $rows['firstName'] . " " . $rows['lastName'] . " </td>
+                                <td>" . $rows['admissionNumber'] . "</td>
+                                <td>" . $rows['poste'] . "</td>
                                
                               </tr>";
-                          }
-                      }
-                      else
-                      {
-                           echo   
-                           "<div class='alert alert-danger' role='alert'>
+                            }
+                          } else {
+                            echo
+                            "<div class='alert alert-danger' role='alert'>
                             Non trouvé!
                             </div>";
-                      }
-                      
-                      ?>
-                    </tbody>
-                  </table>
+                          }
+
+                          ?>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            </div>
-          </div>
-       
 
+
+          </div>
+          <!---Container Fluid-->
         </div>
-        <!---Container Fluid-->
       </div>
     </div>
-  </div>
 
-  <!-- Scroll to top -->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/ruang-admin.min.js"></script>
-   <!-- Page level plugins -->
-  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/ruang-admin.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script>
-$(document).ready(function () {
-  $('#dataTableHover').DataTable({
-        scrollX: true,
-        autoWidth: false,
-        language: {
+    <!-- Page level custom scripts -->
+    <script>
+      $(document).ready(function() {
+        $('#dataTableHover').DataTable({
+          scrollX: true,
+          autoWidth: false,
+          language: {
             url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
-        }
-    });
-});
-</script>
+          }
+        });
+      });
+    </script>
 
 </body>
 

@@ -19,7 +19,7 @@ SELECT
     COUNT(*) as total,
     SUM(CASE WHEN genre='M' THEN 1 ELSE 0 END) as hommes,
     SUM(CASE WHEN genre='F' THEN 1 ELSE 0 END) as femmes
-FROM tblstudents
+FROM tblemployees
 ");
 
 $stats = mysqli_fetch_assoc($statsQuery);

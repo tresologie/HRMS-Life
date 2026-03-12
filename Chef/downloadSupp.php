@@ -12,10 +12,10 @@ include '../Includes/session.php';
 
 
 
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+Where tblchef.Id = '$_SESSION[userId]'";
 
 $rs = $conn->query($query);
 $num = $rs->num_rows;
@@ -34,7 +34,7 @@ echo "
     <td colspan='4' style='text-align:right;'>Le ".$todaysDate."</td>
 </tr>
 <tr style='font-weight:bold;'>
-    <td colspan='6' style='text-align:left;'> Usine: ".$rrw['className']." </td>
+    <td colspan='6' style='text-align:left;'> Usine: ".$rrw['serviceName']." </td>
 </tr>
 <tr style='font-weight:bold;'>
     <td></td>
@@ -68,17 +68,17 @@ $cnt = 1;
 $totalHeures = 0;
 $totalMontant = 0;
 
-$ret = mysqli_query($conn,"SELECT tblsupp.Id, tblsupp.dateTimeTaken, tblstudents.identite,
+$ret = mysqli_query($conn,"SELECT tblsupp.Id, tblsupp.dateTimeTaken, tblemployees.identite,
 DATE_FORMAT(tblsupp.heureDebut, '%H:%i') AS heureDebut, 
 DATE_FORMAT(tblsupp.heureFin, '%H:%i') AS heureFin,
-tblsupp.heures, tblclass.className, FLOOR(tblsupp.montant / 100) * 100 AS montant,        
-tblstudents.firstName, tblstudents.lastName, tblstudents.admissionNumber, tblstudents.poste
+tblsupp.heures, tblservice.serviceName, FLOOR(tblsupp.montant / 100) * 100 AS montant,        
+tblemployees.firstName, tblemployees.lastName, tblemployees.admissionNumber, tblemployees.poste
 FROM tblsupp
-INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
 WHERE tblsupp.dateTimeTaken = '$dateTaken' 
 AND tblsupp.classId = '$_SESSION[classId]' 
-ORDER BY tblstudents.firstName ASC");
+ORDER BY tblemployees.firstName ASC");
 
 if(mysqli_num_rows($ret) > 0 )
 {
@@ -115,7 +115,7 @@ if(mysqli_num_rows($ret) > 0 )
 // Récupérer le nom et prénom du class teacher correspondant au session_classId
 $teacherQuery = mysqli_query($conn, "
     SELECT firstName, lastName 
-    FROM tblclassteacher 
+    FROM tblchef 
     WHERE classId = '".$_SESSION['classId']."'
 ");
 $teacher = mysqli_fetch_assoc($teacherQuery);

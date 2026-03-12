@@ -10,10 +10,10 @@ date_default_timezone_set('Africa/Bujumbura');
 
 if(isset($_POST['save'])){
     
-    $className=$_POST['className'];
+    $serviceName=$_POST['serviceName'];
     
    
-    $query=mysqli_query($conn,"select * from tblclass where className ='$className'");
+    $query=mysqli_query($conn,"select * from tblservice where serviceName ='$serviceName'");
     $ret=mysqli_fetch_array($query);
 
     if($ret > 0){ 
@@ -22,7 +22,7 @@ if(isset($_POST['save'])){
     }
     else{
 
-        $query=mysqli_query($conn,"insert into tblclass(className) value('$className')");
+        $query=mysqli_query($conn,"insert into tblservice(serviceName) value('$serviceName')");
 
     if ($query) {
         
@@ -48,16 +48,16 @@ if(isset($_POST['save'])){
 	{
         $Id= $_GET['Id'];
 
-        $query=mysqli_query($conn,"select * from tblclass where Id ='$Id'");
+        $query=mysqli_query($conn,"select * from tblservice where Id ='$Id'");
         $row=mysqli_fetch_array($query);
 
         //------------UPDATE-----------------------------
 
         if(isset($_POST['update'])){
     
-            $className=$_POST['className'];
+            $serviceName=$_POST['serviceName'];
         
-            $query=mysqli_query($conn,"update tblclass set className='$className' where Id='$Id'");
+            $query=mysqli_query($conn,"update tblservice set serviceName='$serviceName' where Id='$Id'");
 
             if ($query) {
                 
@@ -79,7 +79,7 @@ if(isset($_POST['save'])){
 	{
         $Id= $_GET['Id'];
 
-        $query = mysqli_query($conn,"DELETE FROM tblclass WHERE Id='$Id'");
+        $query = mysqli_query($conn,"DELETE FROM tblservice WHERE Id='$Id'");
 
         if ($query == TRUE) {
 
@@ -153,7 +153,7 @@ if(isset($_POST['save'])){
                     <div class="form-group row mb-3">
                         <div class="col-xl-6">
                             <label class="form-control-label">Usine<span class="text-danger ml-2">*</span></label>
-                      <input type="text" class="form-control" name="className" value="<?php echo $row['className'];?>" id="exampleInputFirstName" placeholder="Nom d'usine">
+                      <input type="text" class="form-control" name="serviceName" value="<?php echo $row['serviceName'];?>" id="exampleInputFirstName" placeholder="Nom d'usine">
                         </div>
                     </div>
                       <?php
@@ -196,10 +196,10 @@ if(isset($_POST['save'])){
                     <tbody>
 
                   <?php
-                      $query = "SELECT tblclassteacher.Id,tblclass.className,tblclassteacher.firstName,
-                      tblclassteacher.lastName,tblclassteacher.dateCreated
-                      FROM tblclassteacher
-                      INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId";
+                      $query = "SELECT tblchef.Id,tblservice.serviceName,tblchef.firstName,
+                      tblchef.lastName,tblchef.dateCreated
+                      FROM tblchef
+                      INNER JOIN tblservice ON tblservice.Id = tblchef.classId";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;
@@ -211,7 +211,7 @@ if(isset($_POST['save'])){
                             echo"
                               <tr>
                                 <td>".$sn."</td>
-                                <td>".$rows['className']."</td>
+                                <td>".$rows['serviceName']."</td>
                                 <td>".$rows['firstName'].'  '.$rows['lastName']."</td>
                                 <td><a href='?action=edit&Id=".$rows['Id']."'><i class='fas fa-fw fa-edit'></i></a></td>
                                 <td><a href='?action=delete&Id=".$rows['Id']."'><i class='fas fa-fw fa-trash'></i></a></td>

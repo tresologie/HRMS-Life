@@ -80,7 +80,7 @@ date_default_timezone_set('Africa/Bujumbura');
                         <div class="col-xl-4">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
-                        $qry= "SELECT * FROM tblstudents  ORDER BY firstName ASC";
+                        $qry= "SELECT * FROM tblemployees  ORDER BY firstName ASC";
                         $result = $conn->query($qry);
                         $num = $result->num_rows;		
                         if ($num > 0){
@@ -148,13 +148,13 @@ date_default_timezone_set('Africa/Bujumbura');
 
                         $query = "SELECT tblsupp.Id, tblsupp.heureDebut,tblsupp.heureFin,
                         FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                        tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                        tblsupp.dateTimeTaken, tblemployees.poste,tblservice.serviceName,tblsupp.heures,
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                        INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                         where tblsupp.admissionNo = '$admissionNumber'
-                        ORDER BY tblclass.className, tblstudents.firstName ASC";
+                        ORDER BY tblservice.serviceName, tblemployees.firstName ASC";
 
                        }
                        if($type == "2"){ //Single Date Attendance
@@ -163,14 +163,14 @@ date_default_timezone_set('Africa/Bujumbura');
 
                          $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,tblsupp.heureDebut,tblsupp.heureFin,
                          FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                          tblstudents.poste,tblclass.className,tblstudents.firstName,tblstudents.lastName,tblsupp.heures,
-                          tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                          tblemployees.poste,tblservice.serviceName,tblemployees.firstName,tblemployees.lastName,tblsupp.heures,
+                          tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
+                        INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
                        
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber'
-                        ORDER BY tblclass.className, tblstudents.firstName ASC";
+                        ORDER BY tblservice.serviceName, tblemployees.firstName ASC";
                         
 
                        }
@@ -181,14 +181,14 @@ date_default_timezone_set('Africa/Bujumbura');
 
                          $query = "SELECT tblsupp.Id,tblsupp.heureDebut,tblsupp.heureFin,
                           FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                         tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
+                         tblsupp.dateTimeTaken, tblemployees.poste,tblservice.serviceName,tblsupp.heures,
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                        INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
                         and tblsupp.admissionNo = '$admissionNumber'  
-                        ORDER BY tblclass.className, tblstudents.firstName ASC";
+                        ORDER BY tblservice.serviceName, tblemployees.firstName ASC";
                         
                        }
 
@@ -207,7 +207,7 @@ date_default_timezone_set('Africa/Bujumbura');
                                 <td>".$sn."</td>
                                 <td>".$rows['firstName'].'  '.$rows['lastName']."</td>
                                 <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['className']."</td>
+                                <td>".$rows['serviceName']."</td>
                                 <td>".$rows['poste']."</td>
                                 <td>".$rows['dateTimeTaken']."</td>
                                 <td>" . date('H:i', strtotime($rows['heureDebut'])) . "</td>

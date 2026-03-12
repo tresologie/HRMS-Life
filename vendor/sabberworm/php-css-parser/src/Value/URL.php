@@ -9,14 +9,14 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 /**
  * This class represents URLs in CSS. `URL`s always output in `URL("")` notation.
  */
 class URL extends PrimitiveValue
 {
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @var CSSString
@@ -92,7 +92,7 @@ class URL extends PrimitiveValue
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             // We're using the term "uri" here to match the wording used in the specs:
             // https://www.w3.org/TR/CSS22/syndata.html#uri
             'uri' => $this->url->getArrayRepresentation(),

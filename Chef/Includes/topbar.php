@@ -1,6 +1,6 @@
 
 <?php 
-  $query = "SELECT * FROM tblclassteacher WHERE Id = ".$_SESSION['userId']."";
+  $query = "SELECT * FROM tblchef WHERE Id = ".$_SESSION['userId']."";
   $rs = $conn->query($query);
   $num = $rs->num_rows;
   $rows = $rs->fetch_assoc();

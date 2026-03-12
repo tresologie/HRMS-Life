@@ -22,7 +22,7 @@ if(isset($_POST['save'])){
     $dateCreated = date("Y-m-d");
 
     // Vérifier si badge OU identite existe déjà
-    $check = mysqli_query($conn, "SELECT Id FROM tblstudents 
+    $check = mysqli_query($conn, "SELECT Id FROM tblemployees 
                                   WHERE admissionNumber='$admissionNumber' 
                                   OR identite='$identite'");
 
@@ -34,7 +34,7 @@ if(isset($_POST['save'])){
     }
     else{
 
-      $insert = mysqli_query($conn, "INSERT INTO tblstudents
+      $insert = mysqli_query($conn, "INSERT INTO tblemployees
       (firstName,lastName,identite,poste,admissionNumber,tel,salaire,ddn,genre,classId,dateCreated)
       VALUES
       ('$firstName','$lastName','$identite','$poste','$admissionNumber','$tel','$salaire','$ddn','$genre','$classId','$dateCreated')");
@@ -59,7 +59,7 @@ if(isset($_POST['save'])){
 	{
         $Id= $_GET['Id'];
 
-        $query=mysqli_query($conn,"select * from tblstudents where Id ='$Id'");
+        $query=mysqli_query($conn,"select * from tblemployees where Id ='$Id'");
         $row=mysqli_fetch_array($query);
 
         //------------UPDATE-----------------------------
@@ -79,13 +79,13 @@ if(isset($_POST['save'])){
 
              $dateCreated = date("Y-m-d");
 
-             $query=mysqli_query($conn,"UPDATE tblstudents SET firstName='$firstName', lastName='$lastName', 
+             $query=mysqli_query($conn,"UPDATE tblemployees SET firstName='$firstName', lastName='$lastName', 
              identite='$identite',poste='$poste',admissionNumber='$admissionNumber',tel='$tel', 
              salaire='$salaire', ddn='$ddn',genre='$genre',classId='$classId'
              WHERE Id='$Id'");
             if ($query) { 
                 echo "<script type = \"text/javascript\">
-                window.location = (\"createStudents.php\")
+                window.location = (\"createEmployees.php\")
                 </script>"; 
             }
             else
@@ -103,12 +103,12 @@ if(isset($_POST['save'])){
         $Id= $_GET['Id'];
         $classArmId= $_GET['classId'];
 
-        $query = mysqli_query($conn,"DELETE FROM tblstudents WHERE Id='$Id'");
+        $query = mysqli_query($conn,"DELETE FROM tblemployees WHERE Id='$Id'");
 
         if ($query == TRUE) {
 
             echo "<script type = \"text/javascript\">
-            window.location = (\"createStudents.php\")
+            window.location = (\"createEmployees.php\")
             </script>";
         }
         else{
@@ -247,7 +247,7 @@ if(!isset($row)){
                         <div class="col-xl-4">
                         <label class="form-control-label">Usine<span class="text-danger ml-2">*</span></label>
                          <?php
-                        $qry= "SELECT * FROM tblclass ORDER BY className ASC";
+                        $qry= "SELECT * FROM tblservice ORDER BY serviceName ASC";
                         $result = $conn->query($qry);
                         $num = $result->num_rows;		
                         if ($num > 0){
@@ -255,7 +255,7 @@ if(!isset($row)){
                           echo'<option value="">--Usine--</option>';
                           while ($rows = $result->fetch_assoc()){
                             $selected = (isset($row['classId']) && $row['classId'] == $rows['Id']) ? "selected" : "";
-                            echo '<option value="'.$rows['Id'].'" '.$selected.'>'.$rows['className'].'</option>';
+                            echo '<option value="'.$rows['Id'].'" '.$selected.'>'.$rows['serviceName'].'</option>';
                         }
                                   echo '</select>';
                               }
@@ -268,7 +268,7 @@ if(!isset($row)){
                     {
                     ?>
                     <button type="submit" name="update" class="btn btn-warning">Modifier</button>
-                    <a href="createStudents.php" class="btn btn-secondary">Annuler</a>
+                    <a href="createEmployees.php" class="btn btn-secondary">Annuler</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <?php
                     } else {           
@@ -303,12 +303,12 @@ if(!isset($row)){
                     <tbody>
 
                   <?php
-                      $query = "SELECT tblstudents.Id,tblclass.className,tblstudents.firstName,tblstudents.lastName,
-                      tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste,tblstudents.tel,
-                      tblstudents.salaire,tblstudents.dateCreated
-                      FROM tblstudents
-                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId 
-                      ORDER BY tblclass.className, tblstudents.firstName ASC";
+                      $query = "SELECT tblemployees.Id,tblservice.serviceName,tblemployees.firstName,tblemployees.lastName,
+                      tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste,tblemployees.tel,
+                      tblemployees.salaire,tblemployees.dateCreated
+                      FROM tblemployees
+                      INNER JOIN tblservice ON tblservice.Id = tblemployees.classId 
+                      ORDER BY tblservice.serviceName, tblemployees.firstName ASC";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;
@@ -326,7 +326,7 @@ if(!isset($row)){
                                 <td>".$rows['admissionNumber']."</td>
                                 <td>".$rows['tel']."</td>
                                 <td>".$rows['salaire']." Fbu</td>
-                                <td>".$rows['className']."</td>
+                                <td>".$rows['serviceName']."</td>
                                  <td>".$rows['dateCreated']."</td>
                                 <td><a href='?action=edit&Id=".$rows['Id']."'><i class='fas fa-fw fa-edit'></i></a></td>
                                 <td><a href='?action=delete&Id=".$rows['Id']."'><i class='fas fa-fw fa-trash'></i></a></td>

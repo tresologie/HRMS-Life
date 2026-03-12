@@ -166,18 +166,18 @@ if(isset($_POST['view'])){
 
   // Requête SQL
   $query = "SELECT 
-    tblstudents.admissionNumber,
-    tblstudents.firstName,
-    tblstudents.lastName,
-    tblstudents.poste,
-    tblclass.className,
+    tblemployees.admissionNumber,
+    tblemployees.firstName,
+    tblemployees.lastName,
+    tblemployees.poste,
+    tblservice.serviceName,
     tblattendance.dateTimeTaken,
     tblattendance.status
 FROM tblattendance
-INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
-INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
+INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
 WHERE tblattendance.dateTimeTaken BETWEEN '$fromDate' AND '$toDate'
-ORDER BY tblclass.className ASC, tblstudents.firstName ASC";
+ORDER BY tblservice.serviceName ASC, tblemployees.firstName ASC";
 
   $rs = $conn->query($query);
 
@@ -195,7 +195,7 @@ ORDER BY tblclass.className ASC, tblstudents.firstName ASC";
 
     $data[$emp]['name'] = $row['firstName'].' '.$row['lastName'];
     $data[$emp]['badge'] = $row['admissionNumber'];
-    $data[$emp]['usine'] = $row['className'];
+    $data[$emp]['usine'] = $row['serviceName'];
     $data[$emp]['poste'] = $row['poste'];
 
     // Marquer P ou A

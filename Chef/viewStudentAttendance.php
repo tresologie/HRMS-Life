@@ -84,7 +84,7 @@ date_default_timezone_set('Africa/Bujumbura');
                         <div class="col-xl-6">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
-                        $qry= "SELECT * FROM tblstudents where classId = '$_SESSION[classId]'  ORDER BY firstName ASC";
+                        $qry= "SELECT * FROM tblemployees where classId = '$_SESSION[classId]'  ORDER BY firstName ASC";
                         $result = $conn->query($qry);
                         $num = $result->num_rows;		
                         if ($num > 0){
@@ -146,11 +146,11 @@ date_default_timezone_set('Africa/Bujumbura');
                        if($type == "1"){ //All Attendance
 
                         $query = "SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
+                        INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
                       
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
                         where tblattendance.admissionNo = '$admissionNumber' and tblattendance.classId = '$_SESSION[classId]' ";
 
                        }
@@ -159,11 +159,11 @@ date_default_timezone_set('Africa/Bujumbura');
                         $singleDate =  $_POST['singleDate'];
 
                          $query = "SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
+                        INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
                        
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
                         where tblattendance.dateTimeTaken = '$singleDate' and tblattendance.admissionNo = '$admissionNumber' 
                         and tblattendance.classId = '$_SESSION[classId]' ";
                         
@@ -175,15 +175,15 @@ date_default_timezone_set('Africa/Bujumbura');
                          $toDate =  $_POST['toDate'];
 
                          $query = "SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
+                        INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
                         
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
                         where tblattendance.dateTimeTaken between '$fromDate' and '$toDate' 
                         and tblattendance.admissionNo = '$admissionNumber' 
                         and tblattendance.classId = '$_SESSION[classId]' 
-                        ORDER BY tblstudents.firstName ASC";
+                        ORDER BY tblemployees.firstName ASC";
                         
                        }
 

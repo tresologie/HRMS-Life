@@ -8,12 +8,12 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Renderable;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 class Comment implements Positionable, Renderable
 {
     use Position;
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @var string
@@ -57,7 +57,7 @@ class Comment implements Positionable, Renderable
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             // "contents" is the term used in the W3C specs:
             // https://www.w3.org/TR/CSS22/syndata.html#comments
             'contents' => $this->commentText,

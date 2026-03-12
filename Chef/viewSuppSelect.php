@@ -6,11 +6,11 @@ include '../Includes/session.php';
 
 date_default_timezone_set('Africa/Bujumbura');
 
-$query = "SELECT tblclass.className
-    FROM tblclassteacher
-    INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
+$query = "SELECT tblservice.serviceName
+    FROM tblchef
+    INNER JOIN tblservice ON tblservice.Id = tblchef.classId
 
-    Where tblclassteacher.Id = '$_SESSION[userId]'";
+    Where tblchef.Id = '$_SESSION[userId]'";
     $rs = $conn->query($query);
     $num = $rs->num_rows;
     $rrw = $rs->fetch_assoc();
@@ -71,7 +71,7 @@ $query = "SELECT tblclass.className
 
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h6 class=" font-weight-bold text-primary" style="margin-left:30px">Heures supplémentaires <b><?php echo $rrw['className'];?></b></h6>
+        <h6 class=" font-weight-bold text-primary" style="margin-left:30px">Heures supplémentaires <b><?php echo $rrw['serviceName'];?></b></h6>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
               <li class="breadcrumb-item active" aria-current="page">Heures suppl</li>
@@ -93,7 +93,7 @@ $query = "SELECT tblclass.className
                         <div class="col-xl-6">
                         <label class="form-control-label">Selectionner un employé<span class="text-danger ml-2">*</span></label>
                         <?php
-                        $qry= "SELECT * FROM tblstudents where classId = '$_SESSION[classId]'  ORDER BY firstName ASC";
+                        $qry= "SELECT * FROM tblemployees where classId = '$_SESSION[classId]'  ORDER BY firstName ASC";
                         $result = $conn->query($qry);
                         $num = $result->num_rows;		
                         if ($num > 0){
@@ -156,11 +156,11 @@ $query = "SELECT tblclass.className
                        if($type == "1"){ //All Attendance
 
                         $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                        tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                        tblsupp.dateTimeTaken, tblemployees.poste,tblservice.serviceName,tblsupp.heures,
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                        INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                         where tblsupp.admissionNo = '$admissionNumber' and tblsupp.classId = '$_SESSION[classId]' ";
 
                        }
@@ -169,12 +169,12 @@ $query = "SELECT tblclass.className
                         $singleDate =  $_POST['singleDate'];
 
                          $query = "SELECT tblsupp.Id,tblsupp.dateTimeTaken,FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                          tblstudents.poste,tblclass.className,tblstudents.firstName,tblstudents.lastName,tblsupp.heures,
-                          tblstudents.identite,tblstudents.admissionNumber,tblstudents.poste
+                          tblemployees.poste,tblservice.serviceName,tblemployees.firstName,tblemployees.lastName,tblsupp.heures,
+                          tblemployees.identite,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblsupp
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
+                        INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
                        
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken = '$singleDate' and tblsupp.admissionNo = '$admissionNumber' 
                         and tblsupp.classId = '$_SESSION[classId]' ";
                         
@@ -186,16 +186,16 @@ $query = "SELECT tblclass.className
                          $toDate =  $_POST['toDate'];
 
                          $query = "SELECT tblsupp.Id, FLOOR(tblsupp.montant / 100) * 100 AS montant,
-                         tblsupp.dateTimeTaken, tblstudents.poste,tblclass.className,tblsupp.heures,
-                        tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
+                         tblsupp.dateTimeTaken, tblemployees.poste,tblservice.serviceName,tblsupp.heures,
+                        tblemployees.firstName,tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste
                         FROM tblattendance
-                        INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
+                        INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
                         
-                        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+                        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
                         where tblsupp.dateTimeTaken between '$fromDate' and '$toDate' 
                         and tblsupp.admissionNo = '$admissionNumber' 
                         and tblsupp.classId = '$_SESSION[classId]' 
-                        ORDER BY tblstudents.firstName ASC";
+                        ORDER BY tblemployees.firstName ASC";
                         
                        }
 

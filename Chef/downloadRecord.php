@@ -12,10 +12,10 @@ include '../Includes/session.php';
 
 
 
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+Where tblchef.Id = '$_SESSION[userId]'";
 
 $rs = $conn->query($query);
 $num = $rs->num_rows;
@@ -34,7 +34,7 @@ echo "
     <td colspan='3' style='text-align:right;'>Le ".$todaysDate."</td>
 </tr>
 <tr style='font-weight:bold;'>
-    <td colspan='3' style='text-align:left;'> Usine: ".$rrw['className']." </td>
+    <td colspan='3' style='text-align:left;'> Usine: ".$rrw['serviceName']." </td>
 </tr>
 <tr style='font-weight:bold;'>
     <td></td>
@@ -59,14 +59,14 @@ $filename="Liste de Présences";
 $dateTaken = date("Y-m-d");
 
 $cnt=1;			
-$ret = mysqli_query($conn,"SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,tblclass.className,
-        tblstudents.firstName,tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste
+$ret = mysqli_query($conn,"SELECT tblattendance.Id,tblattendance.status,tblattendance.dateTimeTaken,tblservice.serviceName,
+        tblemployees.firstName,tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste
         FROM tblattendance
-        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
+        INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
 
-        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
         where tblattendance.dateTimeTaken = '$dateTaken' and tblattendance.classId = '$_SESSION[classId]' 
-        ORDER BY tblstudents.firstName ASC");
+        ORDER BY tblemployees.firstName ASC");
 
 if(mysqli_num_rows($ret) > 0 )
 {

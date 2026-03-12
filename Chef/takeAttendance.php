@@ -1,91 +1,81 @@
-
-<?php 
+<?php
 error_reporting(0);
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
-    $query = "SELECT tblclass.className
-    FROM tblclassteacher
-    INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
+$query = "SELECT tblservice.serviceName
+    FROM tblchef
+    INNER JOIN tblservice ON tblservice.Id = tblchef.classId
 
-    Where tblclassteacher.Id = '$_SESSION[userId]'";
-    $rs = $conn->query($query);
-    $num = $rs->num_rows;
-    $rrw = $rs->fetch_assoc();
+    Where tblchef.Id = '$_SESSION[userId]'";
+$rs = $conn->query($query);
+$num = $rs->num_rows;
+$rrw = $rs->fetch_assoc();
 
 
 
-    date_default_timezone_set('Africa/Bujumbura');
-    $todaysDate = date("d-m-Y");
+date_default_timezone_set('Africa/Bujumbura');
+$todaysDate = date("d-m-Y");
 
-        $dateTaken = date("Y-m-d");
+$dateTaken = date("Y-m-d");
 
-        $qurty=mysqli_query($conn,"select * from tblattendance  where classId = '$_SESSION[classId]' and dateTimeTaken='$dateTaken'");
-        $count = mysqli_num_rows($qurty);
+$qurty = mysqli_query($conn, "select * from tblattendance  where classId = '$_SESSION[classId]' and dateTimeTaken='$dateTaken'");
+$count = mysqli_num_rows($qurty);
 
-        if($count == 0){ //if Record does not exsit, insert the new record
+if ($count == 0) { //if Record does not exsit, insert the new record
 
-          //insert the students record into the attendance table on page load
-          $qus=mysqli_query($conn,"select * from tblstudents  where classId = '$_SESSION[classId]' ");
-          while ($ros = $qus->fetch_assoc())
-          {
-              $qquery=mysqli_query($conn,"insert into tblattendance(admissionNo,classId,status,dateTimeTaken) 
+  //insert the students record into the attendance table on page load
+  $qus = mysqli_query($conn, "select * from tblemployees  where classId = '$_SESSION[classId]' ");
+  while ($ros = $qus->fetch_assoc()) {
+    $qquery = mysqli_query($conn, "insert into tblattendance(admissionNo,classId,status,dateTimeTaken) 
               value('$ros[admissionNumber]','$_SESSION[classId]','0','$dateTaken')");
-
-          }
-        }
-
-  
-      
+  }
+}
 
 
 
-if(isset($_POST['save'])){
-    
-    $admissionNo=$_POST['admissionNo'];
-
-    $check=$_POST['check'];
-    $N = count($admissionNo);
-    $status = "";
 
 
-//check if the attendance has not been taken i.e if no record has a status of 1
-  $qurty=mysqli_query($conn,"select * from tblattendance  where classId = '$_SESSION[classId]'
+
+if (isset($_POST['save'])) {
+
+  $admissionNo = $_POST['admissionNo'];
+
+  $check = $_POST['check'];
+  $N = count($admissionNo);
+  $status = "";
+
+
+  //check if the attendance has not been taken i.e if no record has a status of 1
+  $qurty = mysqli_query($conn, "select * from tblattendance  where classId = '$_SESSION[classId]'
     and dateTimeTaken='$dateTaken' and status = '1'");
   $count = mysqli_num_rows($qurty);
 
-  if($count > 0){
+  if ($count > 0) {
 
-      $statusMsg = "<div class='alert alert-danger'>L'appel déjà faits!</div>";
+    $statusMsg = "<div class='alert alert-danger'>L'appel déjà faits!</div>";
+  } else //update the status to 1 for the checkboxes checked
+  {
 
-  }
+    for ($i = 0; $i < $N; $i++) {
+      $admissionNo[$i]; //admission Number
 
-    else //update the status to 1 for the checkboxes checked
-    {
+      if (isset($check[$i])) //the checked checkboxes
+      {
+        $qquery = mysqli_query($conn, "update tblattendance set status='1' where admissionNo = '$check[$i]'");
 
-        for($i = 0; $i < $N; $i++)
-        {
-                $admissionNo[$i]; //admission Number
+        if ($qquery) {
 
-                if(isset($check[$i])) //the checked checkboxes
-                {
-                      $qquery=mysqli_query($conn,"update tblattendance set status='1' where admissionNo = '$check[$i]'");
-
-                      if ($qquery) {
-
-                          $statusMsg = "<div class='alert alert-success'>Les présences marqués avec succés!</div>";
-                      }
-                      else
-                      {
-                          $statusMsg = "<div class='alert alert-danger'>Erreur!</div>";
-                      }
-                  
-                }
-          }
+          $statusMsg = "<div class='alert alert-success'>Les présences marqués avec succés!</div>";
+          // Redirection vers index
+          header("Location: index.php?msg=success");
+          exit();
+        } else {
+          $statusMsg = "<div class='alert alert-danger'>Erreur!</div>";
+        }
       }
-
-   
-
+    }
+  }
 }
 
 
@@ -113,25 +103,25 @@ if(isset($_POST['save'])){
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
-      <?php include "Includes/sidebar.php";?>
+    <?php include "Includes/sidebar.php"; ?>
     <!-- Sidebar -->
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
         <!-- TopBar -->
-       <?php include "Includes/topbar.php";?>
+        <?php include "Includes/topbar.php"; ?>
         <!-- Topbar -->
 
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h6 class="font-weight-bold text-primary" style="margin-left:30px">Faire l'appel <b>Le <?php echo date('d-m-Y', strtotime($todaysDate)).' ' . $rrw['className'] ; ?></b></h6>
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="./">Accueil</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Tous les employés d'usine</li>
-            </ol>
-          </div>
+          <h6 class="font-weight-bold text-primary" style="margin-left:30px">Faire l'appel <b>Le <?php echo date('d-m-Y', strtotime($todaysDate)) . ' ' . $rrw['serviceName']; ?></b></h6>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tous les employés d'usine</li>
+          </ol>
+        </div>
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
-          
+
 
           <div class="row">
             <div class="col-lg-12">
@@ -139,82 +129,78 @@ if(isset($_POST['save'])){
 
 
               <!-- Input Group -->
-        <form method="post">
-            <div class="row">
-              <div class="col-lg-12">
-              <div class="card mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary" >Tous les employés </h6>
-                  <h6 class="m-0 font-weight-bold text-danger">Note: <i>Cochez dans la case pour marquer la présence!</i></h6>
-                </div>
-                <div class="table-responsive p-3 ">
-                <?php echo $statusMsg; ?>
-                  <table class="table align-items-center table-flush table-hover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>#</th>
-                        <th>Nom & Prenom</th>
-                        <th>Badge</th>
-                        <th>Poste</th>
-                        <th>Cocher</th>
-                      </tr>
-                    </thead>
-                    
-                    <tbody>
+              <form method="post">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="card mb-4">
+                      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Tous les employés </h6>
+                        <h6 class="m-0 font-weight-bold text-danger">Note: <i>Cochez dans la case pour marquer la présence!</i></h6>
+                      </div>
+                      <div class="table-responsive p-3 ">
+                        <?php echo $statusMsg; ?>
+                        <table class="table align-items-center table-flush table-hover">
+                          <thead class="thead-light">
+                            <tr>
+                              <th>#</th>
+                              <th>Nom & Prenom</th>
+                              <th>Badge</th>
+                              <th>Poste</th>
+                              <th>Cocher</th>
+                            </tr>
+                          </thead>
 
-                  <?php
-                      $query = "SELECT tblstudents.Id,tblstudents.admissionNumber,tblclass.className,tblclass.Id As classId,tblstudents.firstName,
-                      tblstudents.lastName,tblstudents.admissionNumber,tblstudents.poste, tblstudents.dateCreated
-                      FROM tblstudents
-                      INNER JOIN tblclass ON tblclass.Id = tblstudents.classId
-                      where tblstudents.classId = '$_SESSION[classId]'
-                      ORDER BY tblstudents.firstName ASC ";
-                      $rs = $conn->query($query);
-                      $num = $rs->num_rows;
-                      $sn=0;
-                      $status="";
-                      if($num > 0)
-                      { 
-                        while ($rows = $rs->fetch_assoc())
-                          {
-                             $sn = $sn + 1;
-                            echo"
+                          <tbody>
+
+                            <?php
+                            $query = "SELECT tblemployees.Id,tblemployees.admissionNumber,tblservice.serviceName,tblservice.Id As classId,tblemployees.firstName,
+                      tblemployees.lastName,tblemployees.admissionNumber,tblemployees.poste, tblemployees.dateCreated
+                      FROM tblemployees
+                      INNER JOIN tblservice ON tblservice.Id = tblemployees.classId
+                      where tblemployees.classId = '$_SESSION[classId]'
+                      ORDER BY tblemployees.firstName ASC ";
+                            $rs = $conn->query($query);
+                            $num = $rs->num_rows;
+                            $sn = 0;
+                            $status = "";
+                            if ($num > 0) {
+                              while ($rows = $rs->fetch_assoc()) {
+                                $sn = $sn + 1;
+                                echo "
                               <tr>
-                                <td>".$sn."</td>
-                                <td>".$rows['firstName'].'  '.$rows['lastName']."</td> 
-                                <td>".$rows['admissionNumber']."</td>
-                                <td>".$rows['poste']."</td>
+                                <td>" . $sn . "</td>
+                                <td>" . $rows['firstName'] . '  ' . $rows['lastName'] . "</td> 
+                                <td>" . $rows['admissionNumber'] . "</td>
+                                <td>" . $rows['poste'] . "</td>
                               
-                                <td><input name='check[]' type='checkbox' value=".$rows['admissionNumber']." class='form-control'></td>
+                                <td><input name='check[]' type='checkbox' value=" . $rows['admissionNumber'] . " class='form-control'></td>
                               </tr>";
-                              echo "<input name='admissionNo[]' value=".$rows['admissionNumber']." type='hidden' class='form-control'>";
-                          }
-                      }
-                      else
-                      {
-                           echo   
-                           "<div class='alert alert-danger' role='alert'>
+                                echo "<input name='admissionNo[]' value=" . $rows['admissionNumber'] . " type='hidden' class='form-control'>";
+                              }
+                            } else {
+                              echo
+                              "<div class='alert alert-danger' role='alert'>
                             Non trouvé!
                             </div>";
-                      }
-                      
-                      ?>
-                    </tbody>
-                  </table>
-                  <br>
-                  <button type="submit" name="save" class="btn btn-primary">Faire l'appel</button>
-                  </form>
-                </div>
-              </div>
-            </div>
+                            }
+
+                            ?>
+                          </tbody>
+                        </table>
+                        <br>
+                        <button type="submit" name="save" class="btn btn-primary">Faire l'appel</button>
+              </form>
             </div>
           </div>
-         
-
         </div>
-        <!---Container Fluid-->
       </div>
     </div>
+
+
+  </div>
+  <!---Container Fluid-->
+  </div>
+  </div>
   </div>
 
   <!-- Scroll to top -->
@@ -226,22 +212,22 @@ if(isset($_POST['save'])){
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-   <!-- Page level plugins -->
+  <!-- Page level plugins -->
   <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
-$(document).ready(function () {
-  $('#dataTableHover').DataTable({
+    $(document).ready(function() {
+      $('#dataTableHover').DataTable({
         scrollX: true,
         autoWidth: false,
         language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+          url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
         }
+      });
     });
-});
-</script>
+  </script>
 
 
 </body>

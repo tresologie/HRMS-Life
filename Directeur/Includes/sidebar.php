@@ -40,7 +40,7 @@
         <div id="collapseBootstrap2" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Gérer les employés</h6>
-            <a class="collapse-item" href="createStudents.php">Ajouter un employé</a>
+            <a class="collapse-item" href="createEmployees.php">Ajouter un employé</a>
             <a class="collapse-item" href="viewStudents.php">Voir les employés</a>
             <a class="collapse-item" href="viewStudentAttendance.php">Voir les présences</br>d'un employé</a>
             <a class="collapse-item" href="viewPresences.php">Présences de tous les</br> employés</a>

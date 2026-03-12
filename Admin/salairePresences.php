@@ -86,7 +86,7 @@ $joursPeriode = (strtotime($toDate) - strtotime($fromDate)) / 86400 + 1;
                       COALESCE(b.bankNumber, '-') AS bankNumber,
                       COUNT(CASE WHEN a.status = 1 THEN 1 END) AS nbPresences,
                       COUNT(CASE WHEN a.status = 0 THEN 1 END) AS nbAbsences
-                  FROM tblstudents s
+                  FROM tblemployees s
                   LEFT JOIN tblattendance a ON a.admissionNo = s.admissionNumber 
                       AND a.dateTimeTaken BETWEEN ? AND ?
                   LEFT JOIN tblBankInfo b ON b.admissionNo = s.admissionNumber

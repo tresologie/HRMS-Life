@@ -12,30 +12,30 @@ $todaysDate = date("d-m-Y");
 $dateTaken = date("Y-m-d");
 
 // Récupérer le nom de la classe
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-WHERE tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+WHERE tblchef.Id = '$_SESSION[userId]'";
 $rs = $conn->query($query);
 $rrw = $rs->fetch_assoc();
 
 // Récupérer les heures supplémentaires d'aujourd'hui
-$ret = mysqli_query($conn,"SELECT tblsupp.Id, tblsupp.dateTimeTaken, tblstudents.identite,
+$ret = mysqli_query($conn,"SELECT tblsupp.Id, tblsupp.dateTimeTaken, tblemployees.identite,
 DATE_FORMAT(tblsupp.heureDebut, '%H:%i') AS heureDebut, 
 DATE_FORMAT(tblsupp.heureFin, '%H:%i') AS heureFin,
-tblsupp.heures, tblclass.className, FLOOR(tblsupp.montant / 100) * 100 AS montant,        
-tblstudents.firstName, tblstudents.lastName, tblstudents.admissionNumber, tblstudents.poste
+tblsupp.heures, tblservice.serviceName, FLOOR(tblsupp.montant / 100) * 100 AS montant,        
+tblemployees.firstName, tblemployees.lastName, tblemployees.admissionNumber, tblemployees.poste
 FROM tblsupp
-INNER JOIN tblclass ON tblclass.Id = tblsupp.classId
-INNER JOIN tblstudents ON tblstudents.admissionNumber = tblsupp.admissionNo
+INNER JOIN tblservice ON tblservice.Id = tblsupp.classId
+INNER JOIN tblemployees ON tblemployees.admissionNumber = tblsupp.admissionNo
 WHERE tblsupp.dateTimeTaken = '$dateTaken' 
 AND tblsupp.classId = '$_SESSION[classId]' 
-ORDER BY tblstudents.firstName ASC");
+ORDER BY tblemployees.firstName ASC");
 
 // Récupérer le nom du professeur
 $teacherQuery = mysqli_query($conn, "
     SELECT firstName, lastName 
-    FROM tblclassteacher 
+    FROM tblchef 
     WHERE classId = '".$_SESSION['classId']."'
 ");
 $teacher = mysqli_fetch_assoc($teacherQuery);
@@ -109,7 +109,7 @@ tr:nth-child(even) {
 </div>
 </div>
 
-<div><b>Usine: '.$rrw['className'].'</b></div>
+<div><b>Usine: '.$rrw['serviceName'].'</b></div>
 <div class="title">Liste des heures supplémentaires</div>
 
 <table>

@@ -13,7 +13,7 @@ use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Settings;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 use function Safe\preg_match;
 
@@ -23,7 +23,7 @@ use function Safe\preg_match;
  */
 class Selector implements Renderable
 {
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @internal since 8.5.2
@@ -237,7 +237,7 @@ class Selector implements Renderable
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             'components' => \array_map(
                 static function (Component $component): array {
                     return $component->getArrayRepresentation();

@@ -42,7 +42,7 @@ session_start();
                           <option value="">--Votre Role--</option>
                           <option value="Administrator">Administrateur</option>
                           <option value="Directeur">Directeur</option>
-                          <option value="ClassTeacher">Chef d'Usine</option>
+                          <option value="Chef">Chef d'Usine</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -120,9 +120,9 @@ session_start();
 
       }
     }
-    else if($userType == "ClassTeacher"){
+    else if($userType == "Chef"){
 
-      $query = "SELECT * FROM tblclassteacher WHERE emailAddress = '$username' AND password = '$password'";
+      $query = "SELECT * FROM tblchef WHERE emailAddress = '$username' AND password = '$password'";
       $rs = $conn->query($query);
       $num = $rs->num_rows;
       $rows = $rs->fetch_assoc();

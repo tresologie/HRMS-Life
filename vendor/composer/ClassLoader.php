@@ -146,7 +146,7 @@ class ClassLoader
     }
 
     /**
-     * @return array<string, string> Array of classname => path
+     * @return array<string, string> Array of serviceName => path
      */
     public function getClassMap()
     {

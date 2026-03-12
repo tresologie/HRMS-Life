@@ -19,19 +19,19 @@ header("Expires: 0");
 
 // Requête
 $query = "SELECT 
-    tblstudents.admissionNumber,
-    tblstudents.firstName,
-    tblstudents.lastName,
-    tblstudents.poste,
-    tblclass.className,
+    tblemployees.admissionNumber,
+    tblemployees.firstName,
+    tblemployees.lastName,
+    tblemployees.poste,
+    tblservice.serviceName,
     DATE(tblattendance.dateTimeTaken) as dateTaken,
     tblattendance.status
 FROM tblattendance
-INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
-INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
+INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
 WHERE DATE(tblattendance.dateTimeTaken) 
 BETWEEN '$fromDate' AND '$toDate'
-ORDER BY tblclass.className, tblstudents.firstName ASC";
+ORDER BY tblservice.serviceName, tblemployees.firstName ASC";
 
 $rs = $conn->query($query);
 
@@ -49,7 +49,7 @@ while ($row = $rs->fetch_assoc()) {
 
     $data[$emp]['name']  = $row['firstName'].' '.$row['lastName'];
     $data[$emp]['badge'] = $row['admissionNumber'];
-    $data[$emp]['usine'] = $row['className'];
+    $data[$emp]['usine'] = $row['serviceName'];
     $data[$emp]['poste'] = $row['poste'];
 
     $data[$emp]['values'][$date] = ($status == 1) ? 'P' : 'A';

@@ -86,7 +86,7 @@
             <h6 class="collapse-header">Life compony </h6>
             <a class="collapse-item" href="createClass.php">Ajouter une usine</a>
             <a class="collapse-item" href="createDirector.php">Ajouter un Directeur</a>
-            <a class="collapse-item" href="createClassTeacher.php">Ajouter un chef</a>
+            <a class="collapse-item" href="createChef.php">Ajouter un chef</a>
             <a class="collapse-item" href="viewUsine.php">Liste des usines</br> et leurs chefs</a>
           
           </div>

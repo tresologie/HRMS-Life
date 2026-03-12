@@ -12,11 +12,11 @@ $todaysDate = date("d-m-Y");
 $filename = "Liste_chefs_usines.pdf";
 
 // Récupérer tous les chefs et leurs usines
-$ret = mysqli_query($conn,"SELECT t.Id, t.dateCreated, c.className, 
+$ret = mysqli_query($conn,"SELECT t.Id, t.dateCreated, c.serviceName, 
     t.firstName, t.lastName, t.emailAddress, t.phoneNo
-    FROM tblclassteacher t
-    INNER JOIN tblclass c ON c.Id = t.classId
-    ORDER BY c.className, t.firstName ASC");
+    FROM tblchef t
+    INNER JOIN tblservice c ON c.Id = t.classId
+    ORDER BY c.serviceName, t.firstName ASC");
 
 // Construire le HTML
 $html = '<!DOCTYPE html>
@@ -117,7 +117,7 @@ if(mysqli_num_rows($ret) > 0){
         <td>'.$row['firstName'].' '.$row['lastName'].'</td>
         <td>'.$row['emailAddress'].'</td>
         <td>'.$row['phoneNo'].'</td>
-        <td>'.$row['className'].'</td>
+        <td>'.$row['serviceName'].'</td>
         <td>'.$row['dateCreated'].'</td>
         </tr>';
         $cnt++;

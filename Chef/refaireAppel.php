@@ -3,11 +3,11 @@ error_reporting();
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
 
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+Where tblchef.Id = '$_SESSION[userId]'";
 $rs = $conn->query($query);
 $num = $rs->num_rows;
 $rrw = $rs->fetch_assoc();
@@ -90,7 +90,7 @@ if($row['startTime']){
 
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h6 class="font-weight-bold text-primary" style="margin-left:30px">Refaire l'appel <b> Le <?php echo date('d-m-Y', strtotime($dateToday)).' ' . $rrw['className'] ; ?></b></h6>
+            <h6 class="font-weight-bold text-primary" style="margin-left:30px">Refaire l'appel <b> Le <?php echo date('d-m-Y', strtotime($dateToday)).' ' . $rrw['serviceName'] ; ?></b></h6>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
               <li class="breadcrumb-item active" aria-current="page">Tous les employés d'usine</li>
@@ -132,11 +132,11 @@ if($row['startTime']){
                         <?php
                         $classId = $_SESSION['classId'];
 
-                        $query = "SELECT s.Id, s.admissionNumber, c.className, 
+                        $query = "SELECT s.Id, s.admissionNumber, c.serviceName, 
                                          s.firstName, s.lastName, s.poste,
                                          a.status
-                                  FROM tblstudents s
-                                  INNER JOIN tblclass c ON c.Id = s.classId
+                                  FROM tblemployees s
+                                  INNER JOIN tblservice c ON c.Id = s.classId
                                   LEFT JOIN tblattendance a 
                                        ON a.admissionNo = s.admissionNumber
                                        AND a.classId = s.classId

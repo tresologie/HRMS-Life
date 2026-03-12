@@ -10,9 +10,9 @@ $toDate   = $_GET['to'] ?? date('Y-m-d');
 
 /* ===================== CLASSES ===================== */
 $queryClasses = mysqli_query($conn,"
-SELECT DISTINCT c.Id as classId, c.className
-FROM tblclass c
-INNER JOIN tblstudents s ON s.classId = c.Id
+SELECT DISTINCT c.Id as classId, c.serviceName
+FROM tblservice c
+INNER JOIN tblemployees s ON s.classId = c.Id
 ORDER BY c.Id ASC
 ");
 
@@ -20,7 +20,7 @@ ORDER BY c.Id ASC
 $studentsData = [];
 $resultStudents = mysqli_query($conn,"
 SELECT classId, COUNT(*) as total
-FROM tblstudents
+FROM tblemployees
 GROUP BY classId
 ");
 while($row = mysqli_fetch_assoc($resultStudents)){
@@ -104,7 +104,7 @@ Statistiques de présences du <?php echo date("d-m-Y"); ?>
 <?php while ($class = mysqli_fetch_assoc($queryClasses)) { 
 
 $classId   = $class['classId'];
-$className = $class['className'];
+$serviceName = $class['serviceName'];
 
 $students      = $studentsData[$classId]  ?? 0;
 $totAttendance = $presenceData[$classId] ?? 0;
@@ -121,7 +121,7 @@ $absent        = $students - $totAttendance;
 <div class="row no-gutters align-items-center">
 <div class="col mr-2">
 <div class="text-xs font-weight-bold text-uppercase mb-1">
-Tous les employés - <?php echo $className;?>
+Tous les employés - <?php echo $serviceName;?>
 </div>
 <div class="h5 mb-0 font-weight-bold text-gray-800">
 <?php echo $students;?>
@@ -142,7 +142,7 @@ Tous les employés - <?php echo $className;?>
 <div class="row no-gutters align-items-center">
 <div class="col mr-2">
 <div class="text-xs font-weight-bold text-uppercase mb-1">
-Présents - <?php echo $className;?>
+Présents - <?php echo $serviceName;?>
 </div>
 <div class="h5 mb-0 font-weight-bold text-gray-800">
 <?php echo $totAttendance;?>
@@ -163,7 +163,7 @@ Présents - <?php echo $className;?>
 <div class="row no-gutters align-items-center">
 <div class="col mr-2">
 <div class="text-xs font-weight-bold text-uppercase mb-1">
-Absents - <?php echo $className;?>
+Absents - <?php echo $serviceName;?>
 </div>
 <div class="h5 mb-0 font-weight-bold text-gray-800">
 <?php echo $absent;?>
@@ -184,7 +184,7 @@ Absents - <?php echo $className;?>
 <div class="row no-gutters align-items-center">
 <div class="col mr-2">
 <div class="text-xs font-weight-bold text-uppercase mb-1">
-Abandons - <?php echo $className;?>
+Abandons - <?php echo $serviceName;?>
 </div>
 <div class="h5 mb-0 font-weight-bold text-gray-800">
 <?php echo $abandon;?>

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 /**
  * A `ValueList` represents a lists of `Value`s, separated by some separation character
@@ -15,7 +15,7 @@ use Sabberworm\CSS\ShortClassNameProvider;
  */
 abstract class ValueList extends Value
 {
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @var array<Value|string>
@@ -105,7 +105,7 @@ abstract class ValueList extends Value
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             'components' => \array_map(
                 /**
                  * @parm Value|string $component

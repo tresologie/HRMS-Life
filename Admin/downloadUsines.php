@@ -6,10 +6,10 @@ include '../Includes/session.php';
 date_default_timezone_set('Africa/Bujumbura');
 
 
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-Where tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+Where tblchef.Id = '$_SESSION[userId]'";
 
 $rs = $conn->query($query);
 $num = $rs->num_rows;
@@ -47,10 +47,10 @@ $filename="Liste des usines et chefs de Life campony";
 $dateCreated = date("Y-m-d");
 
 $cnt=1;			
-$ret = mysqli_query($conn,"SELECT tblclassteacher.firstName,tblclassteacher.lastName,
-tblclassteacher.emailAddress,tblclassteacher.phoneNo,tblclassteacher.dateCreated,tblclass.className
- FROM tblclassteacher
- INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId ");
+$ret = mysqli_query($conn,"SELECT tblchef.firstName,tblchef.lastName,
+tblchef.emailAddress,tblchef.phoneNo,tblchef.dateCreated,tblservice.serviceName
+ FROM tblchef
+ INNER JOIN tblservice ON tblservice.Id = tblchef.classId ");
 
 if(mysqli_num_rows($ret) > 0 )
 {
@@ -62,7 +62,7 @@ echo '
 <td>'.$row['firstName'].'  '.$row['lastName'].'</td>  
 <td>'.$row['emailAddress'].'</td> 
 <td>'.$row['phoneNo'].'</td>
-<td>'.$row['className'].'</td>  
+<td>'.$row['serviceName'].'</td>  
 <td>'.$row['dateCreated'].'</td>	 					
 </tr>  
 ';

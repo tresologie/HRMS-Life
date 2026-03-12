@@ -7,10 +7,10 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 // ===== Infos classe =====
-$query = "SELECT tblclass.className
-FROM tblclassteacher
-INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-WHERE tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+FROM tblchef
+INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+WHERE tblchef.Id = '$_SESSION[userId]'";
 
 $rs = $conn->query($query);
 $rrw = $rs->fetch_assoc();
@@ -26,17 +26,17 @@ $cnt = 1;
 $ret = mysqli_query($conn,"SELECT tblattendance.Id,
         tblattendance.status,
         tblattendance.dateTimeTaken,
-        tblclass.className,
-        tblstudents.firstName,
-        tblstudents.lastName,
-        tblstudents.admissionNumber,
-        tblstudents.poste
+        tblservice.serviceName,
+        tblemployees.firstName,
+        tblemployees.lastName,
+        tblemployees.admissionNumber,
+        tblemployees.poste
         FROM tblattendance
-        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
-        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+        INNER JOIN tblservice ON tblservice.Id = tblattendance.classId
+        INNER JOIN tblemployees ON tblemployees.admissionNumber = tblattendance.admissionNo
         WHERE tblattendance.dateTimeTaken = '$dateTaken' 
         AND tblattendance.classId = '$_SESSION[classId]' 
-        ORDER BY tblstudents.firstName ASC");
+        ORDER BY tblemployees.firstName ASC");
 
 // ===== Générer le HTML pour PDF =====
 $html = '
@@ -103,7 +103,7 @@ tr:nth-child(even) {
 <div class="header">
 <div class="logo">Life Company</div>
 <div>
-<strong>Usine: '.$rrw['className'].'</strong>
+<strong>Usine: '.$rrw['serviceName'].'</strong>
 </div><div>
 <strong>Le ' . date("d/m/Y") . '</strong>
 </div>

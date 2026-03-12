@@ -81,10 +81,10 @@ date_default_timezone_set('Africa/Bujumbura');
                     <tbody>
 
                   <?php
-                      $query = "SELECT tblclassteacher.Id,tblclass.className,tblclassteacher.firstName,
-                      tblclassteacher.lastName,tblclassteacher.emailAddress,tblclassteacher.phoneNo,tblclassteacher.dateCreated
-                      FROM tblclassteacher
-                      INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId";
+                      $query = "SELECT tblchef.Id,tblservice.serviceName,tblchef.firstName,
+                      tblchef.lastName,tblchef.emailAddress,tblchef.phoneNo,tblchef.dateCreated
+                      FROM tblchef
+                      INNER JOIN tblservice ON tblservice.Id = tblchef.classId";
                       $rs = $conn->query($query);
                       $num = $rs->num_rows;
                       $sn=0;
@@ -100,7 +100,7 @@ date_default_timezone_set('Africa/Bujumbura');
                                 <td>".$rows['firstName'].'  '.$rows['lastName']."</td>
                                 <td>".$rows['emailAddress']."</td>
                                 <td>".$rows['phoneNo']."</td>
-                                <td>".$rows['className']."</td>
+                                <td>".$rows['serviceName']."</td>
                                 <td>".$rows['dateCreated']."</td>
                                 
                               </tr>";

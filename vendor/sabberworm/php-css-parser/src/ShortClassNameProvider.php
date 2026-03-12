@@ -9,12 +9,12 @@ namespace Sabberworm\CSS;
  *
  * @internal
  */
-trait ShortClassNameProvider
+trait ShortserviceNameProvider
 {
     /**
      * @return non-empty-string
      */
-    private function getShortClassName(): string
+    private function getShortserviceName(): string
     {
         return (new \ReflectionClass($this))->getShortName();
     }

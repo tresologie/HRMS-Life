@@ -7,10 +7,10 @@ date_default_timezone_set('Africa/Bujumbura');
 
 
 // Récupérer le nom de la classe de l'enseignant
-$query = "SELECT tblclass.className
-          FROM tblclassteacher
-          INNER JOIN tblclass ON tblclass.Id = tblclassteacher.classId
-          WHERE tblclassteacher.Id = '$_SESSION[userId]'";
+$query = "SELECT tblservice.serviceName
+          FROM tblchef
+          INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+          WHERE tblchef.Id = '$_SESSION[userId]'";
 $rs = $conn->query($query);
 $rrw = $rs->fetch_assoc();
 
@@ -19,7 +19,7 @@ $todaysDate = date("d-m-Y");
 $dateTaken = date("Y-m-d"); // pour les requêtes SQL
 
 // Récupérer le nombre total d'étudiants/employés
-$query1 = mysqli_query($conn, "SELECT * FROM tblstudents WHERE classId = '$_SESSION[classId]'");
+$query1 = mysqli_query($conn, "SELECT * FROM tblemployees WHERE classId = '$_SESSION[classId]'");
 $students = $query1 ? mysqli_num_rows($query1) : 0;
 
 // Présents aujourd'hui
@@ -105,7 +105,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
 
         <div class="container-fluid" id="container-wrapper">
         <h6 class=" font-weight-bold text-primary">
-              Statistiques du <?php echo $todaysDate; ?> <b><?php echo $rrw['className'];?></b>
+              Statistiques du <?php echo $todaysDate; ?> <b><?php echo $rrw['serviceName'];?></b>
             </h6>
             <hr class="sidebar-divider">
           <div class="row mb-3">

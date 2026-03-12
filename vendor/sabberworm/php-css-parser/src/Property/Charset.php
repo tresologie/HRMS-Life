@@ -8,7 +8,7 @@ use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 use Sabberworm\CSS\Value\CSSString;
 
 /**
@@ -23,7 +23,7 @@ class Charset implements AtRule, Positionable
 {
     use CommentContainer;
     use Position;
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     /**
      * @var CSSString
@@ -82,7 +82,7 @@ class Charset implements AtRule, Positionable
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             'charset' => $this->charset->getArrayRepresentation(),
         ];
     }

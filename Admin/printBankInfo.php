@@ -20,7 +20,7 @@ $query = "
         s.admissionNumber,
         s.poste
     FROM tblBankInfo b
-    INNER JOIN tblstudents s ON s.admissionNumber = b.admissionNo
+    INNER JOIN tblemployees s ON s.admissionNumber = b.admissionNo
     ORDER BY s.firstName ASC, s.lastName ASC
 ";
 

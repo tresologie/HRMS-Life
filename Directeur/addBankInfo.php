@@ -30,7 +30,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['Id'])) 
     $stmt = $conn->prepare("
         SELECT b.*, s.firstName, s.lastName, s.admissionNumber, s.identite AS student_identite
         FROM tblBankInfo b
-        INNER JOIN tblstudents s ON s.admissionNumber = b.admissionNo
+        INNER JOIN tblemployees s ON s.admissionNumber = b.admissionNo
         WHERE b.Id = ?
     ");
     $stmt->bind_param("i", $Id);
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="form-control-label">Employé <span class="text-danger">*</span></label>
                         <?php
                         $qry = "SELECT admissionNumber, firstName, lastName, identite 
-                                FROM tblstudents 
+                                FROM tblemployees 
                                 ORDER BY firstName ASC, lastName ASC";
                         $result = $conn->query($qry);
 
@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             SELECT b.Id, b.identite, b.bankName, b.bankNumber, b.dateAdded,
                                    s.firstName, s.lastName, s.admissionNumber
                             FROM tblBankInfo b
-                            INNER JOIN tblstudents s ON s.admissionNumber = b.admissionNo
+                            INNER JOIN tblemployees s ON s.admissionNumber = b.admissionNo
                             ORDER BY s.firstName ASC
                         ";
                         $rs = $conn->query($query);

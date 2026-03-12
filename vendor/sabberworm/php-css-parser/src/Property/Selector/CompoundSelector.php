@@ -8,7 +8,7 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\ShortClassNameProvider;
+use Sabberworm\CSS\ShortserviceNameProvider;
 
 use function Safe\preg_match;
 
@@ -18,7 +18,7 @@ use function Safe\preg_match;
  */
 class CompoundSelector implements Component
 {
-    use ShortClassNameProvider;
+    use ShortserviceNameProvider;
 
     private const PARSER_STOP_CHARACTERS = [
         '{',
@@ -270,7 +270,7 @@ class CompoundSelector implements Component
     public function getArrayRepresentation(): array
     {
         return [
-            'class' => $this->getShortClassName(),
+            'class' => $this->getShortserviceName(),
             'value' => $this->value,
         ];
     }

@@ -75,7 +75,7 @@ date_default_timezone_set('Africa/Bujumbura');
                             s.lastName,
                             s.admissionNumber
                         FROM tblBankInfo b
-                        INNER JOIN tblstudents s ON s.admissionNumber = b.admissionNo
+                        INNER JOIN tblemployees s ON s.admissionNumber = b.admissionNo
                         ORDER BY s.firstName ASC, s.lastName ASC
                     ";
                     
@@ -154,8 +154,8 @@ date_default_timezone_set('Africa/Bujumbura');
         pageLength: 15,
         order: [[1, 'asc']], // tri par nom d'employé par défaut
         columnDefs: [
-          { targets: [0,2,3,6], className: "text-center" },
-          { targets: [5], className: "font-monospace text-center" }
+          { targets: [0,2,3,6], serviceName: "text-center" },
+          { targets: [5], serviceName: "font-monospace text-center" }
         ]
       });
     });
