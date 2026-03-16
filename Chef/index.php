@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
@@ -41,7 +41,7 @@ $abandon = $query3 ? mysqli_num_rows($query3) : 0;
 
 
 // Montant payé aujourd'hui
-if(isset($_POST['view'])){
+if (isset($_POST['view'])) {
   $dateTaken = $_POST['dateTaken']; // remplace la valeur par la sélection
 
   // Calculer la somme
@@ -93,21 +93,21 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
 
 <body id="page-top">
   <div id="wrapper">
-    <?php include "Includes/sidebar.php";?>
+    <?php include "Includes/sidebar.php"; ?>
 
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
-        <?php include "Includes/topbar.php";?>
+        <?php include "Includes/topbar.php"; ?>
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            
+        <div class="d-sm-flex align-items-center justify-content-between mt-3">
+          <h6 class="font-weight-bold text-primary" style="margin-left:30px">
+            Statistiques du <?php echo $todaysDate; ?> <b><?php echo $rrw['serviceName']; ?></b>
+          </h6>
         </div>
 
         <div class="container-fluid" id="container-wrapper">
-        <h6 class=" font-weight-bold text-primary">
-              Statistiques du <?php echo $todaysDate; ?> <b><?php echo $rrw['serviceName'];?></b>
-            </h6>
-            <hr class="sidebar-divider">
+
+          <hr class="sidebar-divider">
           <div class="row mb-3">
 
             <!-- Tous les Employés -->
@@ -117,7 +117,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Tous les Employés</div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $students;?></div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $students; ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-users fa-2x" style="color: blue;"></i>
@@ -134,7 +134,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Présents</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totAttendance;?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totAttendance; ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar-check fa-2x text-success"></i>
@@ -151,7 +151,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Absents</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $absent;?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $absent; ?></div>
                     </div>
                     <div class="col-auto">
                       <i class=" text-danger fas fa-user-times fa-2x text-secondary"></i>
@@ -168,7 +168,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Abandons</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $abandon;?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $abandon; ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fa fa-cut fa-2x"></i>
@@ -189,7 +189,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">A payer</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($totalGeneral, 0, ',', ' ')?> Fbu</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($totalGeneral, 0, ',', ' ') ?> Fbu</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-money-bill fa-2x" style="color: blue;"></i>
@@ -206,10 +206,10 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Présents</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $suppl;?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $suppl; ?></div>
                     </div>
                     <div class="col-auto">
-                    <i class="fas fa-calendar-check fa-2x text-success"></i>
+                      <i class="fas fa-calendar-check fa-2x text-success"></i>
                     </div>
                   </div>
                 </div>
@@ -223,10 +223,10 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Absents</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $absentSuppl;?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $absentSuppl; ?></div>
                     </div>
                     <div class="col-auto">
-                    <i class=" text-danger fas fa-user-times fa-2x text-secondary"></i>
+                      <i class=" text-danger fas fa-user-times fa-2x text-secondary"></i>
                     </div>
                   </div>
                 </div>
@@ -240,7 +240,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Carotés</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carro;?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carro; ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fa fa-times fa-2x"></i>
@@ -252,13 +252,13 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
 
           </div>
         </div>
-        <?php include "Includes/footer.php";?>
+        <?php include "Includes/footer.php"; ?>
       </div>
-      
+
     </div>
-    
+
   </div>
-  
+
 
   <!-- Scroll to top -->
   <a class="scroll-to-top rounded" href="#page-top">
@@ -270,7 +270,7 @@ $carro = $query4 ? mysqli_num_rows($query4) : 0;
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
   <script src="../vendor/chart.js/Chart.min.js"></script>
-  <script src="js/demo/chart-area-demo.js"></script>  
+  <script src="js/demo/chart-area-demo.js"></script>
 </body>
 
 </html>

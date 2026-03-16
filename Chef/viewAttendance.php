@@ -1,4 +1,4 @@
-<?php 
+<?php
 error_reporting(0);
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
@@ -29,8 +29,7 @@ $absent = $students - $totAttendance;
 
 // Si l'utilisateur a soumis le formulaire avec une date
 if (isset($_POST['view']) && !empty($_POST['dateTaken'])) {
-    $dateToShow = $_POST['dateTaken'];
-
+  $dateToShow = $_POST['dateTaken'];
 }
 
 $queryClass = "SELECT tblservice.serviceName
@@ -69,9 +68,9 @@ $rrw = $rsClass->fetch_assoc();
         <?php include "Includes/topbar.php"; ?>
         <!-- Topbar -->
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-        <h6 class=" font-weight-bold text-primary" style="margin-left:30px">
-            Liste d'appel <b>Le <?php echo date('d-m-Y', strtotime($dateToShow)).' ' . $rrw['serviceName'] ; ?></b>
+        <div class="d-sm-flex align-items-center justify-content-between">
+          <h6 class=" font-weight-bold text-primary" style="margin-left:30px">
+            Liste d'appel <b>Le <?php echo date('d-m-Y', strtotime($dateToShow)) . ' ' . $rrw['serviceName']; ?></b>
           </h6>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="downloadRecord.php">Exporter</a> (Excel)</li>
@@ -99,28 +98,28 @@ $rrw = $rsClass->fetch_assoc();
                           Sélectionner la date <span class="text-danger ml-2">*</span>
                         </label>
                         <input type="date" class="form-control" name="dateTaken"
-                               value="<?php echo htmlspecialchars($today); ?>"
-                               max="<?php echo htmlspecialchars($today); ?>">
+                          value="<?php echo htmlspecialchars($today); ?>"
+                          max="<?php echo htmlspecialchars($today); ?>">
                       </div>
                       <div class="col-xl-2">
-                          <h4 class="form-control-label">Effectif</h4>
-                          <h1 class="text-success form-control font-weight-bold" style="height:40px;font-size:20px;">
-                              <?php echo $students; ?>
-                         </h1>
+                        <h4 class="form-control-label">Effectif</h4>
+                        <h1 class="text-success form-control font-weight-bold" style="height:40px;font-size:20px;">
+                          <?php echo $students; ?>
+                        </h1>
 
                       </div>
                       <div class="col-xl-2">
-                          <h4 class="form-control-label">Présents</h4>
-                          <h1 class="form-control font-weight-bold" style="height:40px;font-size:20px;color:#00FF00">
-                              <?php echo $totAttendance; ?>
-                         </h1>
+                        <h4 class="form-control-label">Présents</h4>
+                        <h1 class="form-control font-weight-bold" style="height:40px;font-size:20px;color:#00FF00">
+                          <?php echo $totAttendance; ?>
+                        </h1>
 
                       </div>
                       <div class="col-xl-2">
-                          <h4 class="form-control-label">Absents</h4>
-                          <h1 class="text-danger form-control font-weight-bold" style="height:40px;font-size:20px;">
-                              <?php echo $absent; ?>
-                         </h1>
+                        <h4 class="form-control-label">Absents</h4>
+                        <h1 class="text-danger form-control font-weight-bold" style="height:40px;font-size:20px;">
+                          <?php echo $absent; ?>
+                        </h1>
 
                       </div>
 
@@ -222,7 +221,7 @@ $rrw = $rsClass->fetch_assoc();
 
   <!-- Page level custom scripts -->
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#dataTableHover').DataTable({
         scrollX: true,
         autoWidth: false,
@@ -234,4 +233,5 @@ $rrw = $rsClass->fetch_assoc();
   </script>
 
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
@@ -10,99 +10,96 @@ $editData = [];
 
 // ----------------------- SUPPRESSION -----------------------
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['Id'])) {
-    $Id = (int)$_GET['Id'];
-    $stmt = $conn->prepare("DELETE FROM tblBankInfo WHERE Id = ?");
-    $stmt->bind_param("i", $Id);
-    if ($stmt->execute()) {
-        header("Location: addBankInfo.php?msg=deleted");
-        exit;
-    } else {
-        $statusMsg = "<div class='alert alert-danger'>Erreur lors de la suppression</div>";
-    }
-    $stmt->close();
+  $Id = (int)$_GET['Id'];
+  $stmt = $conn->prepare("DELETE FROM tblBankInfo WHERE Id = ?");
+  $stmt->bind_param("i", $Id);
+  if ($stmt->execute()) {
+    header("Location: addBankInfo.php?msg=deleted");
+    exit;
+  } else {
+    $statusMsg = "<div class='alert alert-danger'>Erreur lors de la suppression</div>";
+  }
+  $stmt->close();
 }
 
 // ----------------------- ÉDITION -----------------------
 if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['Id'])) {
-    $mode = "edit";
-    $Id = (int)$_GET['Id'];
-    
-    $stmt = $conn->prepare("
+  $mode = "edit";
+  $Id = (int)$_GET['Id'];
+
+  $stmt = $conn->prepare("
         SELECT b.*, s.firstName, s.lastName, s.admissionNumber, s.identite AS student_identite
         FROM tblBankInfo b
         INNER JOIN tblemployees s ON s.admissionNumber = b.admissionNo
         WHERE b.Id = ?
     ");
-    $stmt->bind_param("i", $Id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $editData = $result->fetch_assoc();
-    $stmt->close();
+  $stmt->bind_param("i", $Id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $editData = $result->fetch_assoc();
+  $stmt->close();
 }
 
 // ----------------------- TRAITEMENT FORMULAIRE -----------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    $admissionNo = trim($_POST['admissionNo'] ?? '');
-    $identite    = trim($_POST['identite'] ?? '');
-    $bankName    = trim($_POST['bankName'] ?? '');
-    $bankNumber  = trim($_POST['bankNumber'] ?? '');
 
-    if (empty($admissionNo) || empty($identite) || empty($bankName) || empty($bankNumber)) {
-        $statusMsg = "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
-    }
-    else {
-        if ($mode === "edit") {
-            // Mise à jour
-            $Id = (int)$_POST['Id'];
-            $stmt = $conn->prepare("
+  $admissionNo = trim($_POST['admissionNo'] ?? '');
+  $identite    = trim($_POST['identite'] ?? '');
+  $bankName    = trim($_POST['bankName'] ?? '');
+  $bankNumber  = trim($_POST['bankNumber'] ?? '');
+
+  if (empty($admissionNo) || empty($identite) || empty($bankName) || empty($bankNumber)) {
+    $statusMsg = "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
+  } else {
+    if ($mode === "edit") {
+      // Mise à jour
+      $Id = (int)$_POST['Id'];
+      $stmt = $conn->prepare("
                 UPDATE tblBankInfo 
                 SET identite = ?, bankName = ?, bankNumber = ?
                 WHERE Id = ?
             ");
-            $stmt->bind_param("sssi", $identite, $bankName, $bankNumber, $Id);
-            $successText = "Informations bancaires modifiées avec succès !";
-        } 
-        else {
-            // Vérifier doublon
-            $check = $conn->prepare("SELECT Id FROM tblBankInfo WHERE admissionNo = ?");
-            $check->bind_param("s", $admissionNo);
-            $check->execute();
-            $check->store_result();
-            
-            if ($check->num_rows > 0) {
-                $statusMsg = "<div class='alert alert-warning'>Cet employé possède déjà des informations bancaires.</div>";
-                $check->close();
-            } 
-            else {
-                $check->close();
-                
-                // Insertion
-                $stmt = $conn->prepare("
+      $stmt->bind_param("sssi", $identite, $bankName, $bankNumber, $Id);
+      $successText = "Informations bancaires modifiées avec succès !";
+    } else {
+      // Vérifier doublon
+      $check = $conn->prepare("SELECT Id FROM tblBankInfo WHERE admissionNo = ?");
+      $check->bind_param("s", $admissionNo);
+      $check->execute();
+      $check->store_result();
+
+      if ($check->num_rows > 0) {
+        $statusMsg = "<div class='alert alert-warning'>Cet employé possède déjà des informations bancaires.</div>";
+        $check->close();
+      } else {
+        $check->close();
+
+        // Insertion
+        $stmt = $conn->prepare("
                     INSERT INTO tblBankInfo 
                     (admissionNo, identite, bankName, bankNumber, addedBy) 
                     VALUES (?, ?, ?, ?, ?)
                 ");
-                $userId = $_SESSION['userId'] ?? 0;
-                $stmt->bind_param("ssssi", $admissionNo, $identite, $bankName, $bankNumber, $userId);
-                $successText = "Informations bancaires enregistrées avec succès !";
-            }
-        }
-
-        if (isset($stmt) && $stmt->execute()) {
-            $statusMsg = "<div class='alert alert-success'>$successText</div>";
-        } 
-        elseif (isset($stmt)) {
-            $statusMsg = "<div class='alert alert-danger'>Erreur : " . $conn->error . "</div>";
-        }
-        
-        if (isset($stmt)) $stmt->close();
+        $userId = $_SESSION['userId'] ?? 0;
+        $stmt->bind_param("ssssi", $admissionNo, $identite, $bankName, $bankNumber, $userId);
+        $successText = "Informations bancaires enregistrées avec succès !";
+      }
     }
+
+    if (isset($stmt) && $stmt->execute()) {
+      $statusMsg = "<div class='alert alert-success'>$successText</div>";
+    } elseif (isset($stmt)) {
+      $statusMsg = "<div class='alert alert-danger'>Erreur : " . $conn->error . "</div>";
+    }
+
+    if (isset($stmt)) $stmt->close();
+  }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -123,9 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php include "Includes/topbar.php"; ?>
 
         <div class="container-fluid" id="container-wrapper">
-          
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-          <h6 class="font-weight-bold text-primary">
+
+          <div class="d-sm-flex align-items-center justify-content-between">
+            <h6 class="font-weight-bold text-primary">
               <?php echo ($mode === "edit") ? "Modifier informations bancaires" : "Informations bancaires"; ?>
             </h6>
             <ol class="breadcrumb">
@@ -158,15 +155,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         echo '<option value="">-- Sélectionner un employé --</option>';
 
                         while ($emp = $result->fetch_assoc()) {
-                            $selected = (isset($editData['admissionNo']) && $editData['admissionNo'] === $emp['admissionNumber']) ? 'selected' : '';
-                            echo "<option value='{$emp['admissionNumber']}' $selected>";
-                            echo htmlspecialchars("{$emp['firstName']} {$emp['lastName']} ({$emp['admissionNumber']})");
-                            echo "</option>";
+                          $selected = (isset($editData['admissionNo']) && $editData['admissionNo'] === $emp['admissionNumber']) ? 'selected' : '';
+                          echo "<option value='{$emp['admissionNumber']}' $selected>";
+                          echo htmlspecialchars("{$emp['firstName']} {$emp['lastName']} ({$emp['admissionNumber']})");
+                          echo "</option>";
                         }
                         echo '</select>';
 
                         if ($mode === "edit") {
-                            echo '<input type="hidden" name="admissionNo" value="' . htmlspecialchars($editData['admissionNo'] ?? '') . '">';
+                          echo '<input type="hidden" name="admissionNo" value="' . htmlspecialchars($editData['admissionNo'] ?? '') . '">';
                         }
                         ?>
                       </div>
@@ -174,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <div class="col-xl-6">
                         <label class="form-control-label">Numéro d’identité <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="identite" required
-                               value="<?php echo htmlspecialchars($editData['identite'] ?? $editData['student_identite'] ?? ''); ?>">
+                          value="<?php echo htmlspecialchars($editData['identite'] ?? $editData['student_identite'] ?? ''); ?>">
                       </div>
                     </div>
 
@@ -182,12 +179,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <div class="col-xl-6">
                         <label class="form-control-label">Nom de la banque <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="bankName" required
-                               value="<?php echo htmlspecialchars($editData['bankName'] ?? ''); ?>">
+                          value="<?php echo htmlspecialchars($editData['bankName'] ?? ''); ?>">
                       </div>
                       <div class="col-xl-6">
                         <label class="form-control-label">Numéro de compte <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="bankNumber" required
-                               value="<?php echo htmlspecialchars($editData['bankNumber'] ?? ''); ?>">
+                          value="<?php echo htmlspecialchars($editData['bankNumber'] ?? ''); ?>">
                       </div>
                     </div>
 
@@ -203,8 +200,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               <!-- Liste -->
               <div class="card">
-              <div class="card mb-4">
-                <div class="table-responsive p-3">
+                <div class="card mb-4">
+                  <div class="table-responsive p-3">
                     <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                       <thead class="thead-light">
                         <tr>
@@ -231,9 +228,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $sn = 0;
 
                         if ($rs->num_rows > 0) {
-                            while ($row = $rs->fetch_assoc()) {
-                                $sn++;
-                                echo "
+                          while ($row = $rs->fetch_assoc()) {
+                            $sn++;
+                            echo "
                                 <tr>
                                   <td>$sn</td>
                                   <td>{$row['firstName']} {$row['lastName']}
@@ -253,9 +250,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </a>
                                   </td>
                                 </tr>";
-                            }
+                          }
                         } else {
-                            echo "<tr><td colspan='7' class='text-center py-4'>Aucune donnée enregistrée</td></tr>";
+                          echo "<tr><td colspan='7' class='text-center py-4'>Aucune donnée enregistrée</td></tr>";
                         }
                         ?>
                       </tbody>
@@ -272,8 +269,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
 
- <!-- Scroll to top -->
- <a class="scroll-to-top rounded" href="#page-top">
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
@@ -282,21 +279,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-   <!-- Page level plugins -->
+  <!-- Page level plugins -->
   <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
-$(document).ready(function () {
-  $('#dataTableHover').DataTable({
+    $(document).ready(function() {
+      $('#dataTableHover').DataTable({
         language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+          url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
         }
+      });
     });
-});
-</script>
+  </script>
 </body>
+
 </html>
 
 <?php $conn->close(); ?>

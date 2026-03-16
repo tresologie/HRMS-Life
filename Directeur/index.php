@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
@@ -14,7 +14,7 @@ $poste = "SELECT tbldirector.poste
 $rs = $conn->query($poste);
 $rrw = $rs->fetch_assoc();
 
-$statsQuery = mysqli_query($conn,"
+$statsQuery = mysqli_query($conn, "
 SELECT 
     COUNT(*) as total,
     SUM(CASE WHEN genre='M' THEN 1 ELSE 0 END) as hommes,
@@ -29,7 +29,7 @@ $hommes   = $stats['hommes'] ?? 0;
 $femmes   = $stats['femmes'] ?? 0;
 
 
-$abandonQuery = mysqli_query($conn,"
+$abandonQuery = mysqli_query($conn, "
 SELECT admissionNo
 FROM tblattendance
 WHERE status='0'
@@ -39,7 +39,7 @@ HAVING COUNT(*) >= 5
 
 $abandon = mysqli_num_rows($abandonQuery);
 
-$presenceQuery = mysqli_query($conn,"
+$presenceQuery = mysqli_query($conn, "
 SELECT COUNT(*) as total 
 FROM tblattendance 
 WHERE status='1' 
@@ -52,7 +52,7 @@ $totAttendance = $rowPresence['total'] ?? 0;
 $absent = $students - $totAttendance;
 
 
-$payerQuery = mysqli_query($conn,"
+$payerQuery = mysqli_query($conn, "
 SELECT SUM(FLOOR(montant/100)*100) as total
 FROM tblsupp
 WHERE DATE(dateTimeTaken)='$dateSQL'
@@ -62,12 +62,13 @@ $rowPayer = mysqli_fetch_assoc($payerQuery);
 $payer = $rowPayer['total'] ?? 0;
 
 
-$query1=mysqli_query($conn,"SELECT * from tblsupp where montant='0'  and DATE(dateTimeTaken) = CURDATE()");                       
+$query1 = mysqli_query($conn, "SELECT * from tblsupp where montant='0'  and DATE(dateTimeTaken) = CURDATE()");
 $carot = mysqli_num_rows($query1);
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,180 +81,182 @@ $carot = mysqli_num_rows($query1);
 </head>
 
 <body id="page-top">
-<div id="wrapper">
+  <div id="wrapper">
 
-<?php include "Includes/sidebar.php";?>
+    <?php include "Includes/sidebar.php"; ?>
 
-<div id="content-wrapper" class="d-flex flex-column">
-<div id="content">
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
 
-<?php include "Includes/topbar.php";?>
-
-<div class="container-fluid" id="container-wrapper">
-<h6 class=" font-weight-bold text-primary">
- <b><?php echo $rrw['poste'];?></b> - Le <?php echo $todaysDate; ?> 
-    </h6>
-<hr class="sidebar-divider">
-
-<div class="row mb-3">
-
-<!-- Tous les employés -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">Tous les Employés</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $students; ?></div>
-</div>
-<div class="col-auto">
-<i class="fas fa-users fa-3x" style="color: blue;"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Hommes -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">Les hommes</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $hommes; ?></div>
-</div>
-<div class="col-auto">
-<i class="fas fa-male fa-4x text-success"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Femmes -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">Les femmes</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $femmes; ?></div>
-</div>
-<div class="col-auto">
-<i class="text-danger fas fa-female fa-4x"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Abandons -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">Abandons</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $abandon; ?></div>
-</div>
-<div class="col-auto">
-<i class="fa fa-cut fa-3x"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-</div>
+        <?php include "Includes/topbar.php"; ?>
 
 
-<div class="row mb-3">
+        <h6 class="font-weight-bold text-primary mt-3" style="margin-left:30px">
+          <b><?php echo $rrw['poste']; ?></b> - Le <?php echo $todaysDate; ?>
+        </h6>
+        <hr class="sidebar-divider">
+        <div class="container-fluid" id="container-wrapper">
 
-<!-- Montant à payer -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">A payer</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800">
-<?php echo number_format($payer,0,',',' '); ?> Fbu
-</div>
-</div>
-<div class="col-auto">
-<i class="fas fa-money-bill fa-3x" style="color: blue;"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
+          <div class="row mb-3">
 
-<!-- Présents -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">Présents</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totAttendance; ?></div>
-</div>
-<div class="col-auto">
-<i class="fas fa-calendar-check fa-3x text-success"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Absents -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">Absents</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $absent; ?></div>
-</div>
-<div class="col-auto">
-<i class="text-danger fas fa-user-times fa-3x text-secondary"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-   <!-- Employés carotés -->
-   <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Carrotés</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carot; ?></div>
-                  </div>
-                  <div class="col-auto">
-                    <i class="fa fa-times fa-3x"></i>
+            <!-- Tous les employés -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Tous les Employés</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $students; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-users fa-3x" style="color: blue;"></i>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- Hommes -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Les hommes</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $hommes; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-male fa-4x text-success"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Femmes -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Les femmes</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $femmes; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="text-danger fas fa-female fa-4x"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Abandons -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Abandons</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $abandon; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa fa-cut fa-3x"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-</div>
-</div>
-<?php include "Includes/footer.php";?>
-</div>
-</div>
 
-<a class="scroll-to-top rounded" href="#page-top">
-<i class="fas fa-angle-up"></i>
-</a>
+          <div class="row mb-3">
 
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/ruang-admin.min.js"></script>
+            <!-- Montant à payer -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">A payer</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?php echo number_format($payer, 0, ',', ' '); ?> Fbu
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-money-bill fa-3x" style="color: blue;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Présents -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Présents</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totAttendance; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar-check fa-3x text-success"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Absents -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Absents</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $absent; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="text-danger fas fa-user-times fa-3x text-secondary"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Employés carotés -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Carrotés</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carot; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fa fa-times fa-3x"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <?php include "Includes/footer.php"; ?>
+      </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/ruang-admin.min.js"></script>
 
 </body>
+
 </html>

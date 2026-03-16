@@ -309,7 +309,7 @@ tr:nth-child(even) {
             <div id="content">
                 <?php include "Includes/topbar.php"; ?>
 
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <div class="d-sm-flex align-items-center justify-content-between">
                     <h6 class="font-weight-bold text-primary" style="margin-left:30px">
                         <?php if ($fromDate == $toDate): ?>
                             Heures supplémentaires du <?= date("d/m/Y", strtotime($fromDate)) ?>

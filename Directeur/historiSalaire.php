@@ -51,7 +51,7 @@ $selectedDateEsc = $conn->real_escape_string($selectedDate);
             <div id="content">
                 <?php include "Includes/topbar.php"; ?>
 
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <div class="d-sm-flex align-items-center justify-content-between">
                     <h6 class="font-weight-bold text-primary" style="margin-left:30px">
                         Historique des salaires validés
                     </h6>

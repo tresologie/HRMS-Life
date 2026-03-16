@@ -112,8 +112,9 @@ if (isset($_POST['save'])) {
         <!-- Topbar -->
 
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-          <h6 class="font-weight-bold text-primary" style="margin-left:30px">Faire l'appel <b>Le <?php echo date('d-m-Y', strtotime($todaysDate)) . ' ' . $rrw['serviceName']; ?></b></h6>
+        <div class="d-sm-flex align-items-center justify-content-between mt-4">
+          <h6 class="font-weight-bold text-primary" style="margin-left:30px">
+            Faire l'appel <b>Le <?php echo date('d-m-Y', strtotime($todaysDate)) . ' ' . $rrw['serviceName']; ?></b></h6>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="./">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Tous les employés d'usine</li>

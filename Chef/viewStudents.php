@@ -45,7 +45,7 @@ $rrw = $rs->fetch_assoc();
         <?php include "Includes/topbar.php"; ?>
         <!-- Topbar -->
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-sm-flex align-items-center justify-content-between">
           <h6 class=" font-weight-bold text-primary" style="margin-left:30px">Tous les employés de <b><?php echo $rrw['serviceName']; ?></b></h6>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="downloadEmployesUsine.php">Exporter</a>(Exel)</li>
@@ -149,11 +149,7 @@ $rrw = $rs->fetch_assoc();
     <script>
       $(document).ready(function() {
         $('#dataTableHover').DataTable({
-          scrollX: true,
-          autoWidth: false,
-          language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
-          }
+
         });
       });
     </script>

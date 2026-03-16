@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
@@ -22,6 +22,7 @@ $queryClasses = mysqli_query($conn, "
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,161 +35,165 @@ $queryClasses = mysqli_query($conn, "
 </head>
 
 <body id="page-top">
-<div id="wrapper">
-  <?php include "Includes/sidebar.php";?>
-  <div id="content-wrapper" class="d-flex flex-column">
-    <div id="content">
-      <?php include "Includes/topbar.php";?>
+  <div id="wrapper">
+    <?php include "Includes/sidebar.php"; ?>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <?php include "Includes/topbar.php"; ?>
 
-      <div class="d-sm-flex align-items-center justify-content-between mb-0">
-      <h6 class="font-weight-bold text-primary" style="margin-left:30px">Heures Supplémentaires du <?php echo date("d-m-Y");?></h6>
+        <div class="d-sm-flex align-items-center justify-content-between mb-0">
+          <h6 class="font-weight-bold text-primary" style="margin-left:30px">Heures Supplémentaires du <?php echo date("d-m-Y"); ?></h6>
           <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="downloadSuppl.php?from=<?php echo $fromDate;?>
-              &to=<?php echo $toDate;?>" >Exporter</a>(Exel)</li>
-              <li class="breadcrumb-item"><a href="printSuppl.php?from=<?php echo $fromDate;?>
-              &to=<?php echo $toDate;?>" >Imprimer</a>(PDF)</li>
-              
-            </ol>
+            <li class="breadcrumb-item"><a href="downloadSuppl.php?from=<?php echo $fromDate; ?>
+              &to=<?php echo $toDate; ?>">Exporter</a>(Exel)</li>
+            <li class="breadcrumb-item"><a href="printSuppl.php?from=<?php echo $fromDate; ?>
+              &to=<?php echo $toDate; ?>">Imprimer</a>(PDF)</li>
+
+          </ol>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="./">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Tableau</li>
           </ol>
-      </div>
+        </div>
 
-      <div class="container-fluid" id="container-wrapper">
-        <div class="row mb-3">
-        
-          <?php 
-          // Date du jour
-          $todaysDate = date("d-m-Y");
-          $dateTaken = date("Y-m-d"); // pour les requêtes SQL
-          
-          while ($class = mysqli_fetch_assoc($queryClasses)) {
+        <div class="container-fluid" id="container-wrapper">
+          <div class="row mb-3">
+
+            <?php
+            // Date du jour
+            $todaysDate = date("d-m-Y");
+            $dateTaken = date("Y-m-d"); // pour les requêtes SQL
+
+            while ($class = mysqli_fetch_assoc($queryClasses)) {
               $classId = $class['classId'];
               $serviceName = $class['serviceName'];
 
-             /* ===================== TOTAL ÉTUDIANTS PAR CLASSE ===================== */
-$studentsData = [];
-$resultStudents = mysqli_query($conn,"
+              /* ===================== TOTAL ÉTUDIANTS PAR CLASSE ===================== */
+              $studentsData = [];
+              $resultStudents = mysqli_query($conn, "
 SELECT classId, COUNT(*) as total
 FROM tblemployees
 GROUP BY classId
 ");
-while($row = mysqli_fetch_assoc($resultStudents)){
-    $studentsData[$row['classId']] = $row['total'];
-}
+              while ($row = mysqli_fetch_assoc($resultStudents)) {
+                $studentsData[$row['classId']] = $row['total'];
+              }
 
               // Montant payé
-              $resultPayer = mysqli_query($conn,
-               "SELECT SUM(FLOOR(tblsupp.montant / 100) * 100) as total
+              $resultPayer = mysqli_query(
+                $conn,
+                "SELECT SUM(FLOOR(tblsupp.montant / 100) * 100) as total
                  FROM tblsupp
-                 WHERE classId = '$classId' AND tblsupp.dateTimeTaken = '$dateTaken' ");
+                 WHERE classId = '$classId' AND tblsupp.dateTimeTaken = '$dateTaken' "
+              );
               $rowPayer = mysqli_fetch_assoc($resultPayer);
               $payer = floor(($rowPayer['total'] ?? 0) / 100) * 100;
 
               // Present
-              $queryCarot = mysqli_query($conn,"SELECT * FROM tblsupp WHERE classId='$classId' AND montant!='0' AND DATE(dateTimeTaken)=CURDATE()");
+              $queryCarot = mysqli_query($conn, "SELECT * FROM tblsupp WHERE classId='$classId' AND montant!='0' AND DATE(dateTimeTaken)=CURDATE()");
               $present = mysqli_num_rows($queryCarot);
 
               // Employés carotés
-              $queryCarot = mysqli_query($conn,"SELECT * FROM tblsupp WHERE classId='$classId' AND montant='0' AND DATE(dateTimeTaken)=CURDATE()");
+              $queryCarot = mysqli_query($conn, "SELECT * FROM tblsupp WHERE classId='$classId' AND montant='0' AND DATE(dateTimeTaken)=CURDATE()");
               $carot = mysqli_num_rows($queryCarot);
 
-              $absent= $present-$carot;
+              $absent = $present - $carot;
 
-              
-          ?>
 
-          <!-- Montant prévu -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">À payer-<?php echo $serviceName; ?></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($payer,0,',',' '); ?> Fbu</div>
-                  </div>
-                  <div class="col-auto">
-                    <i class="fas fa-money-bill fa-2x" style="color: blue;"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            ?>
 
-                  <!-- Présents -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">
-Présents - <?php echo $serviceName;?>
-</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800">
-<?php echo $present;?>
-</div>
-</div>
-                  <div class="col-auto">
-                  <i class="fas fa-calendar-check fa-2x text-success"></i>
+              <!-- Montant prévu -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">À payer-<?php echo $serviceName; ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo number_format($payer, 0, ',', ' '); ?> Fbu</div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-money-bill fa-2x" style="color: blue;"></i>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-
-          <!-- Absents -->
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card h-100">
-<div class="card-body">
-<div class="row no-gutters align-items-center">
-<div class="col mr-2">
-<div class="text-xs font-weight-bold text-uppercase mb-1">
-Absents - <?php echo $serviceName;?>
-</div>
-<div class="h5 mb-0 font-weight-bold text-gray-800">
-<?php echo $absent;?>
-</div>
-</div>
-<div class="col-auto">
-<i class="fas fa-user-times fa-2x text-danger"></i>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-          <!-- Employés carotés -->
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card h-100">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Carrotés - <?php echo $serviceName; ?></div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carot; ?></div>
-                  </div>
-                  <div class="col-auto">
-                    <i class="fa fa-times fa-2x"></i>
+              <!-- Présents -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                          Présents - <?php echo $serviceName; ?>
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          <?php echo $present; ?>
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-calendar-check fa-2x text-success"></i>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <?php } // fin while ?>
+
+              <!-- Absents -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                          Absents - <?php echo $serviceName; ?>
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          <?php echo $absent; ?>
+                        </div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-user-times fa-2x text-danger"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Employés carotés -->
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Carrotés - <?php echo $serviceName; ?></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $carot; ?></div>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fa fa-times fa-2x"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <?php } // fin while 
+            ?>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
 
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/ruang-admin.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/ruang-admin.min.js"></script>
 </body>
+
 </html>

@@ -9,11 +9,11 @@ $today = date('Y-m-d');
 $currentDay = (int)date('d');
 
 if ($currentDay >= 28) {
-    $fromDate = date('Y-m-28');
-    $toDate   = date('Y-m-28', strtotime('+1 month -1 day')); // jusqu'au 27 du mois suivant
+  $fromDate = date('Y-m-28');
+  $toDate   = date('Y-m-28', strtotime('+1 month -1 day')); // jusqu'au 27 du mois suivant
 } else {
-    $fromDate = date('Y-m-28', strtotime('-1 month'));
-    $toDate   = date('Y-m-28', strtotime('-1 day')); // jusqu'au 27 du mois en cours
+  $fromDate = date('Y-m-28', strtotime('-1 month'));
+  $toDate   = date('Y-m-28', strtotime('-1 day')); // jusqu'au 27 du mois en cours
 }
 
 // Nombre de jours calendaires dans la période (approximation)
@@ -23,6 +23,7 @@ $joursPeriode = (strtotime($toDate) - strtotime($fromDate)) / 86400 + 1;
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,50 +33,51 @@ $joursPeriode = (strtotime($toDate) - strtotime($fromDate)) / 86400 + 1;
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/ruang-admin.min.css" rel="stylesheet">
 </head>
+
 <body id="page-top">
 
-<div id="wrapper">
-  <?php include "Includes/sidebar.php"; ?>
+  <div id="wrapper">
+    <?php include "Includes/sidebar.php"; ?>
 
-  <div id="content-wrapper" class="d-flex flex-column">
-    <div id="content">
-      <?php include "Includes/topbar.php"; ?>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <?php include "Includes/topbar.php"; ?>
 
-      <div class="container-fluid" id="container-wrapper">
+        <div class="container-fluid" id="container-wrapper">
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <div class="d-sm-flex align-items-center justify-content-between">
             <h6 class="font-weight-bold text-primary">Détail des présences et salaires</h6>
-          
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./">Accueil</a></li>
-            <li class="breadcrumb-item active">Salaire / Présences</li>
-          </ol>
-        </div>
+
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="./">Accueil</a></li>
+              <li class="breadcrumb-item active">Salaire / Présences</li>
+            </ol>
+          </div>
 
 
-        <!-- Tableau -->
-        <div class="card shadow mb-4">
-          
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover table-sm" id="dataTable">
-                <thead class="thead-light">
-                  <tr>
-                    <th>#</th>
-                    <th>Nom & Prénom</th>
-                    <th>Identité</th>
-                    <th>Présences</th>
-                    <th>Absences</th>
-                    <th>Salaire de base</th>
-                    <th>Recevable</th>
-                    <th>N° Compte</th>
-                    <th>Banque</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  // Requête principale
-                  $sql = "
+          <!-- Tableau -->
+          <div class="card shadow mb-4">
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm" id="dataTable">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Nom & Prénom</th>
+                      <th>Identité</th>
+                      <th>Présences</th>
+                      <th>Absences</th>
+                      <th>Salaire de base</th>
+                      <th>Recevable</th>
+                      <th>N° Compte</th>
+                      <th>Banque</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    // Requête principale
+                    $sql = "
                   SELECT 
                       s.admissionNumber,
                       s.firstName,
@@ -93,13 +95,13 @@ $joursPeriode = (strtotime($toDate) - strtotime($fromDate)) / 86400 + 1;
                   GROUP BY s.admissionNumber
                   ORDER BY s.firstName, s.lastName";
 
-                  $stmt = $conn->prepare($sql);
-                  $stmt->bind_param("ss", $fromDate, $toDate);
-                  $stmt->execute();
-                  $result = $stmt->get_result();
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ss", $fromDate, $toDate);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
 
-                  $sn = 0;
-                  while ($row = $result->fetch_assoc()) {
+                    $sn = 0;
+                    while ($row = $result->fetch_assoc()) {
                       $sn++;
                       $pres = (int)$row['nbPresences'];
                       $abs  = (int)$row['nbAbsences'];
@@ -121,26 +123,26 @@ $joursPeriode = (strtotime($toDate) - strtotime($fromDate)) / 86400 + 1;
                       echo "<td class='font-monospace text-center'>" . htmlspecialchars($row['bankNumber']) . "</td>";
                       echo "<td>" . htmlspecialchars($row['bankName']) . "</td>";
                       echo "</tr>";
-                  }
+                    }
 
-                  if ($sn == 0) {
+                    if ($sn == 0) {
                       echo "<tr><td colspan='9' class='text-center py-4 text-muted'>Aucune donnée pour cette période</td></tr>";
-                  }
-                  ?>
-                </tbody>
-              </table>
+                    }
+                    ?>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
- <!-- Scroll to top -->
- <a class="scroll-to-top rounded" href="#page-top">
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
@@ -149,21 +151,22 @@ $joursPeriode = (strtotime($toDate) - strtotime($fromDate)) / 86400 + 1;
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="js/ruang-admin.min.js"></script>
-   <!-- Page level plugins -->
+  <!-- Page level plugins -->
   <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
   <!-- Page level custom scripts -->
   <script>
-$(document).ready(function () {
-  $('#dataTableHover').DataTable({
+    $(document).ready(function() {
+      $('#dataTableHover').DataTable({
         scrollX: true,
         autoWidth: false,
         language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+          url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
         }
+      });
     });
-});
-</script>
+  </script>
 </body>
+
 </html>

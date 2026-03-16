@@ -1,134 +1,140 @@
 <?php
+error_reporting(0);
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
-date_default_timezone_set('Africa/Bujumbura');
-$dateTaken = date('Y-m-d');
-
-// Protection session
-$userId   = isset($_SESSION['userId'])   ? $_SESSION['userId']   : 0;
-$classId  = isset($_SESSION['classId'])  ? $_SESSION['classId']  : 0;
-
-if (!$userId || !$classId) {
-  die("<div class='alert alert-danger'>Session invalide. Veuillez vous reconnecter.</div>");
-}
-
-// Nom du service
 $query = "SELECT tblservice.serviceName
-          FROM tblchef
-          INNER JOIN tblservice ON tblservice.Id = tblchef.classId
-          WHERE tblchef.Id = '" . mysqli_real_escape_string($conn, $userId) . "'";
+    FROM tblchef
+    INNER JOIN tblservice ON tblservice.Id = tblchef.classId
+
+    Where tblchef.Id = '$_SESSION[userId]'";
 $rs = $conn->query($query);
+$num = $rs->num_rows;
 $rrw = $rs->fetch_assoc();
-$serviceName = $rrw['serviceName'] ?? '(service inconnu)';
 
-// Vérifier si CE SERVICE a déjà des données aujourd'hui
-$qurty = $conn->query("
-    SELECT COUNT(*) as cnt 
-    FROM tblsupp 
-    WHERE classId = '" . mysqli_real_escape_string($conn, $classId) . "'
-      AND dateTimeTaken = '$dateTaken'
-");
-$rowCheck = $qurty->fetch_assoc();
-$count = $rowCheck['cnt'] ?? 0;
 
-$alreadyRecorded = ($count > 0);
-$statusMsg = '';
 
-// Création lignes vides si nécessaire
-if (!$alreadyRecorded) {
-  $qus = $conn->query("
-        SELECT admissionNumber 
-        FROM tblemployees 
-        WHERE classId = '" . mysqli_real_escape_string($conn, $classId) . "'
-    ");
+date_default_timezone_set('Africa/Bujumbura');
+$dateTaken = date("Y-m-d");
+
+// Vérifier si des enregistrements existent déjà pour aujourd'hui
+$qurty = mysqli_query($conn, "SELECT * FROM tblsupp WHERE classId = '" . $_SESSION['classId'] . "' AND dateTimeTaken='$dateTaken'");
+$count = mysqli_num_rows($qurty);
+
+// Si aucun enregistrement pour aujourd'hui, insérer automatiquement
+if ($count == 0) {
+
+  $qus = mysqli_query($conn, "SELECT * FROM tblemployees WHERE classId = '" . $_SESSION['classId'] . "'");
 
   while ($ros = $qus->fetch_assoc()) {
-    $adNo    = mysqli_real_escape_string($conn, $ros['admissionNumber']);
-    $class   = mysqli_real_escape_string($conn, $classId);
 
-    $insert = $conn->query("
-            INSERT INTO tblsupp 
-            (admissionNo, classId, heureDebut, heureFin, heures, montant, dateTimeTaken)
-            VALUES ('$adNo', '$class', '00:00', '00:00', 0, 0, '$dateTaken')
-        ");
+    $admissionNo = mysqli_real_escape_string($conn, $ros['admissionNumber']);
+    $classId     = mysqli_real_escape_string($conn, $_SESSION['classId']);
 
-    if (!$insert) {
-      $statusMsg .= "<div class='alert alert-danger'>Erreur création employé $adNo</div>";
-    }
-  }
-}
+    // Valeurs par défaut lors de l'insertion automatique
+    $heureDebut  = '00:00';
+    $heureFin    = '00:00';
+    $heures      = 0;
+    $montant     = 0;
 
-// Traitement formulaire
-if (isset($_POST['save'])) {
-
-  if ($alreadyRecorded) {
-    $statusMsg = "<div class='alert alert-danger'>
-            Les heures supplémentaires pour aujourd'hui sont déjà enregistrées.
-        </div>";
-  } else {
-    $admissionNo = $_POST['admissionNo']   ?? [];
-    $heureDebut  = $_POST['heureDebut']    ?? [];
-    $heureFin    = $_POST['heureFin']      ?? [];
-    $heures      = $_POST['heures']        ?? [];
-    $check       = $_POST['check']         ?? [];
-
-    $erreur = false;
-
-    foreach ($admissionNo as $i => $adNoRaw) {
-      $adNo = mysqli_real_escape_string($conn, $adNoRaw);
-
-      if (!in_array($adNo, $check)) {
-        continue; // on n'enregistre que les cochés
-      }
-
-      $hd = mysqli_real_escape_string($conn, $heureDebut[$i] ?? '00:00');
-      $hf = mysqli_real_escape_string($conn, $heureFin[$i]   ?? '00:00');
-      $h  = (int)($heures[$i] ?? 0);
-
-      // Salaire
-      $rs = $conn->query("SELECT salaire FROM tblemployees WHERE admissionNumber='$adNo' LIMIT 1");
-      $row = $rs->fetch_assoc();
-
-      if (!$row || empty($row['salaire'])) {
-        $statusMsg = "<div class='alert alert-danger'>Salaire introuvable pour $adNo</div>";
-        $erreur = true;
-        break;
-      }
-
-      $salaire = (float)$row['salaire'];
-      $montant = ($salaire * $h) / 240;
-
-      // INSERT (pas UPDATE)
-      $insert = $conn->query("
-                INSERT INTO tblsupp 
-                (admissionNo, classId, heureDebut, heureFin, heures, montant, dateTimeTaken)
-                VALUES ('$adNo', '$classId', '$hd', '$hf', '$h', '$montant', '$dateTaken')
-                ON DUPLICATE KEY UPDATE 
-                    heureDebut = VALUES(heureDebut),
-                    heureFin   = VALUES(heureFin),
-                    heures     = VALUES(heures),
-                    montant    = VALUES(montant)
+    $insert = mysqli_query($conn, "
+                INSERT INTO tblsupp (admissionNo, classId, heureDebut, heureFin, heures, montant, dateTimeTaken)
+                VALUES ('$admissionNo', '$classId', '$heureDebut', '$heureFin', '$heures', '$montant', '$dateTaken')
             ");
 
-      if (!$insert) {
-        $statusMsg = "<div class='alert alert-danger'>Erreur enregistrement $adNo</div>";
-        $erreur = true;
-        break;
-      }
-    }
-
-    if (!$erreur) {
-      $statusMsg = "<div class='alert alert-success'>
-                Enregistrement effectué avec succès !
-            </div>";
-
-      // Redirection
-      header("Location: index.php");
-      exit;
+    if (!$insert) {
+      echo "Erreur d'insertion: " . mysqli_error($conn);
     }
   }
 }
+
+// Mise à jour après soumission du formulaire
+if (isset($_POST['save'])) {
+
+  $admissionNo = $_POST['admissionNo'];
+  $heureDebut  = $_POST['heureDebut'];
+  $heureFin    = $_POST['heureFin'];
+  $heures      = $_POST['heures'];
+  $check       = isset($_POST['check']) ? $_POST['check'] : array();
+  $N = count($admissionNo);
+
+  $erreur = false;
+
+  for ($i = 0; $i < $N; $i++) {
+
+    $adNo = mysqli_real_escape_string($conn, $admissionNo[$i]);
+
+    if (in_array($adNo, $check)) {
+
+      $hd = mysqli_real_escape_string($conn, $heureDebut[$i]);
+      $hf = mysqli_real_escape_string($conn, $heureFin[$i]);
+      $h  = mysqli_real_escape_string($conn, $heures[$i]);
+
+      // Récupérer le salaire
+      $rs = mysqli_query($conn, "SELECT salaire FROM tblemployees WHERE admissionNumber='$adNo' LIMIT 1");
+
+      if (!$rs) {
+        echo "Erreur récupération salaire pour $adNo : " . mysqli_error($conn);
+        $erreur = true;
+        break;
+      }
+
+      $row = mysqli_fetch_assoc($rs);
+
+      if (!$row) {
+        echo "Salaire introuvable pour $adNo";
+        $erreur = true;
+        break;
+      }
+
+      $salaire = $row['salaire'];
+      $m = ($salaire * $h) / 240;
+    } else {
+
+      $hd = '00:00';
+      $hf = '00:00';
+      $h  = 0;
+      $m  = 0;
+    }
+
+    // Vérifier si déjà enregistré
+    $verif = mysqli_query($conn, "
+SELECT heures FROM tblsupp 
+WHERE admissionNo='$adNo' 
+AND dateTimeTaken='$dateTaken'
+LIMIT 1
+");
+
+    $rowVerif = mysqli_fetch_assoc($verif);
+
+    if ($rowVerif && $rowVerif['heures'] > 0 && in_array($adNo, $check)) {
+      $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>
+                  Les heures supplémentaires sont déjà marquées
+                </div>";
+      $erreur = true;
+      break;
+    }
+
+
+    $update = mysqli_query($conn, "UPDATE tblsupp 
+              SET heureDebut='$hd',  heureFin='$hf', heures='$h',  montant='$m' 
+              WHERE admissionNo='$adNo' AND dateTimeTaken='$dateTaken'
+          ");
+
+    if (!$update) {
+      echo "Erreur mise à jour pour $adNo : " . mysqli_error($conn);
+      $erreur = true;
+      break;
+    }
+  }
+
+  if (!$erreur) {
+    $statusMsg = "<div class='alert alert-success' style='margin-right:700px;'>
+                          Les heures supplémentaires ont été enregistrées avec succès!
+                        </div>";
+  }
+}
+
 ?>
 
 
@@ -161,7 +167,7 @@ if (isset($_POST['save'])) {
         <!-- Topbar -->
 
 
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-sm-flex align-items-center justify-content-between">
           <h6 class="font-weight-bold text-primary" style="margin-left:30px">Ajouter les heures supplémentaires <b>Le <?php echo $todaysDate = date("d-m-Y"); ?></b></h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Accueil</a></li>
