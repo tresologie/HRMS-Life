@@ -57,7 +57,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
     if ($query) {
 
       echo "<script type = \"text/javascript\">
-                window.location = (\"createClass.php\")
+                window.location = (\"createService.php\")
                 </script>";
     } else {
       $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>Erreur!</div>";
@@ -76,7 +76,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
   if ($query == TRUE) {
 
     echo "<script type = \"text/javascript\">
-                window.location = (\"createClass.php\")
+                window.location = (\"createService.php\")
                 </script>";
   } else {
 
@@ -150,7 +150,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                   if (isset($Id)) {
                   ?>
                     <button type="submit" name="update" class="btn btn-warning">Modifier</button>
-                    <a href="createClass.php" class="btn btn-secondary">Annuler</a>
+                    <a href="createService.php" class="btn btn-secondary">Annuler</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <?php
                   } else {

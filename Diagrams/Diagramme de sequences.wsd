@@ -1,0 +1,44 @@
+@startuml
+actor Admin
+actor Director
+actor Chef
+
+participant "HRMS System" as System
+database "Database" as DB
+participant "PDF/Excel Generator" as Report
+
+== Connexion ==
+Chef -> System : Se connecter (login, password)
+Admin -> System : Se connecter
+Director -> System : Se connecter
+System -> DB : Vérifier identifiants
+DB --> System : Validation
+System --> Chef : Connexion réussie
+System --> Admin : Connexion réussie
+System --> Director : Connexion réussie
+
+== Enregistrement des présences (Chef seulement) ==
+Chef -> System : Enregistrer présence(admissionNo, status, date)
+System -> DB : INSERT INTO Attendance(...)
+DB --> System : Confirmation insertion
+System --> Chef : Présence enregistrée
+
+== Enregistrement des heures supplémentaires (Chef seulement) ==
+Chef -> System : Enregistrer heuresSupp(admissionNo, heureDebut, heureFin, montant)
+System -> DB : INSERT INTO Supp(...)
+DB --> System : Confirmation insertion
+System --> Chef : Heures supplémentaires enregistrées
+
+== Génération de rapports PDF/Excel (Admin/Director/Chef) ==
+Admin -> System : Demande rapport
+Director -> System : Demande rapport
+Chef -> System : Demande rapport
+System -> DB : SELECT ... FROM Employee, Attendance, Supp, Salaire, SalaireResume, SuppResume
+DB --> System : Données récupérées
+System -> Report : Générer PDF/Excel
+Report --> System : Fichier généré
+System --> Admin : Télécharger fichier
+System --> Director : Télécharger fichier
+System --> Chef : Télécharger fichier
+
+@enduml

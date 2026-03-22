@@ -1,0 +1,37 @@
+@startuml
+[*] --> Attendance_NonEnregistre
+
+'========================
+' Cycle des présences
+'========================
+Attendance_NonEnregistre --> Attendance_Enregistre : Chef enregistre présence
+Attendance_Enregistre --> Attendance_Valide : Admin/Director valide
+Attendance_Valide --> Attendance_Modifie : Correction si erreur
+Attendance_Modifie --> Attendance_Valide : Revalidation
+Attendance_Valide --> Attendance_Archive : Fin de période / archivage
+
+'========================
+' Cycle des heures supplémentaires
+'========================
+Supp_NonEnregistre --> Supp_Enregistre : Chef enregistre heures sup
+Supp_Enregistre --> Supp_Valide : Admin/Director valide
+Supp_Valide --> Supp_Modifie : Correction si erreur
+Supp_Modifie --> Supp_Valide : Revalidation
+Supp_Valide --> Supp_Archive : Fin de période / archivage
+
+'========================
+' Cycle des résumés Salaire et Supp
+'========================
+Resume_Calcule --> Resume_Valide : Admin/Director valide résumé
+Resume_Valide --> Resume_Modifie : Correction si erreur
+Resume_Modifie --> Resume_Valide : Revalidation
+Resume_Valide --> Resume_Paye : Salaire/Supp payé à l’employé
+Resume_Paye --> Resume_Archive : Archivage terminé
+
+'========================
+' Liaisons initiales
+'========================
+[*] --> Supp_NonEnregistre
+[*] --> Resume_Calcule
+
+@enduml

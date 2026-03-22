@@ -1,0 +1,140 @@
+@startuml
+' Classes principales
+class Admin {
+  - Id : int
+  - firstName : string
+  - lastName : string
+  - poste : string
+  - emailAddress : string
+  - password : string
+}
+
+class Director {
+  - Id : int
+  - firstName : string
+  - lastName : string
+  - poste : string
+  - phoneNumber : string
+  - emailAddress : string
+  - password : string
+}
+
+class Chef {
+  - Id : int
+  - firstName : string
+  - lastName : string
+  - emailAddress : string
+  - password : string
+  - phoneNo : string
+  - classId : string
+  - dateCreated : string
+}
+
+class Service {
+  - Id : int
+  - serviceName : string
+}
+
+class Employee {
+  - Id : int
+  - firstName : string
+  - lastName : string
+  - identite : string
+  - admissionNumber : string
+  - poste : string
+  - tel : string
+  - salaire : int
+  - ddn : string
+  - genre : string
+  - password : string
+  - classId : string
+  - dateCreated : string
+}
+
+class BankInfo {
+  - Id : int
+  - admissionNo : string
+  - identite : string
+  - bankName : string
+  - bankNumber : string
+  - addedBy : int
+  - dateAdded : datetime
+}
+
+class Attendance {
+  - Id : int
+  - admissionNo : string
+  - classId : string
+  - status : string
+  - dateTimeTaken : date
+  - timeTaken : timestamp
+}
+
+class Salaire {
+  - Id : int
+  - admissionNo : string
+  - classId : string
+  - status : string
+  - dateTimeTaken : date
+}
+
+class SalaireResume {
+  - id : int
+  - admissionNumber : string
+  - nom : string
+  - prenom : string
+  - identite : string
+  - salaire_base : decimal
+  - presences : int
+  - absences : int
+  - salaire_receivable : decimal
+  - periode_debut : date
+  - periode_fin : date
+  - date_validation : datetime
+  - compte_bancaire : string
+  - banque : string
+}
+
+class Supp {
+  - Id : int
+  - admissionNo : string
+  - classId : string
+  - heureDebut : time
+  - heureFin : time
+  - heures : int
+  - montant : int
+  - dateTimeTaken : string
+  - timeTaken : timestamp
+}
+
+class SuppResume {
+  - id : int
+  - admissionNumber : string
+  - nom : string
+  - prenom : string
+  - identite : string
+  - usine : string
+  - poste : string
+  - dateDebut : date
+  - dateFin : date
+  - nombreJours : int
+  - totalPaye : int
+  - dateEnregistrement : timestamp
+}
+
+' Relations principales
+Admin "1" --> "*" Director
+Admin "1" --> "*" Chef
+Director "1" --> "*" Chef
+Chef "1" --> "1" Service
+Service "1" --> "*" Employee
+Employee "1" --> "1" BankInfo
+Employee "1" --> "*" Attendance
+Employee "1" --> "*" Salaire
+Employee "1" --> "*" SalaireResume
+Employee "1" --> "*" Supp
+Employee "1" --> "*" SuppResume
+Service "1" --> "*" Salaire
+Service "1" --> "*" Supp
+
+@enduml

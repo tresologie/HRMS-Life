@@ -1,0 +1,34 @@
+@startuml
+left to right direction
+
+actor Administrateur
+actor Directeur
+actor "Chef de service" as Chef
+
+rectangle HRMS {
+    usecase "Authentification / Déconnexion" as UC1
+    usecase "Gestion des utilisateurs" as UC2
+    usecase "Gestion des services" as UC3
+    usecase "Création des employés" as UC4
+    usecase "Enregistrement des présences" as UC5
+    usecase "Saisie des heures supplémentaires" as UC6
+    usecase "Calcul et gestion des paies" as UC7
+    usecase "Génération et consultation des rapports" as UC8
+}
+
+Administrateur --> UC1
+Administrateur --> UC2
+Administrateur --> UC3
+Administrateur --> UC8
+
+Directeur --> UC1
+Directeur --> UC4
+Directeur --> UC8
+
+Chef --> UC1
+Chef --> UC5
+Chef --> UC6
+Chef --> UC7
+Chef --> UC8
+
+@enduml

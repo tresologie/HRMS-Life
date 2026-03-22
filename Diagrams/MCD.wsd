@@ -1,0 +1,148 @@
+@startuml
+!define table(x) class x << (T,#FFAAAA) >>
+
+'========================
+' Entités principales
+'========================
+table(Admin) {
+  Id : int
+  firstName : string
+  lastName : string
+  poste : string
+  emailAddress : string
+  password : string
+}
+
+table(Director) {
+  Id : int
+  firstName : string
+  lastName : string
+  poste : string
+  phoneNumber : string
+  emailAddress : string
+  password : string
+}
+
+table(Chef) {
+  Id : int
+  firstName : string
+  lastName : string
+  emailAddress : string
+  password : string
+  phoneNo : string
+  classId : string
+  dateCreated : string
+}
+
+table(Service) {
+  Id : int
+  serviceName : string
+}
+
+table(Employee) {
+  Id : int
+  firstName : string
+  lastName : string
+  identite : string
+  admissionNumber : string
+  poste : string
+  tel : string
+  salaire : int
+  ddn : string
+  genre : string
+  password : string
+  classId : string
+  dateCreated : string
+}
+
+table(BankInfo) {
+  Id : int
+  admissionNo : string
+  identite : string
+  bankName : string
+  bankNumber : string
+  addedBy : int
+  dateAdded : datetime
+}
+
+table(Attendance) {
+  Id : int
+  admissionNo : string
+  classId : string
+  status : string
+  dateTimeTaken : date
+  timeTaken : timestamp
+  createdBy : Chef
+}
+
+table(Salaire) {
+  Id : int
+  admissionNo : string
+  classId : string
+  status : string
+  dateTimeTaken : date
+}
+
+table(SalaireResume) {
+  id : int
+  admissionNumber : string
+  nom : string
+  prenom : string
+  identite : string
+  salaire_base : decimal
+  presences : int
+  absences : int
+  salaire_receivable : decimal
+  periode_debut : date
+  periode_fin : date
+  date_validation : datetime
+  compte_bancaire : string
+  banque : string
+}
+
+table(Supp) {
+  Id : int
+  admissionNo : string
+  classId : string
+  heureDebut : time
+  heureFin : time
+  heures : int
+  montant : int
+  dateTimeTaken : string
+  timeTaken : timestamp
+  createdBy : Chef
+}
+
+table(SuppResume) {
+  id : int
+  admissionNumber : string
+  nom : string
+  prenom : string
+  identite : string
+  usine : string
+  poste : string
+  dateDebut : date
+  dateFin : date
+  nombreJours : int
+  totalPaye : int
+  dateEnregistrement : timestamp
+}
+
+'========================
+' Relations
+'========================
+Admin ||--o{ Director : crée
+Admin ||--o{ Chef : crée
+Director ||--o{ Chef : supervise
+Chef ||--|| Service : gère
+Service ||--o{ Employee : contient
+Employee ||--|| BankInfo : possède
+Employee ||--o{ Attendance : a
+Employee ||--o{ Salaire : a
+Employee ||--o{ SalaireResume : a
+Employee ||--o{ Supp : a
+Employee ||--o{ SuppResume : a
+Service ||--o{ Salaire : lié
+Service ||--o{ Supp : lié
+
+@enduml
