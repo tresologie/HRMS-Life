@@ -1,0 +1,37 @@
+@startuml
+title Gestion des présences, heures supplémentaires et salaires
+
+start
+
+:Chef de service s'authentifie;
+:Sélection de l'employé (Employee);
+
+partition "Saisie des données" {
+    :Saisir présence quotidienne (Attendance);
+    :Saisir heures supplémentaires si applicable;
+}
+
+partition "Calcul de la paie" {
+    :Récupérer salaire de base (Employee);
+    :Récupérer présences (Attendance);
+    :Calculer salaire = salaire de base*nombre de p/nombre de jour du mois;
+    :Enregistrer dans Salaire;
+    :Générer résumé dans SalaireResume;
+}
+
+partition "Génération des documents" {
+    :Créer bulletin de paie (PDF);
+    :Sauvegarder bulletin de paie;
+}
+
+partition "Consultation / Rapport" {
+    if (Utilisateur = Admin / Directeur / Chef) then (Oui)
+        :Consulter bulletin de paie;
+        :Générer rapport détaillé;
+    else (Non)
+        :Fin accès;
+    endif
+}
+
+stop
+@enduml

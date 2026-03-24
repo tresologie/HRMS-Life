@@ -8,7 +8,6 @@ services:
       - .:/var/www/html
     depends_on:
       - db
-
   db:
     image: mysql:8
     container_name: HRMS_db
@@ -20,7 +19,6 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: HRMS_phpmyadmin
@@ -30,6 +28,5 @@ services:
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: root
-
 volumes:
   db_data:

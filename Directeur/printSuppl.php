@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php'; 
+require '../vendor/autoload.php';
 include '../Includes/dbcon.php';
 
 date_default_timezone_set('Africa/Bujumbura');
@@ -12,9 +12,9 @@ $fromDate = $_GET['from'] ?? date('Y-m-d', strtotime('-6 days'));
 $toDate   = $_GET['to'] ?? date('Y-m-d');
 
 // Limiter à 7 jours max
-$diff = (strtotime($toDate) - strtotime($fromDate)) / (60*60*24) + 1;
-if($diff > 7){
-    $toDate = date('Y-m-d', strtotime($fromDate. ' + 6 days'));
+$diff = (strtotime($toDate) - strtotime($fromDate)) / (60 * 60 * 24) + 1;
+if ($diff > 7) {
+    $toDate = date('Y-m-d', strtotime($fromDate . ' + 6 days'));
 }
 
 // ===== Requête =====
@@ -39,14 +39,14 @@ $result = $conn->query($query);
 $dates = [];
 $data  = [];
 
-while($row = $result->fetch_assoc()){
+while ($row = $result->fetch_assoc()) {
     $emp = $row['admissionNumber'];
     $date = $row['dateTimeTaken'];
     $montant = $row['montant'];
 
     $dates[$date] = $date;
 
-    $data[$emp]['name']  = $row['firstName'].' '.$row['lastName'];
+    $data[$emp]['name']  = $row['firstName'] . ' ' . $row['lastName'];
     $data[$emp]['identite'] = $row['identite'];
     $data[$emp]['badge'] = $row['admissionNumber'];
     $data[$emp]['usine'] = $row['serviceName'];
@@ -126,7 +126,7 @@ tr:nth-child(even) {
     <strong>Le ' . date("d/m/Y") . '</strong>
 </div>
 </div>
-<div class="title">Heures supplementaires du '.$fromDate.' au '.$toDate.'</div>
+<div class="title">Heures supplementaires du ' . $fromDate . ' au ' . $toDate . '</div>
 </div>
 <table>
 <thead>
@@ -138,8 +138,8 @@ tr:nth-child(even) {
 <th>Usine</th>
 <th>Poste</th>';
 
-foreach($dates as $date){
-    $html .= '<th>'.date("d/m", strtotime($date)).'</th>';
+foreach ($dates as $date) {
+    $html .= '<th>' . date("d/m", strtotime($date)) . '</th>';
 }
 $html .= '<th>Total</th>';
 $html .= '<th>Signature</th></tr></thead><tbody>';
@@ -147,23 +147,23 @@ $html .= '<th>Signature</th></tr></thead><tbody>';
 // ===== Lignes par employé =====
 $totalGeneral = 0;
 $cnt = 1;
-foreach($data as $emp => $info){
+foreach ($data as $emp => $info) {
     $totalEmp = 0;
     $html .= '<tr>';
-    $html .= '<td>'.$cnt.'</td>';
-    $html .= '<td>'.$info['name'].'</td>';
-    $html .= '<td>'.$info['identite'].'</td>';
-    $html .= '<td>'.$info['badge'].'</td>';
-    $html .= '<td>'.$info['usine'].'</td>';
-    $html .= '<td>'.$info['poste'].'</td>';
+    $html .= '<td>' . $cnt . '</td>';
+    $html .= '<td>' . $info['name'] . '</td>';
+    $html .= '<td>' . $info['identite'] . '</td>';
+    $html .= '<td>' . $info['badge'] . '</td>';
+    $html .= '<td>' . $info['usine'] . '</td>';
+    $html .= '<td>' . $info['poste'] . '</td>';
 
-    foreach($dates as $date){
+    foreach ($dates as $date) {
         $value = $info['values'][$date] ?? 0;
         $totalEmp += $value;
-        $html .= '<td>'.number_format($value,0,',',' ').' Fbu</td>';
+        $html .= '<td class="right">' . number_format($value, 0, ',', ' ') . ' Fbu</td>';
     }
 
-    $html .= '<td><b>'.number_format($totalEmp,0,',',' ').' Fbu</b></td>';
+    $html .= '<td class="right"><b>' . number_format($totalEmp, 0, ',', ' ') . ' Fbu</b></td>';
     $html .= '<td></td></tr>';
 
     $totalGeneral += $totalEmp;
@@ -172,8 +172,8 @@ foreach($data as $emp => $info){
 
 // ===== Total général =====
 $html .= '<tr>
-<td colspan="'.(6+count($dates)).'" style="text-align:right;font-weight:bold;">TOTAL GENERAL</td>
-<td style="font-weight:bold;">'.number_format($totalGeneral,0,',',' ').' Fbu</td>
+<td colspan="' . (6 + count($dates)) . '" style="text-align:right;font-weight:bold;">TOTAL GENERAL</td>
+<td class="right"; style="font-weight:bold;">' . number_format($totalGeneral, 0, ',', ' ') . ' Fbu</td>
 <td></td>
 </tr>';
 
@@ -186,8 +186,7 @@ $options->set('isRemoteEnabled', true);
 
 $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
-$dompdf->setPaper('A4', 'landscape'); 
+$dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 $dompdf->stream("Heures_supplementaires.pdf", ["Attachment" => true]);
 exit;
-?>

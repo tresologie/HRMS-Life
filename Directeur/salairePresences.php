@@ -220,6 +220,7 @@ if (isset($_POST['save'])) {
       $stmt->execute();
       $resultPDF = $stmt->get_result();
       $sn = 0;
+      $totalGeneral = 0;
 
       while ($row = $resultPDF->fetch_assoc()) {
         $sn++;
@@ -236,12 +237,18 @@ if (isset($_POST['save'])) {
                     <td>" . htmlspecialchars($row['identite'] ?: '-') . "</td>
                     <td>$pres</td>
                     <td>$abs</td>
-                    <td class='right'>" . number_format($salaireBase, 0, ',', ' ') . "</td>
-                    <td class='right total-row'>" . number_format($recevable, 0, ',', ' ') . "</td>
+                    <td class='right'>" . number_format($salaireBase, 0, ',', ' ') . " FBu</td>
+                    <td class='right total-row'>" . number_format($recevable, 0, ',', ' ') . " FBu</td>
                     <td>" . htmlspecialchars($row['bankNumber']) . "</td>
-                    <td class='left'>" . htmlspecialchars($row['bankName']) . "</td>
-                </tr>";
+                    <td class='left'>" . htmlspecialchars($row['bankName']) . "</td></tr>";
+        $totalGeneral += $recevable;
       }
+      $html .= "
+                    <tr>
+                    <td colspan='6'; style='text-align:right;font-weight:bold;'>TOTAL GENERAL</td>
+                    <td class='right'; style='font-weight:bold;'>" . number_format($totalGeneral, 0, ',', ' ') . " FBu</td>
+                    <td colspan='2'></td>
+                </tr>";
 
       $html .= '
             </table>
